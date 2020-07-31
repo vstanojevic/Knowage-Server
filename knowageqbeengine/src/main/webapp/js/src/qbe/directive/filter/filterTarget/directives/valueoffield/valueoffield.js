@@ -16,30 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 (function(){
-	angular.module('targetApp').service('mappings',function(parsingHelper){
+	angular.module('targetApp').directive('valueoffield', function(targetAppBasePath,sbiModule_translate) {
 
-		var mappings = {};
-		var parsingHelper = parsingHelper;
-		var init = function(){
-			register(['manual'],'manual',mappings)
-			register(['parameter'],'parameter',mappings)
-			register(['valueoffield'],'valueoffield',mappings)
-			register(['anotherentity'],'anotherentity',mappings)
-			register(['subquery'],'subqueries',mappings)
-			register(['default'],'manual',mappings)
+		return {
 
+			scope:{
+				filter:'='
+			},
+			restrict:'E',
+			templateUrl:targetAppBasePath +"/directives/valueoffield/valueoffield.html",
+			controller:function($scope){
+
+				$scope.translate = sbiModule_translate;
+
+				var init = function(){
+
+					$scope.filter.rightOperandType="Static Content";
+
+				}
+
+				init();
+
+			}
 		}
-
-		this.get = function(){
-			return mappings;
-		}
-
-		var register = function(properties,value,obj){
-			parsingHelper.set(properties,obj,value)
-
-		}
-
-		init()
 	})
-
 })()
+
+
