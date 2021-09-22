@@ -198,6 +198,12 @@ export default defineComponent({
                     }
                     this.$emit('reloadList')
                 })
+                .catch((response) => {
+                    this.$store.commit('setError', {
+                        title: this.$t('common.uploading'),
+                        msg: response.data.errors[0].message
+                    })
+                })
                 .finally(() => (this.triggerUpload = false))
         },
 
