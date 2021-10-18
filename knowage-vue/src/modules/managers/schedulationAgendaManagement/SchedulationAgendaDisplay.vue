@@ -7,9 +7,9 @@
                 </span>
             </template>
             <template #content>
-                <div v-for="dataItem in groupedItemList" :key="dataItem" class="xyz">
+                <div v-for="dataItem in groupedItemList" :key="dataItem">
                     <div class="p-grid">
-                        <div v-if="displayMode == 'time'" class="kn-list--column p-col-3" style="overflow: visible">
+                        <div v-if="displayMode == 'time'" class="kn-list--column p-col-3">
                             <div class="flex-body">
                                 <div class="flex-row">
                                     <p class="p-large">{{ dataItem.day }}</p>
@@ -20,14 +20,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div v-if="displayMode == 'package'" class="kn-list--column p-col-3" style="overflow: visible">
+                        <div v-if="displayMode == 'package'" class="kn-list--column p-col-3">
                             <div class="flex-body">
                                 <div class="flex-row">
                                     <h2>{{ dataItem.jobName }}</h2>
                                 </div>
                             </div>
                         </div>
-                        <div v-if="displayMode == 'document'" class="kn-list--column p-col-3" style="overflow: visible">
+                        <div v-if="displayMode == 'document'" class="kn-list--column p-col-3">
                             <div class="flex-body">
                                 <div class="flex-row">
                                     <h2>{{ dataItem.document }}</h2>
@@ -58,7 +58,7 @@
                                         </span>
                                     </template>
                                 </Column>
-                                <Column :expander="true" headerStyle="width: 3rem" />
+                                <Column :expander="true" />
                                 <Column :style="schedulationAgendaDescriptor.table.iconColumn.style">
                                     <template #body>
                                         <Button icon="pi pi-pencil" class="p-button-link" @click="openRedirection()" :data-test="'action-button'" />
@@ -253,10 +253,9 @@ export default defineComponent({
                     }
                     break
             }
-            console.log('groupedItemList ', JSON.stringify(this.groupedItemList))
         },
         openRedirection() {
-            this.$router.push('/scheduler/edit-package-schedule?id=Test&clone=false')
+            this.$router.push('/knowage/servlet/AdapterHTTP?ACTION_NAME=MANAGE_SCHEDULER_ACTION_ANGULARJS&LIGHT_NAVIGATOR_RESET_INSERT=TRUE')
         },
         getDayOfWeekName(date: any) {
             let inputDateValue = new Date(date)

@@ -1,9 +1,19 @@
 {
     "breakpoint": "560px",
+    "buttonGroup": {
+        "style": {
+            "margin": "5px"
+        }
+    },
     "card": {
         "style": {
             "margin-bottom": "2em",
             "width": "100%"
+        }
+    },
+    "colorLeftBorder": {
+        "style": {
+            "border-left": "8px solid"
         }
     },
     "columns": [
@@ -24,15 +34,59 @@
             }
         }
     ],
+    "flexBody": {
+        "style": {
+            "align-content": "center",
+            "display": "flex",
+            "flex-direction": "row",
+            "justify-content": "center"
+        }
+    },
+    "flexColumn": {
+        "style": {
+            "display": "flex",
+            "flex-direction": "column",
+            "padding-top": "22px"
+        }
+    },
+    "flexRow": {
+        "style": {
+            "display": "flex",
+            "flex-direction": "row",
+            "width": "15%"
+        }
+    },
     "form": {
         "style": {
             "width": "60vw"
         }
     },
     "globalFilterFields": ["name", "description"],
+    "hCard": {
+        "style": {
+            "height ": "205",
+            "justify-content": "flex-end",
+            "overflow ": "visible",
+            "overflow-x": "hidden",
+            "overflow-y": "auto",
+            "padding": "15px"
+        }
+    },
     "intervalInput": {
         "style": {
             "min-width": "200px"
+        }
+    },
+    "numberSpan": {
+        "style": {
+            "background": "#5178d0",
+            "border-radius": "0.8em",
+            "color": "#ffffff",
+            "display": "inline-block",
+            "line-height": "1.6em",
+            "margin-right": "15px",
+            "text-align": "center",
+            "width": "1.6em"
         }
     },
     "operation": {
@@ -49,11 +103,30 @@
             "margin-bottom": "40px"
         }
     },
-    "hCard": {
+    "pLarge": {
         "style": {
-            "height ": "205",
-            "justify-content": "flex-end",
-            "overflow ": "visible",
+            "font-size": "28px",
+            "font-weight": "bold",
+            "text-align": "center"
+        }
+    },
+    "pSmall": {
+        "style": {
+            "margin": "2px",
+            "text-align": "left"
+        }
+    },
+    "pSmallBold": {
+        "style": {
+            "font-weight": "bold",
+            "margin": "2px",
+            "text-align": "left"
+        }
+    },
+    "parentCard": {
+        "style": {
+            "height": "100%",
+            "overflow": "visible",
             "overflow-x": "hidden",
             "overflow-y": "auto",
             "padding": "15px"

@@ -294,7 +294,6 @@ describe('Scheduler Agenda loading', () => {
         await router.push('/schedulation-agenda')
         await router.isReady()
         await flushPromises()
-        console.log(wrapper.html())
         expect(wrapper.html()).toContain('managers.schedulationAgendaManagement.hint')
     })
 })

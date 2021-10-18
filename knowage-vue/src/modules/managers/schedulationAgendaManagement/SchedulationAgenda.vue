@@ -12,28 +12,28 @@
                     <div class="p-d-flex">
                         <label for="startDate" class="kn-material-input-label p-m-2"> {{ $t('managers.schedulationAgendaManagement.detail.startDate') + ':' }}</label>
                         <span>
-                            <Calendar id="startDate" class="kn-material-input" v-model="startDate" :showIcon="true" :manualInput="false" @date-select="setDateTime('startDate')" :minDate="minStartDate" data-test="start-date" />
+                            <Calendar id="startDate" class="kn-material-input" v-model="startDateTime" :showIcon="true" :manualInput="false" :minDate="minStartDate" data-test="start-date" />
                         </span>
                     </div>
 
                     <div class="p-d-flex p-ai-center">
                         <label for="startTime" class="kn-material-input-label p-m-2"> {{ $t('managers.schedulationAgendaManagement.detail.startTime') + ':' }}</label>
                         <span>
-                            <Calendar id="startTime" class="kn-material-input" v-model="startTime" :manualInput="false" :timeOnly="true" hourFormat="24" :inline="true" @date-select="setDateTime('startTime')" data-test="start-time" />
+                            <Calendar id="startTime" class="kn-material-input" v-model="startDateTime" :manualInput="false" :timeOnly="true" hourFormat="24" :inline="true" data-test="start-time" />
                         </span>
                     </div>
 
                     <div class="p-d-flex">
                         <label for="endDate" class="kn-material-input-label p-m-2"> {{ $t('managers.schedulationAgendaManagement.detail.endDate') + ':' }}</label>
                         <span>
-                            <Calendar id="endDate" class="kn-material-input" v-model="endDate" :showIcon="true" :manualInput="false" @date-select="setDateTime('endDate')" data-test="end-date" />
+                            <Calendar id="endDate" class="kn-material-input" v-model="endDateTime" :showIcon="true" :manualInput="false" data-test="end-date" />
                         </span>
                     </div>
 
                     <div class="p-col-2 p-d-flex p-ai-center">
                         <label for="endTime" class="kn-material-input-label p-m-2"> {{ $t('managers.schedulationAgendaManagement.detail.endTime') + ':' }}</label>
                         <span>
-                            <Calendar id="endTime" class="kn-material-input" v-model="endTime" :manualInput="false" :timeOnly="true" hourFormat="24" :inline="true" @date-select="setDateTime('endTime')" data-test="end-time" />
+                            <Calendar id="endTime" class="kn-material-input" v-model="endDateTime" :manualInput="false" :timeOnly="true" hourFormat="24" :inline="true" data-test="end-time" />
                         </span>
                     </div>
 
@@ -58,10 +58,10 @@
                     </div>
                 </div>
                 <div class="kn-page-content p-grid p-m-0">
-                    <div v-if="packageFormVisible">
+                    <div v-if="displayFormType == 'packageForm'">
                         <SchedulationAgendaDialog :itemList="packageList" :model="selectedPackage" :title="$t('managers.schedulationAgendaManagement.packageTypes.title')" @changed="selectedPackageChanged($event)" @close="closeForm" data-test="package-schedulation-form"></SchedulationAgendaDialog>
                     </div>
-                    <div v-if="documentFormVisible">
+                    <div v-if="displayFormType == 'documentForm'">
                         <SchedulationAgendaDialog
                             :itemList="documentList"
                             :model="selectedDocument"
@@ -109,17 +109,12 @@ export default defineComponent({
             selectedDocument: null as iDataItem | null,
             selectedPackageName: '',
             selectedDocumentName: '',
-            packageFormVisible: false,
-            documentFormVisible: false,
             packageList: [] as iDataItem[],
             documentList: [] as iDataItem[],
             loading: false,
-            startDate: null as Date | null,
-            startTime: null as Date | null,
-            endDate: null as Date | null,
-            endTime: null as Date | null,
             startDateTime: null as Date | null,
-            endDateTime: null as Date | null
+            endDateTime: null as Date | null,
+            displayFormType: ''
         }
     },
     computed: {
@@ -168,26 +163,16 @@ export default defineComponent({
                 .finally(() => (this.loading = false))
         },
         showForm(formType) {
-            switch (formType) {
-                case 'packageForm':
-                    this.packageFormVisible = true
-                    break
-                case 'documentForm':
-                    this.documentFormVisible = true
-                    break
-            }
+            this.displayFormType = formType
         },
         closeForm() {
-            if (this.packageFormVisible) this.packageFormVisible = false
-            if (this.documentFormVisible) this.documentFormVisible = false
+            this.displayFormType = ''
         },
         selectedPackageChanged(dataItem: any) {
             this.selectedPackage = dataItem
-            console.log('selectedPackageChanged ', this.selectedPackage)
         },
         selectedDocumentChanged(dataItem: any) {
             this.selectedDocument = dataItem
-            console.log('selectedDocument ', this.selectedDocument)
         },
         async runSearch() {
             this.loading = true
@@ -199,39 +184,6 @@ export default defineComponent({
                 .finally(() => (this.loading = false))
 
             this.$router.push('/schedulation-agenda/search-result')
-        },
-        setDateTime(type: string) {
-            if (!this.startDateTime) this.startDateTime = new Date()
-            if (!this.endDateTime) this.endDateTime = new Date()
-
-            switch (type) {
-                case 'startDate':
-                    if (this.startDate) {
-                        this.startDateTime.setFullYear(this.startDate.getFullYear())
-                        this.startDateTime.setMonth(this.startDate.getMonth())
-                        this.startDateTime.setDate(this.startDate.getDate())
-                    }
-                    break
-                case 'startTime':
-                    if (this.startTime) {
-                        this.startDateTime.setHours(this.startTime.getHours())
-                        this.startDateTime.setMinutes(this.startTime.getMinutes())
-                    }
-                    break
-                case 'endDate':
-                    if (this.endDate) {
-                        this.endDateTime.setFullYear(this.endDate.getFullYear())
-                        this.endDateTime.setMonth(this.endDate.getMonth())
-                        this.endDateTime.setDate(this.endDate.getDate())
-                    }
-                    break
-                case 'endTime':
-                    if (this.endTime) {
-                        this.endDateTime.setHours(this.endTime.getHours())
-                        this.endDateTime.setMinutes(this.endTime.getMinutes())
-                    }
-                    break
-            }
         },
         formatDateTime(date: any) {
             return formatDate(date, 'YYYY-MM-DDTHH:MM:SS')
