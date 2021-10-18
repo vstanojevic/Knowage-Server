@@ -33,6 +33,7 @@ export interface iDataItem {
     id?: string
     name: string
     description?: string
+    label?: string
 }
 
 export interface iGroupDataItem {
