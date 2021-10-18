@@ -60,8 +60,8 @@
                                 </Column>
                                 <Column :expander="true" />
                                 <Column :style="schedulationAgendaDescriptor.table.iconColumn.style">
-                                    <template #body>
-                                        <Button icon="pi pi-pencil" class="p-button-link" @click="openRedirection()" :data-test="'action-button'" />
+                                    <template #body="slotProps">
+                                        <Button icon="pi pi-pencil" class="p-button-link" @click="openRedirection(slotProps.data.jobName)" :data-test="'action-button'" />
                                     </template>
                                 </Column>
                                 <template #expansion="slotProps">
@@ -254,8 +254,10 @@ export default defineComponent({
                     break
             }
         },
-        openRedirection() {
-            this.$router.push('/knowage/servlet/AdapterHTTP?ACTION_NAME=MANAGE_SCHEDULER_ACTION_ANGULARJS&LIGHT_NAVIGATOR_RESET_INSERT=TRUE')
+        openRedirection(jobName: String) {
+            if (jobName) {
+                this.$router.push(`/scheduler/edit-package-schedule?id=${jobName}&clone=false`)
+            }
         },
         getDayOfWeekName(date: any) {
             let inputDateValue = new Date(date)
