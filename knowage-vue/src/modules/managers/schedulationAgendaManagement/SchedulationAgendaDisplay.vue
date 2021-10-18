@@ -35,7 +35,7 @@
                             </div>
                         </div>
                         <div class="p-col-9">
-                            <DataTable :value="dataItem.executions" v-model:expandedRows="expandedRows" class="p-datatable-sm kn-table" dataKey="date" :rows="10" responsiveLayout="stack" breakpoint="960px" data-test="data-table" :rowClass="rowClass" row>
+                            <DataTable :value="dataItem.executions" v-model:expandedRows="expandedRows" class="p-datatable-sm kn-table" dataKey="date" :rows="10" responsiveLayout="stack" breakpoint="960px" data-test="data-table">
                                 <template #empty>
                                     {{ $t('common.info.noDataFound') }}
                                 </template>
@@ -145,10 +145,6 @@ export default defineComponent({
         }
     },
     methods: {
-        rowClass(data) {
-            console.log(data)
-            return 'active'
-        },
         async updateDisplayData(displayType: string) {
             await this.runDisplay(displayType)
         },
