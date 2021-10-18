@@ -1,0 +1,98 @@
+{
+    "breakpoint": "560px",
+    "card": {
+        "style": {
+            "margin-bottom": "2em",
+            "width": "100%"
+        }
+    },
+    "columns": [
+        {
+            "field": "name",
+            "header": "managers.schedulationAgendaManagement.headers.name",
+            "position": 1,
+            "style": {
+                "width": "50%"
+            }
+        },
+        {
+            "field": "description",
+            "header": "managers.configurationManagement.headers.description",
+            "position": 2,
+            "style": {
+                "width": "50%"
+            }
+        }
+    ],
+    "form": {
+        "style": {
+            "width": "60vw"
+        }
+    },
+    "globalFilterFields": ["name", "description"],
+    "intervalInput": {
+        "style": {
+            "min-width": "200px"
+        }
+    },
+    "operation": {
+        "insert": {
+            "toastTitle": "common.toast.createTitle"
+        },
+        "success": "common.toast.success",
+        "update": {
+            "toastTitle": "common.toast.updateTitle"
+        }
+    },
+    "pField": {
+        "style": {
+            "margin-bottom": "40px"
+        }
+    },
+    "hCard": {
+        "style": {
+            "height ": "205",
+            "justify-content": "flex-end",
+            "overflow ": "visible",
+            "overflow-x": "hidden",
+            "overflow-y": "auto",
+            "padding": "15px"
+        }
+    },
+    "schedulationColumns": [
+        {
+            "field": "date",
+            "position": 1,
+            "style": {
+                "width": "50%"
+            }
+        },
+        {
+            "field": "jobName",
+            "position": 2,
+            "style": {
+                "width": "50%"
+            }
+        },
+        {
+            "field": "numberOfDocuments",
+            "position": 2,
+            "style": {
+                "width": "50%"
+            }
+        }
+    ],
+    "span": {
+        "style": {
+            "justify-content": "flex-end"
+        }
+    },
+    "table": {
+        "iconColumn": {
+            "style": {
+                "text-align": "end",
+                "width": "5%"
+            }
+        }
+    }
+}
