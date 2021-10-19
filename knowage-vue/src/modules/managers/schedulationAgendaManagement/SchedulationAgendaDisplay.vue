@@ -136,6 +136,9 @@ export default defineComponent({
     watch: {
         itemList() {
             this.dataItemList = this.itemList as iSchedulation[]
+            if (this.displayModes) {
+                this.selectedDisplayMode = this.displayModes[0]
+            }
         },
         selectedDisplayMode() {
             if (this.selectedDisplayMode) {
@@ -143,13 +146,6 @@ export default defineComponent({
                 this.updateDisplayData(this.displayMode)
             }
         }
-    },
-    created() {
-        setTimeout(() => {
-            if (this.displayModes) {
-                this.selectedDisplayMode = this.displayModes[0]
-            }
-        }, 500)
     },
     methods: {
         updateDisplayData(displayType: string) {
