@@ -56,6 +56,7 @@
                             <Button class="p-button-text kn-button" :label="$t('managers.schedulationAgendaManagement.common.search')" @click="runSearch" data-test="search-button" />
                         </div>
                     </div>
+                    <h1></h1>
                 </div>
                 <div class="kn-page-content p-grid p-m-0">
                     <div v-if="displayFormType == 'packageForm'">
@@ -123,6 +124,10 @@ export default defineComponent({
         }
     },
     created() {
+        this.startDateTime = new Date()
+        this.endDateTime = new Date()
+        this.endDateTime.setDate(this.endDateTime.getDate() + 7)
+
         this.loadPackages()
         this.loadDocuments()
     },
