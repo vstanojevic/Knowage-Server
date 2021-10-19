@@ -145,10 +145,10 @@ export default defineComponent({
         }
     },
     methods: {
-        async updateDisplayData(displayType: string) {
-            await this.runDisplay(displayType)
+        updateDisplayData(displayType: string) {
+            this.runDisplay(displayType)
         },
-        async runDisplay(displayType: string) {
+        runDisplay(displayType: string) {
             this.groupedItemList = [] as iGroupDataItem[]
             this.displayMode = displayType
             switch (displayType) {

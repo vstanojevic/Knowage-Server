@@ -179,7 +179,9 @@ export default defineComponent({
         selectedDocumentChanged(dataItem: any) {
             this.selectedDocument = dataItem
         },
-        async runSearch() {
+        runSearch() {
+            this.loading = true
+
             let path = process.env.VUE_APP_RESTFUL_SERVICES_PATH + `scheduleree/nextExecutions?start=${this.formatDateTime(this.startDateTime)}&end=${this.formatDateTime(this.endDateTime)}`
             if (this.selectedPackage) {
                 path += `&jobPackageName=${this.selectedPackage.id}`
@@ -187,8 +189,7 @@ export default defineComponent({
             if (this.selectedDocument) {
                 path += `&document=${this.selectedDocument.label}`
             }
-            this.loading = true
-            await axios
+            axios
                 .get(path)
                 .then((response) => {
                     this.schedulations = response.data.root
