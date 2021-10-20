@@ -28,7 +28,7 @@
                         </div>
                     </div>
                     <div class="p-col-9">
-                        <DataTable :value="dataItem.executions" v-model:expandedRows="expandedRows" class="custom-row-border p-datatable-sm kn-table" dataKey="date" :rows="10" :rowClass="rowClass" responsiveLayout="stack" breakpoint="960px" data-test="data-table">
+                        <DataTable :value="dataItem.executions" v-model:expandedRows="expandedRows" class="custom-row-border p-datatable-sm kn-table" dataKey="id" :rows="10" :rowClass="rowClass" responsiveLayout="stack" breakpoint="960px" data-test="data-table">
                             <template #empty>
                                 {{ $t('common.info.noDataFound') }}
                             </template>
@@ -175,6 +175,7 @@ export default defineComponent({
             return currentColor
         },
         createDocumentItemList(): iGroupDataItem[] {
+            let index = 0
             const groupedItemList: iGroupDataItem[] = []
             for (let i = 0; i < this.dataItemList.length; i++) {
                 if (this.dataItemList[i].triggers && this.dataItemList[i].triggers[0].executions) {
@@ -196,6 +197,7 @@ export default defineComponent({
 
                                 if (!execution) {
                                     execution = {
+                                        id: index++,
                                         date: this.formatDateTime(this.dataItemList[i].triggers[j].executions[k]),
                                         jobName: this.dataItemList[i].triggers[j].jobName,
                                         numberOfDocuments: this.dataItemList[i].triggers[j].documents.length,
@@ -211,6 +213,7 @@ export default defineComponent({
             return groupedItemList
         },
         createPackageItemList(): iGroupDataItem[] {
+            let index = 0
             const groupedItemList: iGroupDataItem[] = []
             for (let i = 0; i < this.dataItemList.length; i++) {
                 if (this.dataItemList[i].triggers && this.dataItemList[i].triggers[0].executions) {
@@ -223,6 +226,7 @@ export default defineComponent({
                     for (let j = 0; j < this.dataItemList[i].triggers.length; j++) {
                         for (let k = 0; k < this.dataItemList[i].triggers[j].executions.length; k++) {
                             let execution = {
+                                id: index++,
                                 date: this.formatDateTime(this.dataItemList[i].triggers[j].executions[k]),
                                 jobName: this.dataItemList[i].triggers[j].jobName,
                                 numberOfDocuments: this.dataItemList[i].triggers[j].documents.length,
@@ -237,6 +241,7 @@ export default defineComponent({
             return groupedItemList
         },
         createTimeItemList(): iGroupDataItem[] {
+            let index = 0
             const groupedItemList: iGroupDataItem[] = []
             for (let i = 0; i < this.dataItemList.length; i++) {
                 if (this.dataItemList[i].triggers && this.dataItemList[i].triggers[0].executions) {
@@ -248,6 +253,7 @@ export default defineComponent({
                                 groupedItemList.push(item)
                             }
                             let execution = {
+                                id: index++,
                                 date: this.dataItemList[i].triggers[j].executions[k],
                                 jobName: this.dataItemList[i].triggers[j].jobName,
                                 numberOfDocuments: this.dataItemList[i].triggers[j].documents.length,
