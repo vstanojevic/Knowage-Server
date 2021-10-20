@@ -8,7 +8,7 @@
             </Toolbar>
             <ProgressBar mode="indeterminate" class="kn-progress-bar" v-if="loading" data-test="progress-bar" />
 
-            <div :style="schedulationAgendaDescriptor.hCard.style" class="flex-no-resize p-p-2">
+            <div :style="schedulationAgendaDescriptor.hCard.style" class="flex-no-resize p-p-3">
                 <Card>
                     <template #content>
                         <div class="p-d-flex p-ai-center p-mt-2 p-flex-wrap">

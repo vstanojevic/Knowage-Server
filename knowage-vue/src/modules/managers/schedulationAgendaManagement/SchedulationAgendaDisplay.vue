@@ -5,7 +5,7 @@
         </span>
         <div class="flex-grow overflow-auto">
             <template v-for="dataItem in groupedItemList" :key="dataItem">
-                <Card class="p-mx-2 p-my-1">
+                <Card class="p-mx-3 p-my-1">
                     <template #content>
                         <div class="p-grid p-m-0">
                             <div class=" p-col-3">
@@ -97,11 +97,13 @@ import Column from 'primevue/column'
 import SelectButton from 'primevue/selectbutton'
 import schedulationAgendaDescriptor from './SchedulationAgendaDescriptor.json'
 import { formatDate, formatDateWithLocale } from '@/helpers/commons/localeHelper'
+import Card from 'primevue/card'
 import moment from 'moment'
 
 export default defineComponent({
     name: 'schedulation-agenda-display',
     components: {
+        Card,
         Badge,
         Column,
         DataTable,
