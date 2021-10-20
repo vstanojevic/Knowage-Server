@@ -39,11 +39,11 @@ export interface iDataItem {
 export interface iGroupDataItem {
     color: string
     jobName: string
-    date: Date | null
-    dayOfWeek: string
-    monthName: string
-    year: number
-    day: number
+    date?: Date | string | null
+    dayOfWeek?: string
+    monthName?: string
+    year?: number
+    day?: number
     document: string
     executions?: Array
 }

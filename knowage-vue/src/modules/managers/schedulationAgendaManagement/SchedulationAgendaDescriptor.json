@@ -11,11 +11,6 @@
             "width": "100%"
         }
     },
-    "colorLeftBorder": {
-        "style": {
-            "border-left": "8px solid"
-        }
-    },
     "columns": [
         {
             "field": "name",
@@ -34,28 +29,6 @@
             }
         }
     ],
-    "flexBody": {
-        "style": {
-            "align-content": "center",
-            "display": "flex",
-            "flex-direction": "row",
-            "justify-content": "center"
-        }
-    },
-    "flexColumn": {
-        "style": {
-            "display": "flex",
-            "flex-direction": "column",
-            "padding-top": "22px"
-        }
-    },
-    "flexRow": {
-        "style": {
-            "display": "flex",
-            "flex-direction": "row",
-            "width": "15%"
-        }
-    },
     "form": {
         "style": {
             "width": "60vw"
@@ -72,23 +45,6 @@
             "padding": "15px"
         }
     },
-    "intervalInput": {
-        "style": {
-            "min-width": "200px"
-        }
-    },
-    "numberSpan": {
-        "style": {
-            "background": "#5178d0",
-            "border-radius": "0.8em",
-            "color": "#ffffff",
-            "display": "inline-block",
-            "line-height": "1.6em",
-            "margin-right": "15px",
-            "text-align": "center",
-            "width": "1.6em"
-        }
-    },
     "operation": {
         "insert": {
             "toastTitle": "common.toast.createTitle"
@@ -98,70 +54,31 @@
             "toastTitle": "common.toast.updateTitle"
         }
     },
-    "pField": {
-        "style": {
-            "margin-bottom": "40px"
-        }
-    },
-    "pLarge": {
-        "style": {
-            "font-size": "28px",
-            "font-weight": "bold",
-            "text-align": "center"
-        }
-    },
-    "pSmall": {
-        "style": {
-            "margin": "2px",
-            "text-align": "left"
-        }
-    },
-    "pSmallBold": {
-        "style": {
-            "font-weight": "bold",
-            "margin": "2px",
-            "text-align": "left"
-        }
-    },
-    "parentCard": {
-        "style": {
-            "height": "100%",
-            "overflow": "visible",
-            "overflow-x": "hidden",
-            "overflow-y": "auto",
-            "padding": "15px"
-        }
-    },
-    "schedulationColumns": [
-        {
-            "field": "date",
-            "position": 1,
-            "style": {
-                "width": "50%"
-            }
-        },
-        {
-            "field": "jobName",
-            "position": 2,
-            "style": {
-                "width": "50%"
-            }
-        },
-        {
-            "field": "numberOfDocuments",
-            "position": 2,
-            "style": {
-                "width": "50%"
-            }
-        }
-    ],
     "span": {
         "style": {
             "justify-content": "flex-end"
         }
     },
     "table": {
+        "badgeColumn": {
+            "style": {
+                "width": "10%"
+            }
+        },
+        "dateColumn": {
+            "style": {
+                "line-height": "2rem",
+                "text-align": "left",
+                "width": "15%"
+            }
+        },
         "iconColumn": {
+            "style": {
+                "text-align": "end",
+                "width": "5%"
+            }
+        },
+        "rowExpanderColumn": {
             "style": {
                 "text-align": "end",
                 "width": "5%"
