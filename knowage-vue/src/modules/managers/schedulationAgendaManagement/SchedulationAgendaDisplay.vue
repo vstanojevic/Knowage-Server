@@ -137,13 +137,6 @@ export default defineComponent({
             }
         }
     },
-    created() {
-        setTimeout(() => {
-            if (this.displayModes) {
-                this.selectedDisplayMode = this.displayModes[0]
-            }
-        }, 500)
-    },
     methods: {
         updateDisplayData(displayType: string) {
             this.runDisplay(displayType)
