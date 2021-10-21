@@ -187,9 +187,11 @@ export default defineComponent({
         },
         selectedPackageChanged(dataItem: any) {
             this.selectedPackage = dataItem
+            this.displayFormType = ''
         },
         selectedDocumentChanged(dataItem: any) {
             this.selectedDocument = dataItem
+            this.displayFormType = ''
         },
         runSearch() {
             this.loading = true
