@@ -302,6 +302,17 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.p-card:nth-child(even) {
+    background-color: #f2f2f2;
+    &:deep(.p-datatable) {
+        .p-datatable-tbody tr {
+            background-color: inherit;
+        }
+        .p-datatable-thead tr th {
+            background-color: inherit;
+        }
+    }
+}
 .p-large {
     font-size: 2rem;
 }

@@ -8,10 +8,10 @@
             </Toolbar>
             <ProgressBar mode="indeterminate" class="kn-progress-bar" v-if="loading" data-test="progress-bar" />
 
-            <div :style="schedulationAgendaDescriptor.hCard.style" class="flex-no-resize p-p-3">
+            <div :style="schedulationAgendaDescriptor.hCard.style" class="card-no-padding flex-no-resize p-p-3">
                 <Card>
                     <template #content>
-                        <div class="p-d-flex p-ai-center p-mt-2 p-flex-wrap">
+                        <div class="p-d-flex p-ai-center p-flex-wrap">
                             <div class="p-d-flex">
                                 <label for="startDate" class="kn-material-input-label p-m-2"> {{ $t('managers.schedulationAgendaManagement.detail.startDate') + ':' }}</label>
                                 <span>
@@ -22,7 +22,7 @@
                             <div class="p-d-flex p-ai-center">
                                 <label for="startTime" class="kn-material-input-label p-m-2"> {{ $t('managers.schedulationAgendaManagement.detail.startTime') + ':' }}</label>
                                 <span>
-                                    <Calendar id="startTime" class="kn-material-input" v-model="startDateTime" :manualInput="false" :timeOnly="true" hourFormat="24" :inline="true" data-test="start-time" />
+                                    <Calendar id="startTime" class="kn-material-input custom-timepicker" v-model="startDateTime" :manualInput="false" :timeOnly="true" hourFormat="24" :inline="true" data-test="start-time" />
                                 </span>
                             </div>
 
@@ -35,7 +35,7 @@
 
                             <div class="p-col-2 p-d-flex p-ai-center">
                                 <label for="endTime" class="kn-material-input-label p-m-2"> {{ $t('managers.schedulationAgendaManagement.detail.endTime') + ':' }}</label>
-                                <span>
+                                <span class="custom-timepicker">
                                     <Calendar id="endTime" class="kn-material-input" v-model="endDateTime" :manualInput="false" :timeOnly="true" hourFormat="24" :inline="true" data-test="end-time" />
                                 </span>
                             </div>
@@ -226,5 +226,27 @@ export default defineComponent({
 .flex-no-resize {
     flex-grow: 0;
     flex-shrink: 0;
+}
+
+.custom-timepicker {
+    &:deep(.p-datepicker) {
+        border-color: transparent;
+    }
+}
+
+.card-no-padding {
+    :deep(.p-card-body) {
+        padding: 0;
+        .p-card-content {
+            padding: 0;
+        }
+    }
+
+    :deep(.p-datepicker) {
+        padding: 0;
+        .p-timepicker {
+            padding: 0;
+        }
+    }
 }
 </style>
