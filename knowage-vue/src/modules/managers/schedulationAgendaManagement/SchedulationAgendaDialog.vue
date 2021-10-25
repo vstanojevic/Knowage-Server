@@ -14,6 +14,10 @@
                 :responsiveLayout="schedulationAgendaDescriptor.responsiveLayout"
                 :breakpoint="schedulationAgendaDescriptor.breakpoint"
                 @rowClick="selectRow"
+                :paginator="true"
+                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                :rowsPerPageOptions="[10, 15, 20]"
+                :currentPageReportTemplate="$t('common.table.footer.paginated', { first: '{first}', last: '{last}', totalRecords: '{totalRecords}' })"
             >
                 <template #empty>
                     <div id="noDataFound">

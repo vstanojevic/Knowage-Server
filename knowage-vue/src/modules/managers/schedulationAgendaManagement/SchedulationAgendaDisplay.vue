@@ -233,15 +233,22 @@ export default defineComponent({
                         for (let k = 0; k < this.dataItemList[i].triggers[j].executions.length; k++) {
                             let execution = {
                                 id: index++,
+                                rawDate: new Date(this.dataItemList[i].triggers[j].executions[k]),
                                 date: this.formatDateTime(this.dataItemList[i].triggers[j].executions[k]),
                                 jobName: this.dataItemList[i].triggers[j].jobName,
                                 numberOfDocuments: this.dataItemList[i].triggers[j].documents.length,
                                 documents: this.dataItemList[i].triggers[j].documents
                             }
-                            item.executions.push(execution)
+                            const executionMomentDate = moment(execution.rawDate)
+                            const ind = item.executions.findIndex((item) => executionMomentDate.isBefore(item.rawDate))
+                            if (ind >= 0) {
+                                item.executions.splice(ind, 0, execution)
+                            } else {
+                                item.executions.push(execution)
+                            }
                         }
-                        groupedItemList.push(item)
                     }
+                    groupedItemList.push(item)
                 }
             }
             return groupedItemList
@@ -256,16 +263,30 @@ export default defineComponent({
                             let item = groupedItemList.find((x) => moment(x.date).isSame(this.dataItemList[i].triggers[j].executions[k], 'day'))
                             if (!item) {
                                 item = this.createTimeGrupItem(this.dataItemList[i].triggers[j].executions[k])
-                                groupedItemList.push(item)
+                                //search for position of group item
+                                const itemMomentDate = moment(item.rawDate)
+                                const ind = groupedItemList.findIndex((groupItem) => itemMomentDate.isBefore(groupItem.rawDate))
+                                if (ind >= 0) {
+                                    groupedItemList.splice(ind, 0, item)
+                                } else {
+                                    groupedItemList.push(item)
+                                }
                             }
                             let execution = {
                                 id: index++,
+                                rawDate: new Date(this.dataItemList[i].triggers[j].executions[k]),
                                 date: this.dataItemList[i].triggers[j].executions[k],
                                 jobName: this.dataItemList[i].triggers[j].jobName,
                                 numberOfDocuments: this.dataItemList[i].triggers[j].documents.length,
                                 documents: this.dataItemList[i].triggers[j].documents
                             }
-                            item.executions.push(execution)
+                            const execItemMomentDate = moment(execution.rawDate)
+                            const execItemInd = item.executions.findIndex((groupItem) => execItemMomentDate.isBefore(groupItem.rawDate))
+                            if (execItemInd >= 0) {
+                                item.executions.splice(execItemInd, 0, execution)
+                            } else {
+                                item.executions.push(execution)
+                            }
                         }
                     }
                 }
@@ -276,6 +297,7 @@ export default defineComponent({
             return {
                 jobName: '',
                 color: 'red',
+                rawDate: new Date(date),
                 date: formatDateWithLocale(date),
                 dayOfWeek: formatDateWithLocale(date, { weekday: 'long' }),
                 monthName: formatDateWithLocale(date, { month: 'long' }),

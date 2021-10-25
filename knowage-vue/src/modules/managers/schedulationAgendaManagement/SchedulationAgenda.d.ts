@@ -39,6 +39,7 @@ export interface iDataItem {
 export interface iGroupDataItem {
     color: string
     jobName: string
+    rawDate?: Date
     date?: Date | string | null
     dayOfWeek?: string
     monthName?: string
