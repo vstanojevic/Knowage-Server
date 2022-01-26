@@ -134,7 +134,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import { iBusinessModelColumn } from '../../../../../Metaweb'
+import { iBusinessModelColumn } from '@/modules/managers/businessModelCatalogue/metaweb/Metaweb'
 import { formatDate } from '@/helpers/commons/localeHelper'
 import Dialog from 'primevue/dialog'
 import Dropdown from 'primevue/dropdown'
