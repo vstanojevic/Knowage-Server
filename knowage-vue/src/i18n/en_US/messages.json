@@ -89,6 +89,7 @@
         "language": "Language",
         "lastChangeDate": "Last change date",
         "library": "Library",
+        "list": "List",
         "load": "Load",
         "locked": "Locked",
         "loggedUser": "logged user",
@@ -152,6 +153,7 @@
         "sqlExpression": "SQL expression",
         "state": "State",
         "status": "Status",
+        "style": "Style",
         "suspended": "Suspended",
         "table": {
             "footer": {
@@ -201,6 +203,7 @@
         "visibility": "Visibility",
         "visible": "Visible",
         "warning": "Warning",
+        "widget": "Widget",
         "yes": "Yes"
     },
     "cron": {
@@ -635,7 +638,37 @@
             "useIt": "Use It"
         },
         "kpiEdit": {
-            "title": "Kpi Document Designer"
+            "font": {
+                "extended": "Extended (16px)",
+                "large": "Large (18px)",
+                "medium": "Medium (14px)",
+                "small": "Small (10px)",
+                "xlarge": "Extra-large (24px)",
+                "xsmall": "Extra-small (8px)",
+                "xxlarge": "Very Large (40px)"
+            },
+            "fontFamily": {
+                "arial": "Arial",
+                "courierNew": "Courier-new",
+                "roboto": "Roboto",
+                "tahoma": "Tahoma",
+                "timesNewRoman": "Times New Roman",
+                "verdana": "verdana"
+            },
+            "fontSize": "Font-size",
+            "kpiCard": "Kpi Card",
+            "kpiList": "KPI List",
+            "prefix": "Prefix",
+            "prefixSuffixLabel": "Prefix / Suffix label",
+            "rangeMaxValue": "Range Max Value",
+            "rangeMinValue": "Range Min Value",
+            "scorecard": "Scorecard",
+            "showLabelAs": "Show label as",
+            "speedometer": "Speedometer",
+            "suffix": "Suffix",
+            "title": "Kpi Document Designer",
+            "typeOfDocument": "Type of Document",
+            "viewAs": "View as"
         },
         "kpiScheduler": {
             "addKpiAssociation": "Add KPI associations",

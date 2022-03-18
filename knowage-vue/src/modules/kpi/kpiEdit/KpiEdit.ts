@@ -33,16 +33,19 @@ export interface iScorecard {
 }
 
 export interface iKpiDesigner {
-    chart: {
-        model: string,
-        type: string,
-        data: {
-            kpi: iKpiListItem[]
-        },
-        options: iOptions,
-        style: iStyle
-    }
+    chart: iChart
 }
+
+export interface iChart {
+    model: string,
+    type: string,
+    data: {
+        kpi: iKpiListItem[]
+    },
+    options: iOptions,
+    style: iStyle
+}
+
 
 export interface iKpiListItem {
     isSuffix: string,
@@ -50,7 +53,8 @@ export interface iKpiListItem {
     prefixSuffixValue: string,
     rangeMaxValue: string,
     rangeMinValue: string,
-    vieweas: string
+    vieweas: string,
+    category?: string
 }
 
 export interface iOptions {
@@ -66,10 +70,12 @@ export interface iOptions {
 }
 
 export interface iStyle {
-    font: {
-        color: string,
-        fontFamily: string,
-        fontWeight: string,
-        size: string
-    }
+    font: iFont
+}
+
+export interface iFont {
+    color: string,
+    fontFamily: string,
+    fontWeight: string,
+    size: string
 }

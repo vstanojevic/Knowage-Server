@@ -1,0 +1,58 @@
+{
+    "fontFamilyOptions": [
+        {
+            "label": "kpi.kpiEdit.fontFamily.roboto",
+            "value": "roboto"
+        },
+        {
+            "label": "kpi.kpiEdit.fontFamily.arial",
+            "value": "arial"
+        },
+        {
+            "label": "kpi.kpiEdit.fontFamily.courierNew",
+            "value": "courier-new"
+        },
+        {
+            "label": "kpi.kpiEdit.fontFamily.tahoma",
+            "value": "tahoma"
+        },
+        {
+            "label": "kpi.kpiEdit.fontFamily.timesNewRoman",
+            "value": "times-new-roman"
+        },
+        {
+            "label": "kpi.kpiEdit.fontFamily.verdana",
+            "value": "verdana"
+        }
+    ],
+    "fontSizeOptions": [
+        {
+            "label": "kpi.kpiEdit.font.xsmall",
+            "value": ".6rem"
+        },
+        {
+            "label": "kpi.kpiEdit.font.small",
+            "value": ".8rem"
+        },
+        {
+            "label": "kpi.kpiEdit.font.medium",
+            "value": "1rem"
+        },
+        {
+            "label": "kpi.kpiEdit.font.extended",
+            "value": "1.1rem"
+        },
+        {
+            "label": "kpi.kpiEdit.font.large",
+            "value": "1.3rem"
+        },
+        {
+            "label": "kpi.kpiEdit.font.xlarge",
+            "value": "1.8rem"
+        },
+        {
+            "label": "kpi.kpiEdit.font.xxlarge",
+            "value": "3rem"
+        }
+    ]
+}

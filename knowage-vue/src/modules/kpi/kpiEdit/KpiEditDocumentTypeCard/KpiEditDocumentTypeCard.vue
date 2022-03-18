@@ -1,17 +1,52 @@
 <template>
-    <h1>KPI EDIT DOCUMENT TYPE CARD</h1>
+    <Card v-if="chart">
+        <template #header>
+            <Toolbar class="kn-toolbar kn-toolbar--secondary">
+                <template #start>
+                    {{ $t('kpi.kpiEdit.typeOfDocument') }}
+                </template>
+            </Toolbar>
+        </template>
+        <template #content>
+            <div class=" p-d-flex p-flex-row">
+                <div class="field-radiobutton p-mx-2" v-for="(option, index) in kpiEditDocumentTypeCardDescriptor.documentTypeOptions" :key="index">
+                    <RadioButton :id="option.value" :value="option.value" v-model="chart.model"></RadioButton>
+                    <label :for="option.value" class="p-ml-2">{{ $t(option.label) }}</label>
+                </div>
+            </div>
+        </template>
+    </Card>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
+import { iChart } from '../KpiEdit'
+import Card from 'primevue/card'
+import RadioButton from 'primevue/radiobutton'
+import kpiEditDocumentTypeCardDescriptor from './KpiEditDocumentTypeCardDescriptor.json'
 
 export default defineComponent({
     name: 'kpi-edit-document-type-card',
-    components: {},
+    components: { Card, RadioButton },
+    props: { propChart: { type: Object as PropType<iChart> } },
     data() {
-        return {}
+        return {
+            kpiEditDocumentTypeCardDescriptor,
+            chart: null as iChart | null
+        }
     },
-    async created() {},
-    methods: {}
+    watch: {
+        propChart() {
+            this.loadChart()
+        }
+    },
+    created() {
+        this.loadChart()
+    },
+    methods: {
+        loadChart() {
+            this.chart = this.propChart as iChart
+        }
+    }
 })
 </script>

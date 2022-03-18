@@ -14,11 +14,16 @@
                     </Toolbar>
                     <ProgressBar v-if="loading" class="kn-progress-bar" mode="indeterminate" />
 
-                    <KpiEditTypeCard></KpiEditTypeCard>
-                    <KpiEditDocumentTypeCard></KpiEditDocumentTypeCard>
-                    <KpiEditKpiListCard></KpiEditKpiListCard>
-                    <KpiEditStyleCard></KpiEditStyleCard>
-                    <KpiEditOptionsCard></KpiEditOptionsCard>
+                    <div v-if="kpiDesigner" class="p-grid">
+                        {{ kpiDesigner }}
+                        <KpiEditTypeCard v-if="showScorecards" class="p-col-12" :chartType="kpiDesigner.chart.type" @typeChanged="onTypeChanged"></KpiEditTypeCard>
+                        <KpiEditDocumentTypeCard v-if="kpiDesigner.chart.type === 'kpi'" class="p-col-12" :propChart="kpiDesigner.chart"></KpiEditDocumentTypeCard>
+                        <KpiEditKpiListCard :propData="kpiDesigner.chart.data" :kpiList="kpiList" class="p-col-12"></KpiEditKpiListCard>
+                        <div class="p-grid p-col-12">
+                            <KpiEditStyleCard class="p-col-6" :propStyle="kpiDesigner.chart.style"></KpiEditStyleCard>
+                            <KpiEditOptionsCard class="p-col-6"></KpiEditOptionsCard>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -41,14 +46,21 @@ export default defineComponent({
     props: { id: { type: String } },
     data() {
         return {
-            kpiDesigner: {} as iKpiDesigner,
+            kpiDesigner: null as iKpiDesigner | null,
             kpiList: [] as iKpi[],
             scorecards: [] as iScorecard[],
             loading: false
         }
     },
     watch: {
-        id() {}
+        async id() {
+            await this.loadKpi()
+        }
+    },
+    computed: {
+        showScorecards(): boolean {
+            return (this.$store.state as any).user.functionalities.includes('ScorecardsManagement')
+        }
     },
     created() {
         this.loadPage()
@@ -56,6 +68,7 @@ export default defineComponent({
     methods: {
         async loadPage() {
             this.loading = true
+            await this.loadKpi()
             await this.loadKpiList()
             await this.loadScorecards()
             this.loading = false
@@ -73,10 +86,34 @@ export default defineComponent({
             if (this.id) {
                 await this.$http.post(process.env.VUE_APP_RESTFUL_SERVICES_PATH + `1.0/kpisTemplate/getKpiTemplate`, { id: this.id }).then((response: AxiosResponse<any>) => (this.kpiDesigner = response.data))
             } else {
-                this.kpiDesigner = {} as iKpiDesigner
+                this.kpiDesigner = this.initializeKpiDesigner()
             }
             this.loading = false
             console.log('LOADED KPI DESIGNER: ', this.kpiDesigner)
+        },
+        initializeKpiDesigner() {
+            return {
+                chart: {
+                    type: 'kpi',
+                    model: 'list',
+                    data: { kpi: [] },
+                    style: { font: { color: '', fontFamily: 'roboto', fontWeight: '', size: '.6rem' } },
+                    options: {
+                        showtarget: '',
+                        showtargetpercentage: '',
+                        showthreshold: '',
+                        showvalue: '',
+                        vieweas: '',
+                        history: {
+                            size: '',
+                            units: ''
+                        }
+                    }
+                }
+            } as iKpiDesigner
+        },
+        onTypeChanged(value: string) {
+            if (this.kpiDesigner) this.kpiDesigner.chart.type = value
         },
         saveKpi() {
             console.log('SAVE KPI!')
