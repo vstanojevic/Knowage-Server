@@ -634,6 +634,9 @@
             "tresholdTitle": "Threshold",
             "useIt": "Use It"
         },
+        "kpiEdit": {
+            "title": "Kpi Document Designer"
+        },
         "kpiScheduler": {
             "addKpiAssociation": "Add KPI associations",
             "dateError": "Start date must be before end date. End date must be in future.",

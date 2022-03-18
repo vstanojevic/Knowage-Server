@@ -3,6 +3,7 @@ import targetDefinitionRoutes from '@/modules/kpi/targetDefinition/TargetDefinit
 import kpiDefinitionRoutes from '@/modules/kpi/kpiDefinition/KpiDefinition.routes.js'
 import kpiSchedulerRoutes from '@/modules/kpi/kpiScheduler/KpiScheduler.routes.js'
 import alertDefinitionRoutes from '@/modules/kpi/alertDefinition/AlertDefinition.routes.js'
+import KpiEditRoutes from '@/modules/kpi/kpiEdit/KpiEdit.routes.js'
 
 const baseRoutes = []
 
@@ -12,5 +13,6 @@ const routes = baseRoutes
     .concat(kpiDefinitionRoutes)
     .concat(kpiSchedulerRoutes)
     .concat(alertDefinitionRoutes)
+    .concat(KpiEditRoutes)
 
 export default routes
