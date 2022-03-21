@@ -66,13 +66,14 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { iFont, iStyle } from '../KpiEdit'
+import Card from 'primevue/card'
 import ColorPicker from 'primevue/colorpicker'
 import Dropdown from 'primevue/dropdown'
 import kpiEditStyleCardDescriptor from './KpiEditStyleCardDescriptor.json'
 
 export default defineComponent({
     name: 'kpi-edit-style-card',
-    components: { ColorPicker, Dropdown },
+    components: { Card, ColorPicker, Dropdown },
     props: { propStyle: { type: Object as PropType<iStyle>, required: true } },
     data() {
         return {

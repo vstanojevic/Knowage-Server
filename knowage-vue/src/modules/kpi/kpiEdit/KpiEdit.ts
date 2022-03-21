@@ -80,3 +80,11 @@ export interface iFont {
     fontWeight: string,
     size: string
 }
+
+export interface iScorecard {
+    id: number,
+    name: string,
+    creationDate: number | Date,
+    author: string,
+    perspectives: any[]
+}

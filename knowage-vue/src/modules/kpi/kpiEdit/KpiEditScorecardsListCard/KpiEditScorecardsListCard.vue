@@ -1,0 +1,106 @@
+<template>
+    <Card>
+        <template #header>
+            <Toolbar class="kn-toolbar kn-toolbar--secondary">
+                <template #start>
+                    {{ $t('kpi.kpiEdit.scorecardList') }}
+                </template>
+            </Toolbar>
+        </template>
+        <template #content>
+            <div>
+                {{ scorecards }}
+                <DataTable :value="scorecards" class="p-datatable-sm kn-table" dataKey="name" v-model:filters="filters" :globalFilterFields="kpiEditScorecardsListCardDescriptor.globalFilterFields" responsiveLayout="stack" breakpoint="960px" :scrollable="true" scroll-height="60vh">
+                    <template #header>
+                        <div class="table-header p-d-flex p-ai-center">
+                            <span id="search-container" class="p-input-icon-left p-mr-3">
+                                <i class="pi pi-search" />
+                                <InputText class="kn-material-input" v-model="filters['global'].value" type="text" :placeholder="$t('common.search')" />
+                            </span>
+                            <Button id="kpi-edit-add-scorecard-association-button" class="kn-button kn-button--primary" :label="$t('kpi.kpiEdit.addScorecardAssociation')" @click="addScorecardVisible = true"></Button>
+                        </div>
+                    </template>
+
+                    <template #empty>{{ $t('common.info.noDataFound') }}</template>
+
+                    <Column class="kn-truncated" field="name" :header="$t('kpi.kpiScheduler.kpiName')" key="name" :sortable="true"> </Column>
+                    <Column class="kn-truncated" field="creationDate" :header="$t('kpi.kpiScheduler.kpiName')" key="dateCreation" :sortable="true">
+                        <template #body="slotProps">
+                            <span>{{ getFormattedDate(slotProps.data.creationDate) }}</span>
+                        </template>
+                    </Column>
+
+                    <Column :style="kpiEditScorecardsListCardDescriptor.iconColumnStyle">
+                        <template #body="slotProps">
+                            <Button icon="pi pi-trash" class="p-button-link" @click="deleteScorecardConfirm(slotProps.data)" />
+                        </template>
+                    </Column>
+                </DataTable>
+            </div>
+
+            <KpiEditScorecardSelectDialog :scorecardList="scorecardList" :visible="addScorecardVisible" :dataScorecards="scorecards" @close="addScorecardVisible = false" @scorecardSelected="onScorecardSelected"></KpiEditScorecardSelectDialog>
+        </template>
+    </Card>
+</template>
+
+<script lang="ts">
+import { defineComponent, PropType } from 'vue'
+import { iScorecard } from '../KpiEdit'
+import { filterDefault } from '@/helpers/commons/filterHelper'
+import { formatDate } from '@/helpers/commons/localeHelper'
+import Card from 'primevue/card'
+import Column from 'primevue/column'
+import DataTable from 'primevue/datatable'
+import kpiEditScorecardsListCardDescriptor from './KpiEditScorecardsListCardDescriptor.json'
+import KpiEditScorecardSelectDialog from './KpiEditScorecardSelectDialog.vue'
+
+export default defineComponent({
+    name: 'kpi-edit-scorecards-list-card',
+    components: { Card, Column, DataTable, KpiEditScorecardSelectDialog },
+    props: { propData: { type: Object }, scorecardList: { type: Array as PropType<iScorecard[]> } },
+    data() {
+        return {
+            kpiEditScorecardsListCardDescriptor,
+            scorecards: [] as iScorecard[],
+            filters: { global: [filterDefault] } as Object,
+            addScorecardVisible: false
+        }
+    },
+    watch: {
+        propData() {
+            this.loadScorecard()
+        }
+    },
+    created() {
+        this.loadScorecard()
+    },
+    methods: {
+        loadScorecard() {
+            if (this.propData?.scorecard) {
+                this.scorecards = [this.propData.scorecard]
+            }
+            console.log(' >>> LOADED SCORECARDS: ', this.scorecards)
+        },
+        onScorecardSelected(scorecard: iScorecard) {
+            console.log('SCORECARD SELECTED: ', scorecard)
+            this.scorecards[0] = scorecard
+            this.addScorecardVisible = false
+        },
+        deleteScorecardConfirm(scorecard: iScorecard) {
+            console.log('DELETE SCORECARD CONFIRM: ', scorecard)
+        },
+        getFormattedDate(date: any) {
+            return formatDate(date)
+        }
+    }
+})
+</script>
+
+<style lang="scss" scoped>
+#kpi-edit-add-scorecard-association-button {
+    flex: 0.15;
+    height: 2.3rem;
+    margin-left: auto;
+    min-width: 150px;
+}
+</style>

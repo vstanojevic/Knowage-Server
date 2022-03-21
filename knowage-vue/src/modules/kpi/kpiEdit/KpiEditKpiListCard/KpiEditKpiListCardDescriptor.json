@@ -11,7 +11,7 @@
             }
         },
         {
-            "field": "name",
+            "field": "category",
             "header": "common.category",
             "style": {
                 "flex": 1

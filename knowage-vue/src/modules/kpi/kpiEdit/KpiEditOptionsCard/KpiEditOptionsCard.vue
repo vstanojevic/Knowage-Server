@@ -62,13 +62,14 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { iOptions } from '../KpiEdit'
+import Card from 'primevue/card'
 import Checkbox from 'primevue/checkbox'
 import Dropdown from 'primevue/dropdown'
 import kpiEditOptionsCardDescriptor from './KpiEditOptionsCardDescriptor.json'
 
 export default defineComponent({
     name: 'kpi-edit-options-card',
-    components: { Checkbox, Dropdown },
+    components: { Card, Checkbox, Dropdown },
     props: { propOptions: { type: Object as PropType<iOptions>, required: true } },
     data() {
         return {

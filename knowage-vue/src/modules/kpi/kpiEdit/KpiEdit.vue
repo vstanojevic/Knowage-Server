@@ -18,7 +18,8 @@
                         {{ kpiDesigner }}
                         <KpiEditTypeCard v-if="showScorecards" class="p-col-12" :chartType="kpiDesigner.chart.type" @typeChanged="onTypeChanged"></KpiEditTypeCard>
                         <KpiEditDocumentTypeCard v-if="kpiDesigner.chart.type === 'kpi'" class="p-col-12" :propChart="kpiDesigner.chart"></KpiEditDocumentTypeCard>
-                        <KpiEditKpiListCard :propData="kpiDesigner.chart.data" :kpiList="kpiList" :documentType="kpiDesigner.chart.model" class="p-col-12"></KpiEditKpiListCard>
+                        <KpiEditKpiListCard v-if="kpiDesigner.chart.type === 'kpi'" class="p-col-12" :propData="kpiDesigner.chart.data" :kpiList="kpiList" :documentType="kpiDesigner.chart.model"></KpiEditKpiListCard>
+                        <KpiEditScorecardsListCard v-else class="p-col-12" :propData="kpiDesigner.chart.data" :scorecardList="scorecards"></KpiEditScorecardsListCard>
                         <div class="p-grid p-col-12">
                             <KpiEditStyleCard :class="{ 'p-col-6': kpiDesigner.chart.type === 'kpi', 'p-col-12': kpiDesigner.chart.type !== 'kpi' }" :propStyle="kpiDesigner.chart.style"></KpiEditStyleCard>
                             <KpiEditOptionsCard v-if="kpiDesigner.chart.type === 'kpi'" class="p-col-6" :propOptions="kpiDesigner.chart.options"></KpiEditOptionsCard>
@@ -42,10 +43,11 @@ import KpiEditOptionsCard from './KpiEditOptionsCard/KpiEditOptionsCard.vue'
 import KpiEditStyleCard from './KpiEditStyleCard/KpiEditStyleCard.vue'
 import KpiEditTypeCard from './KpiEditTypeCard/KpiEditTypeCard.vue'
 import KpiEditSaveDialog from './KpiEditSaveDialog/KpiEditSaveDialog.vue'
+import KpiEditScorecardsListCard from './KpiEditScorecardsListCard/KpiEditScorecardsListCard.vue'
 
 export default defineComponent({
     name: 'kpi-edit',
-    components: { KpiEditDocumentTypeCard, KpiEditKpiListCard, KpiEditOptionsCard, KpiEditStyleCard, KpiEditTypeCard, KpiEditSaveDialog },
+    components: { KpiEditDocumentTypeCard, KpiEditKpiListCard, KpiEditOptionsCard, KpiEditStyleCard, KpiEditTypeCard, KpiEditSaveDialog, KpiEditScorecardsListCard },
     props: { id: { type: String } },
     data() {
         return {
