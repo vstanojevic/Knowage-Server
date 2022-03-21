@@ -41,7 +41,10 @@ export interface iChart {
     model: string,
     type: string,
     data: {
-        kpi: iKpiListItem[]
+        kpi?: iKpiListItem[],
+        scorecard?: {
+            name: string
+        }
     },
     options: iOptions,
     style: iStyle

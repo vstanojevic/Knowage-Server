@@ -19,7 +19,7 @@
                         <KpiEditTypeCard v-if="showScorecards" class="p-col-12" :chartType="kpiDesigner.chart.type" @typeChanged="onTypeChanged"></KpiEditTypeCard>
                         <KpiEditDocumentTypeCard v-if="kpiDesigner.chart.type === 'kpi'" class="p-col-12" :propChart="kpiDesigner.chart"></KpiEditDocumentTypeCard>
                         <KpiEditKpiListCard v-if="kpiDesigner.chart.type === 'kpi'" class="p-col-12" :propData="kpiDesigner.chart.data" :kpiList="kpiList" :documentType="kpiDesigner.chart.model"></KpiEditKpiListCard>
-                        <KpiEditScorecardsListCard v-else class="p-col-12" :propData="kpiDesigner.chart.data" :scorecardList="scorecards"></KpiEditScorecardsListCard>
+                        <KpiEditScorecardsListCard v-else class="p-col-12" :propData="kpiDesigner.chart.data" :scorecardList="scorecards" @scorecardChanged="onScorecardChanged"></KpiEditScorecardsListCard>
                         <div class="p-grid p-col-12">
                             <KpiEditStyleCard :class="{ 'p-col-6': kpiDesigner.chart.type === 'kpi', 'p-col-12': kpiDesigner.chart.type !== 'kpi' }" :propStyle="kpiDesigner.chart.style"></KpiEditStyleCard>
                             <KpiEditOptionsCard v-if="kpiDesigner.chart.type === 'kpi'" class="p-col-6" :propOptions="kpiDesigner.chart.options"></KpiEditOptionsCard>
@@ -45,6 +45,8 @@ import KpiEditTypeCard from './KpiEditTypeCard/KpiEditTypeCard.vue'
 import KpiEditSaveDialog from './KpiEditSaveDialog/KpiEditSaveDialog.vue'
 import KpiEditScorecardsListCard from './KpiEditScorecardsListCard/KpiEditScorecardsListCard.vue'
 
+const deepcopy = require('deepcopy')
+
 export default defineComponent({
     name: 'kpi-edit',
     components: { KpiEditDocumentTypeCard, KpiEditKpiListCard, KpiEditOptionsCard, KpiEditStyleCard, KpiEditTypeCard, KpiEditSaveDialog, KpiEditScorecardsListCard },
@@ -68,7 +70,7 @@ export default defineComponent({
             return (this.$store.state as any).user.functionalities.includes('ScorecardsManagement')
         },
         saveButtonDisabled(): boolean | null {
-            return this.kpiDesigner && (this.kpiDesigner.chart.data.kpi.length === 0 || this.kpiMissingRequiredField())
+            return this.kpiDesigner && ((this.kpiDesigner.chart.type === 'kpi' && this.kpiTypeInvalid()) || (this.kpiDesigner.chart.type === 'scorecard' && this.scorecardTypeInvalid()))
         }
     },
     created() {
@@ -150,10 +152,14 @@ export default defineComponent({
             } as iKpiDesigner
         },
         onTypeChanged(value: string) {
+            console.log('ON TYPE CHANGED: ', value)
             if (this.kpiDesigner) this.kpiDesigner.chart.type = value
         },
+        kpiTypeInvalid() {
+            return this.kpiDesigner && (this.kpiDesigner.chart.data.kpi?.length === 0 || this.kpiMissingRequiredField())
+        },
         kpiMissingRequiredField(): boolean {
-            if (!this.kpiDesigner) return false
+            if (!this.kpiDesigner || !this.kpiDesigner.chart.data.kpi) return false
 
             let missingField = false
             for (let i = 0; i < this.kpiDesigner.chart.data.kpi.length; i++) {
@@ -165,6 +171,19 @@ export default defineComponent({
             }
 
             return missingField
+        },
+        scorecardTypeInvalid() {
+            return !this.kpiDesigner || !this.kpiDesigner.chart.data.scorecard?.name
+        },
+        onScorecardChanged(scorecard: iScorecard | null) {
+            console.log('ON SCORECARD CHANGED: ', scorecard)
+            if (!this.kpiDesigner) return
+
+            if (scorecard) {
+                this.kpiDesigner.chart.data.scorecard = { name: scorecard.name }
+            } else {
+                this.kpiDesigner.chart.data.scorecard = { name: '' }
+            }
         },
         saveKpi() {
             console.log('SAVE KPI!')
@@ -180,7 +199,7 @@ export default defineComponent({
                     type: 'KPI'
                 },
                 customData: {
-                    templateContent: this.kpiDesigner
+                    templateContent: this.getFormattedKpiDesigner()
                 },
                 action: 'DOC_SAVE'
             }
@@ -196,8 +215,21 @@ export default defineComponent({
                 .finally(() => (this.saveDialogVisible = false))
             this.loading = false
         },
+        getFormattedKpiDesigner() {
+            const tempDesigner = deepcopy(this.kpiDesigner)
+
+            if (tempDesigner.chart.type === 'kpi') {
+                delete tempDesigner.chart.data.scorecard
+            } else {
+                delete tempDesigner.chart.data.kpi
+                delete tempDesigner.chart.options
+            }
+
+            return tempDesigner
+        },
         closeKpi() {
-            console.log('CLOSE KPI!')
+            const url = this.$route.query.from === 'documentDetail' ? '/document-browser' : '/workspace/analysis'
+            this.$router.push(url)
         }
     }
 })

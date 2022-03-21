@@ -23,8 +23,8 @@
 
                     <template #empty>{{ $t('common.info.noDataFound') }}</template>
 
-                    <Column class="kn-truncated" field="name" :header="$t('kpi.kpiScheduler.kpiName')" key="name" :sortable="true"> </Column>
-                    <Column class="kn-truncated" field="creationDate" :header="$t('kpi.kpiScheduler.kpiName')" key="dateCreation" :sortable="true">
+                    <Column class="kn-truncated" field="name" :header="$t('common.name')" key="name" :sortable="true"> </Column>
+                    <Column class="kn-truncated" field="creationDate" :header="$t('common.creationDate')" key="dateCreation" :sortable="true">
                         <template #body="slotProps">
                             <span>{{ getFormattedDate(slotProps.data.creationDate) }}</span>
                         </template>
@@ -58,6 +58,7 @@ export default defineComponent({
     name: 'kpi-edit-scorecards-list-card',
     components: { Card, Column, DataTable, KpiEditScorecardSelectDialog },
     props: { propData: { type: Object }, scorecardList: { type: Array as PropType<iScorecard[]> } },
+    emits: ['scorecardChanged'],
     data() {
         return {
             kpiEditScorecardsListCardDescriptor,
@@ -84,10 +85,20 @@ export default defineComponent({
         onScorecardSelected(scorecard: iScorecard) {
             console.log('SCORECARD SELECTED: ', scorecard)
             this.scorecards[0] = scorecard
+            this.$emit('scorecardChanged', this.scorecards[0])
             this.addScorecardVisible = false
         },
         deleteScorecardConfirm(scorecard: iScorecard) {
             console.log('DELETE SCORECARD CONFIRM: ', scorecard)
+            this.$confirm.require({
+                message: this.$t('common.toast.deleteMessage'),
+                header: this.$t('common.toast.deleteTitle'),
+                icon: 'pi pi-exclamation-triangle',
+                accept: () => {
+                    this.scorecards = []
+                    this.$emit('scorecardChanged', null)
+                }
+            })
         },
         getFormattedDate(date: any) {
             return formatDate(date)

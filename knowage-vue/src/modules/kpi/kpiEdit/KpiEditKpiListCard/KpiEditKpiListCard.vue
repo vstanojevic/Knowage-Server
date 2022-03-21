@@ -156,6 +156,20 @@ export default defineComponent({
         },
         deleteKpiAssociationConfirm(kpi: iKpiListItem) {
             console.log('DELETE CONFIRM FOR: ', kpi)
+            this.$confirm.require({
+                message: this.$t('common.toast.deleteMessage'),
+                header: this.$t('common.toast.deleteTitle'),
+                icon: 'pi pi-exclamation-triangle',
+                accept: () => {
+                    this.deleteKpiAssociation(kpi)
+                }
+            })
+        },
+        deleteKpiAssociation(kpi: iKpiListItem) {
+            console.log('DELETE FOR: ', kpi)
+            const index = this.data.kpi.findIndex((tempKpi: iKpiListItem) => tempKpi.name === kpi.name)
+            console.log('INDEX: ', index)
+            if (index !== -1) this.data.kpi.splice(index, 1)
         }
     }
 })

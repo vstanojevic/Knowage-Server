@@ -178,7 +178,7 @@ export default defineComponent({
             this.editDialogVisible = true
         },
         openKpiDesigner(analysis: any) {
-            this.$router.push(`/kpi-edit/${analysis?.id}`)
+            this.$router.push(`/kpi-edit/${analysis?.id}?from=Workspace`)
         },
         async handleEditAnalysis(analysis: any) {
             const formatedAnalysis = {
@@ -360,7 +360,7 @@ export default defineComponent({
             })
         },
         openKpiEdit() {
-            this.$router.push('/kpi-edit/new-kpi')
+            this.$router.push('/kpi-edit/new-kpi?from=Workspace')
         }
     }
 })

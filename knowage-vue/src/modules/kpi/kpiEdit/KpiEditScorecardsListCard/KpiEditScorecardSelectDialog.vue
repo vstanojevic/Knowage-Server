@@ -3,7 +3,7 @@
         <template #header>
             <Toolbar class="kn-toolbar kn-toolbar--primary p-p-0 p-m-0 p-col-12">
                 <template #start>
-                    {{ $t('kpi.kpiEdit.kpiList') }}
+                    {{ $t('kpi.kpiEdit.scorecardList') }}
                 </template>
                 <template #end>
                     <Button class="kn-button p-button-text" :label="$t('common.close')" @click="closeScorecardAssociations"></Button>
@@ -12,7 +12,6 @@
             </Toolbar>
         </template>
 
-        {{ selectedScorecard }}
         <DataTable
             :value="scorecardList"
             v-model:selection="selectedScorecard"
@@ -36,9 +35,9 @@
             <template #empty>
                 {{ $t('common.info.noDataFound') }}
             </template>
-            <Column selectionMode="single" headerStyle="width: 3em"></Column>
-            <Column class="kn-truncated" field="name" :header="$t('kpi.kpiScheduler.kpiName')" key="name" :sortable="true"> </Column>
-            <Column class="kn-truncated" field="creationDate" :header="$t('kpi.kpiScheduler.kpiName')" key="dateCreation" :sortable="true">
+            <Column selectionMode="single" :headerStyle="kpiEditScorecardsListCardDescriptor.selectColumnStyle" :style="kpiEditScorecardsListCardDescriptor.selectColumnStyle"></Column>
+            <Column class="kn-truncated" field="name" :header="$t('common.name')" key="name" :sortable="true"> </Column>
+            <Column class="kn-truncated" field="creationDate" :header="$t('common.creationDate')" key="dateCreation" :sortable="true">
                 <template #body="slotProps">
                     <span>{{ getFormattedDate(slotProps.data.creationDate) }}</span>
                 </template>
@@ -86,6 +85,8 @@ export default defineComponent({
             if (this.dataScorecards[0] && this.scorecardList) {
                 const index = this.scorecardList.findIndex((scorecard: iScorecard) => scorecard.name === this.dataScorecards[0].name)
                 if (index !== -1) this.selectedScorecard = this.scorecardList[index]
+            } else {
+                this.selectedScorecard = null
             }
         },
         closeScorecardAssociations() {
