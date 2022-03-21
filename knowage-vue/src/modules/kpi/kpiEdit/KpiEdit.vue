@@ -1,6 +1,6 @@
 <template>
     <div class="kn-page">
-        <div class="kn-page-content p-grid p-m-0">
+        <div class="kn-page-content p-grid p-m-0 p-p-0">
             <div class="kn-page-content p-grid p-m-0">
                 <div class="p-col-12 p-p-0">
                     <Toolbar class="kn-toolbar kn-toolbar--primary">
@@ -14,15 +14,16 @@
                     </Toolbar>
                     <ProgressBar v-if="loading" class="kn-progress-bar" mode="indeterminate" data-test="progress-bar" />
 
-                    <div v-if="kpiDesigner" class="p-grid">
-                        {{ kpiDesigner }}
-                        <KpiEditTypeCard v-if="showScorecards" class="p-col-12" :chartType="kpiDesigner.chart.type" @typeChanged="onTypeChanged"></KpiEditTypeCard>
-                        <KpiEditDocumentTypeCard v-if="kpiDesigner.chart.type === 'kpi'" class="p-col-12" :propChart="kpiDesigner.chart"></KpiEditDocumentTypeCard>
-                        <KpiEditKpiListCard v-if="kpiDesigner.chart.type === 'kpi'" class="p-col-12" :propData="kpiDesigner.chart.data" :kpiList="kpiList" :documentType="kpiDesigner.chart.model"></KpiEditKpiListCard>
-                        <KpiEditScorecardsListCard v-else class="p-col-12" :propData="kpiDesigner.chart.data" :scorecardList="scorecards" @scorecardChanged="onScorecardChanged"></KpiEditScorecardsListCard>
-                        <div class="p-grid p-col-12">
-                            <KpiEditStyleCard :class="{ 'p-col-6': kpiDesigner.chart.type === 'kpi', 'p-col-12': kpiDesigner.chart.type !== 'kpi' }" :propStyle="kpiDesigner.chart.style"></KpiEditStyleCard>
-                            <KpiEditOptionsCard v-if="kpiDesigner.chart.type === 'kpi'" class="p-col-6" :propOptions="kpiDesigner.chart.options"></KpiEditOptionsCard>
+                    <div v-if="kpiDesigner" class="p-d-flex p-flex-column p-m-0">
+                        <!-- TODO -->
+                        <!-- {{ kpiDesigner }} -->
+                        <KpiEditTypeCard v-if="showScorecards" class="kn-flex" :chartType="kpiDesigner.chart.type" @typeChanged="onTypeChanged"></KpiEditTypeCard>
+                        <KpiEditDocumentTypeCard v-if="kpiDesigner.chart.type === 'kpi'" class="kn-flex" :propChart="kpiDesigner.chart"></KpiEditDocumentTypeCard>
+                        <KpiEditKpiListCard v-if="kpiDesigner.chart.type === 'kpi'" class="kn-flex" :propData="kpiDesigner.chart.data" :kpiList="kpiList" :documentType="kpiDesigner.chart.model"></KpiEditKpiListCard>
+                        <KpiEditScorecardsListCard v-else class="kn-flex" :propData="kpiDesigner.chart.data" :scorecardList="scorecards" @scorecardChanged="onScorecardChanged"></KpiEditScorecardsListCard>
+                        <div class="p-d-flex p-flex-row kn-flex p-p-0 p-m-0">
+                            <KpiEditStyleCard class="kn-flex" :propStyle="kpiDesigner.chart.style"></KpiEditStyleCard>
+                            <KpiEditOptionsCard v-if="kpiDesigner.chart.type === 'kpi'" class="kn-flex" :propOptions="kpiDesigner.chart.options"></KpiEditOptionsCard>
                         </div>
                     </div>
                 </div>
@@ -75,25 +76,20 @@ export default defineComponent({
     },
     async created() {
         await this.loadPage()
-        console.log('THIS ID: ', this.id)
     },
     methods: {
         async loadPage() {
             this.loading = true
-            console.log('LOADING: ', this.loading)
             await this.loadKpi()
             await this.loadKpiList()
             await this.loadScorecards()
             this.loading = false
-            console.log('LOADING AFTER: ', this.loading)
         },
         async loadKpiList() {
             await this.$http.get(process.env.VUE_APP_RESTFUL_SERVICES_PATH + `1.0/kpi/listKpi`).then((response: AxiosResponse<any>) => (this.kpiList = response.data))
-            console.log('LOADED KPI LIST: ', this.kpiList)
         },
         async loadScorecards() {
             await this.$http.get(process.env.VUE_APP_RESTFUL_SERVICES_PATH + `1.0/kpiee/listScorecard`).then((response: AxiosResponse<any>) => (this.scorecards = response.data))
-            console.log('LOADED SCORECARDS: ', this.scorecards)
         },
         async loadKpi() {
             this.loading = true
@@ -105,15 +101,14 @@ export default defineComponent({
                 this.kpiDesigner = this.initializeKpiDesigner()
             }
             this.loading = false
-            console.log('LOADED KPI DESIGNER: ', this.kpiDesigner)
         },
         initializeKpiDesigner() {
             return {
                 chart: {
                     type: 'kpi',
-                    model: 'list',
+                    model: 'widget',
                     data: { kpi: [] },
-                    style: { font: { color: 'rgb(14,13,13)', fontFamily: 'roboto', fontWeight: 'normal', size: '.6rem' } },
+                    style: { font: { color: 'rgb(14,13,13)', fontFamily: 'roboto', fontWeight: 'normal', size: '8px' } },
                     options: {
                         showtarget: true,
                         showtargetpercentage: false,
@@ -129,7 +124,6 @@ export default defineComponent({
             } as iKpiDesigner
         },
         onTypeChanged(value: string) {
-            console.log('ON TYPE CHANGED: ', value)
             if (this.kpiDesigner) this.kpiDesigner.chart.type = value
         },
         kpiTypeInvalid() {
@@ -153,7 +147,6 @@ export default defineComponent({
             return !this.kpiDesigner || !this.kpiDesigner.chart.data.scorecard?.name
         },
         onScorecardChanged(scorecard: iScorecard | null) {
-            console.log('ON SCORECARD CHANGED: ', scorecard)
             if (!this.kpiDesigner) return
 
             if (scorecard) {
@@ -163,7 +156,6 @@ export default defineComponent({
             }
         },
         saveKpi() {
-            console.log('SAVE KPI!')
             if (!this.id) {
                 this.saveDialogVisible = true
             } else {
@@ -172,7 +164,6 @@ export default defineComponent({
         },
         async onKpiSave(kpiName: string) {
             this.loading = true
-            console.log('ID: ', this.id)
 
             if (this.id) {
                 await this.updateKpi()
@@ -202,7 +193,7 @@ export default defineComponent({
                         title: this.$t('common.toast.createTitle'),
                         msg: this.$t('common.toast.success')
                     })
-                    if (this.kpiDesigner) this.kpiDesigner.id = response.data.id
+                    this.$router.push(`/kpi-edit/${response.data.id}?from=${this.$route.query.from}`)
                 })
                 .catch(() => {})
                 .finally(() => (this.saveDialogVisible = false))

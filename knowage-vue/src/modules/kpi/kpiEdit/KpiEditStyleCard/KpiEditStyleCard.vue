@@ -1,5 +1,5 @@
 <template>
-    <Card v-if="font">
+    <Card v-if="font" class="p-m-2">
         <template #header>
             <Toolbar class="kn-toolbar kn-toolbar--secondary">
                 <template #start>
@@ -92,7 +92,6 @@ export default defineComponent({
     methods: {
         loadFont() {
             this.font = this.propStyle?.font as iFont
-            console.log('LOADED FONT: ', this.font)
         },
         getDropdownValueLabel(value: string, options: { value: string; label: string }[]) {
             for (let i = 0; i < options.length; i++) {

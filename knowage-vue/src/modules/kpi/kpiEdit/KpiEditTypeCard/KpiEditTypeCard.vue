@@ -1,5 +1,5 @@
 <template>
-    <Card>
+    <Card class="p-m-2">
         <template #content>
             <div class=" p-d-flex p-flex-row">
                 <div class="field-radiobutton p-mx-2" v-for="(option, index) in kpiEditTypeCardDescriptor.typeOptions" :key="index">

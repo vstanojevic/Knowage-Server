@@ -9,7 +9,8 @@
         </template>
         <template #content>
             <div>
-                {{ scorecards }}
+                <!-- TODO
+                {{ scorecards }} -->
                 <DataTable :value="scorecards" class="p-datatable-sm kn-table" dataKey="name" v-model:filters="filters" :globalFilterFields="kpiEditScorecardsListCardDescriptor.globalFilterFields" responsiveLayout="stack" breakpoint="960px" :scrollable="true" scroll-height="60vh">
                     <template #header>
                         <div class="table-header p-d-flex p-ai-center">
@@ -80,16 +81,13 @@ export default defineComponent({
             if (this.propData?.scorecard) {
                 this.scorecards = [this.propData.scorecard]
             }
-            console.log(' >>> LOADED SCORECARDS: ', this.scorecards)
         },
         onScorecardSelected(scorecard: iScorecard) {
-            console.log('SCORECARD SELECTED: ', scorecard)
             this.scorecards[0] = scorecard
             this.$emit('scorecardChanged', this.scorecards[0])
             this.addScorecardVisible = false
         },
-        deleteScorecardConfirm(scorecard: iScorecard) {
-            console.log('DELETE SCORECARD CONFIRM: ', scorecard)
+        deleteScorecardConfirm() {
             this.$confirm.require({
                 message: this.$t('common.toast.deleteMessage'),
                 header: this.$t('common.toast.deleteTitle'),

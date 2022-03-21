@@ -1,5 +1,5 @@
 <template>
-    <Card v-if="options">
+    <Card v-if="options" class="p-m-2">
         <template #header>
             <Toolbar class="kn-toolbar kn-toolbar--secondary">
                 <template #start>

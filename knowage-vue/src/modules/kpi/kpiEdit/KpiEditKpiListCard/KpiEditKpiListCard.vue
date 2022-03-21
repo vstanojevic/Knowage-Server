@@ -1,5 +1,5 @@
 <template>
-    <Card v-if="data">
+    <Card v-if="data" class="p-m-2">
         <template #header>
             <Toolbar class="kn-toolbar kn-toolbar--secondary">
                 <template #start>
@@ -9,7 +9,8 @@
         </template>
         <template #content>
             <div>
-                {{ data.kpi }}
+                <!-- TODO
+                {{ data.kpi }} -->
                 <DataTable :value="data.kpi" class="p-datatable-sm kn-table" dataKey="name" v-model:filters="filters" :globalFilterFields="kpiEditKpiListCardDescriptor.globalFilterFields" responsiveLayout="stack" breakpoint="960px" :scrollable="true" scroll-height="60vh">
                     <template #header>
                         <div class="table-header p-d-flex p-ai-center">
@@ -134,13 +135,11 @@ export default defineComponent({
         loadData() {
             this.data = this.propData as { kpi: iKpiListItem[] }
             this.setShowSaveAsColumn()
-            console.log(' >>> LOADED DATA: ', this.data)
         },
         setShowSaveAsColumn() {
             this.showSaveAsColumn = this.documentType === 'widget'
         },
         onKpiSelected(selectedKpi: iKpi[]) {
-            console.log('SELECTED KPI: ', selectedKpi)
             this.data.kpi = []
             selectedKpi.forEach((kpi: iKpi) =>
                 this.data.kpi.push({
@@ -156,7 +155,6 @@ export default defineComponent({
             this.addKpiAssociationVisible = false
         },
         deleteKpiAssociationConfirm(kpi: iKpiListItem) {
-            console.log('DELETE CONFIRM FOR: ', kpi)
             this.$confirm.require({
                 message: this.$t('common.toast.deleteMessage'),
                 header: this.$t('common.toast.deleteTitle'),
@@ -167,9 +165,7 @@ export default defineComponent({
             })
         },
         deleteKpiAssociation(kpi: iKpiListItem) {
-            console.log('DELETE FOR: ', kpi)
             const index = this.data.kpi.findIndex((tempKpi: iKpiListItem) => tempKpi.name === kpi.name)
-            console.log('INDEX: ', index)
             if (index !== -1) this.data.kpi.splice(index, 1)
         }
     }

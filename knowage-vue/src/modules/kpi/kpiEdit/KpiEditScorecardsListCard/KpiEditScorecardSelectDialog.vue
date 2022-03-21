@@ -81,7 +81,6 @@ export default defineComponent({
             return formatDate(date)
         },
         setSelectedKpiAssociations() {
-            console.log('setSelectedKpiAssociations', this.dataScorecards)
             if (this.dataScorecards[0] && this.scorecardList) {
                 const index = this.scorecardList.findIndex((scorecard: iScorecard) => scorecard.name === this.dataScorecards[0].name)
                 if (index !== -1) this.selectedScorecard = this.scorecardList[index]
