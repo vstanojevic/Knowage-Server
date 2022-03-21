@@ -25,9 +25,9 @@
 
                     <Column class="kn-truncated" v-for="col of kpiEditKpiListCardDescriptor.columns" :field="col.field" :header="$t(col.header)" :key="col.field" :style="col.style" :sortable="true"> </Column>
 
-                    <Column field="vieweas" :header="$t('kpi.kpiEdit.viewAs')" key="vieweas" :sortable="true" :style="kpiEditKpiListCardDescriptor.columnStyle">
+                    <Column v-if="showSaveAsColumn" field="vieweas" :header="$t('kpi.kpiEdit.viewAs')" key="vieweas" :sortable="true" :style="kpiEditKpiListCardDescriptor.columnStyle">
                         <template #body="slotProps">
-                            <Dropdown class="kpi-edit-kpi-list-card-dropdown" v-model="slotProps.data[slotProps.column.props.field]" :options="kpiEditKpiListCardDescriptor.viewAsOptions" optionValue="value">
+                            <Dropdown class="kpi-edit-kpi-list-card-dropdown" v-model="slotProps.data[slotProps.column.props.field]" :options="kpiEditKpiListCardDescriptor.viewAsOptions" optionValue="value" :placeholder="$t('kpi.kpiEdit.viewAsPlaceholder')">
                                 <template #value="slotProps">
                                     <div v-if="slotProps.value">
                                         <span>{{ slotProps.value === 'speedometer' ? $t('kpi.kpiEdit.speedometer') : $t('kpi.kpiEdit.kpiCard') }}</span>
@@ -43,7 +43,7 @@
                     <Column field="rangeMinValue" :header="$t('kpi.kpiEdit.rangeMinValue')" key="rangeMinValue" :sortable="true" :style="kpiEditKpiListCardDescriptor.columnStyle">
                         <template #body="slotProps">
                             <span class="p-float-label">
-                                <InputText class="kn-material-input" type="number" v-model="slotProps.data[slotProps.column.props.field]" />
+                                <InputText class="kn-material-input" type="number" v-model="slotProps.data[slotProps.column.props.field]" :class="{ 'p-invalid': !slotProps.data[slotProps.column.props.field] }" />
                                 <label class="kn-material-input-label"> {{ $t('kpi.kpiEdit.rangeMinValue') + ' *' }} </label>
                             </span>
                         </template>
@@ -52,7 +52,7 @@
                     <Column field="rangeMaxValue" :header="$t('kpi.kpiEdit.rangeMaxValue')" key="rangeMaxValue" :sortable="true" :style="kpiEditKpiListCardDescriptor.columnStyle">
                         <template #body="slotProps">
                             <span class="p-float-label">
-                                <InputText class="kn-material-input" type="number" v-model="slotProps.data[slotProps.column.props.field]" />
+                                <InputText class="kn-material-input" type="number" v-model="slotProps.data[slotProps.column.props.field]" :class="{ 'p-invalid': !slotProps.data[slotProps.column.props.field] }" />
                                 <label class="kn-material-input-label"> {{ $t('kpi.kpiEdit.rangeMaxValue') + ' *' }} </label>
                             </span>
                         </template>
@@ -69,7 +69,7 @@
 
                     <Column field="isSuffix" :header="$t('kpi.kpiEdit.showLabelAs')" key="isSuffix" :sortable="true" :style="kpiEditKpiListCardDescriptor.columnStyle">
                         <template #body="slotProps">
-                            <Dropdown class="" v-model="slotProps.data[slotProps.column.props.field]" :options="kpiEditKpiListCardDescriptor.prefixSuffixOptions" optionValue="value">
+                            <Dropdown v-model="slotProps.data[slotProps.column.props.field]" :options="kpiEditKpiListCardDescriptor.prefixSuffixOptions" optionValue="value">
                                 <template #value="slotProps">
                                     <div v-if="slotProps.value">
                                         <span>{{ slotProps.value === 'true' ? $t('kpi.kpiEdit.suffix') : $t('kpi.kpiEdit.prefix') }}</span>
@@ -108,18 +108,22 @@ import KpiEditKpiSelectDialog from './KpiEditKpiSelectDialog.vue'
 export default defineComponent({
     name: 'kpi-edit-kpi-list-card',
     components: { Column, DataTable, Dropdown, KpiEditKpiSelectDialog },
-    props: { propData: { type: Object }, kpiList: { type: Array as PropType<iKpi[]> } },
+    props: { propData: { type: Object }, kpiList: { type: Array as PropType<iKpi[]> }, documentType: { type: String } },
     data() {
         return {
             kpiEditKpiListCardDescriptor,
             data: { kpi: [] } as { kpi: iKpiListItem[] },
             filters: { global: [filterDefault] } as Object,
-            addKpiAssociationVisible: false
+            addKpiAssociationVisible: false,
+            showSaveAsColumn: false
         }
     },
     watch: {
         propData() {
             this.loadData()
+        },
+        documentType() {
+            this.setShowSaveAsColumn()
         }
     },
     created() {
@@ -128,7 +132,11 @@ export default defineComponent({
     methods: {
         loadData() {
             this.data = this.propData as { kpi: iKpiListItem[] }
+            this.setShowSaveAsColumn()
             console.log(' >>> LOADED DATA: ', this.data)
+        },
+        setShowSaveAsColumn() {
+            this.showSaveAsColumn = this.documentType === 'widget'
         },
         onKpiSelected(selectedKpi: iKpi[]) {
             console.log('SELECTED KPI: ', selectedKpi)

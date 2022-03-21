@@ -48,7 +48,7 @@
                     :viewType="'analysis'"
                     :document="document"
                     @executeAnalysisDocument="executeAnalysisDocument"
-                    @editAnalysisDocument="editAnalysisDocument"
+                    @editAnalysisDocument="openKpiDesigner"
                     @shareAnalysisDocument="shareAnalysisDocument"
                     @cloneAnalysisDocument="cloneAnalysisDocument"
                     @deleteAnalysisDocument="deleteAnalysisDocumentConfirm"
@@ -176,6 +176,9 @@ export default defineComponent({
         editAnalysisDocument(analysis: any) {
             this.selectedAnalysis = analysis
             this.editDialogVisible = true
+        },
+        openKpiDesigner(analysis: any) {
+            this.$router.push(`/kpi-edit/${analysis?.id}`)
         },
         async handleEditAnalysis(analysis: any) {
             const formatedAnalysis = {

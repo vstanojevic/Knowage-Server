@@ -110,6 +110,7 @@
         "object": "Object",
         "ok": "ok",
         "onlineHelp": "Help Online",
+        "options": "Options",
         "order": "Order",
         "output": "Output",
         "owner": "Owner",
@@ -242,6 +243,7 @@
         "nextExecution": "Next execution",
         "november": "November",
         "october": "October",
+        "quarter": "Quarter",
         "repeatInterval": "Repeat Interval",
         "saturday": "Saturday",
         "selectDays": "Select day(s)",
@@ -259,8 +261,10 @@
         "thursday": "Thursday",
         "tuesday": "Tuesday",
         "wednesday": "Wednesday",
+        "week": "Week",
         "weekday": "Weekday",
-        "weekdays": "Weekdays"
+        "weekdays": "Weekdays",
+        "year": "Year"
     },
     "documentBrowser": {
         "changeStateMessage": "Are you sure you want to change the state for this document?",
@@ -638,6 +642,7 @@
             "useIt": "Use It"
         },
         "kpiEdit": {
+            "color": "Color",
             "font": {
                 "extended": "Extended (16px)",
                 "large": "Large (18px)",
@@ -656,19 +661,35 @@
                 "verdana": "verdana"
             },
             "fontSize": "Font-size",
+            "fontWeight": {
+                "bold": "Bold",
+                "light": "Light",
+                "normal": "Normal",
+                "title": "Font Weight"
+            },
             "kpiCard": "Kpi Card",
             "kpiList": "KPI List",
+            "kpiName": "Kpi name",
+            "precision": "Precision",
             "prefix": "Prefix",
             "prefixSuffixLabel": "Prefix / Suffix label",
             "rangeMaxValue": "Range Max Value",
             "rangeMinValue": "Range Min Value",
+            "saveSubheader": "Please enter a valid name",
+            "saveTitle": "KPI Name is required",
             "scorecard": "Scorecard",
             "showLabelAs": "Show label as",
+            "showPercentage": "Show Percentage",
+            "showTarget": "Show Target",
+            "showThreshold": "Show Threshold",
+            "showValue": "Show Value",
             "speedometer": "Speedometer",
             "suffix": "Suffix",
             "title": "Kpi Document Designer",
             "typeOfDocument": "Type of Document",
-            "viewAs": "View as"
+            "units": "Units",
+            "viewAs": "View as",
+            "viewAsPlaceholder": "Select view as"
         },
         "kpiScheduler": {
             "addKpiAssociation": "Add KPI associations",

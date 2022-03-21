@@ -33,6 +33,7 @@ export interface iScorecard {
 }
 
 export interface iKpiDesigner {
+    id?: number
     chart: iChart
 }
 
@@ -58,13 +59,13 @@ export interface iKpiListItem {
 }
 
 export interface iOptions {
-    showtarget: string,
-    showtargetpercentage: string,
-    showthreshold: string,
-    showvalue: string,
+    showtarget: string | boolean,
+    showtargetpercentage: string | boolean,
+    showthreshold: string | boolean,
+    showvalue: string | boolean,
     vieweas: string,
     history: {
-        size: string,
+        size: string | number,
         units: string
     }
 }

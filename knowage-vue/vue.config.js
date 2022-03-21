@@ -49,6 +49,10 @@ module.exports = {
             '^/knowagewhatifengine/': {
                 target: process.env.VUE_APP_HOST_URL,
                 changeOrigin: true
+            },
+            '^/knowagekpiengine/': {
+                target: process.env.VUE_APP_HOST_URL,
+                changeOrigin: true
             }
         }
     },

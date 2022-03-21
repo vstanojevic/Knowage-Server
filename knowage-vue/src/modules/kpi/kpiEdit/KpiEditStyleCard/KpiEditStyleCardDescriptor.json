@@ -54,5 +54,19 @@
             "label": "kpi.kpiEdit.font.xxlarge",
             "value": "3rem"
         }
+    ],
+    "fontWeightOptions": [
+        {
+            "label": "kpi.kpiEdit.fontWeight.normal",
+            "value": "normal"
+        },
+        {
+            "label": "kpi.kpiEdit.fontWeight.bold",
+            "value": "bold"
+        },
+        {
+            "label": "kpi.kpiEdit.fontWeight.light",
+            "value": "lighter"
+        }
     ]
 }

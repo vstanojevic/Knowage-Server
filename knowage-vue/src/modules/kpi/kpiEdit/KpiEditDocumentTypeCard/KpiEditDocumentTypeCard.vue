@@ -10,7 +10,7 @@
         <template #content>
             <div class=" p-d-flex p-flex-row">
                 <div class="field-radiobutton p-mx-2" v-for="(option, index) in kpiEditDocumentTypeCardDescriptor.documentTypeOptions" :key="index">
-                    <RadioButton :id="option.value" :value="option.value" v-model="chart.model"></RadioButton>
+                    <RadioButton :id="option.value" :value="option.value" v-model="chart.model" @change="$emit('documentTypeChanged')"></RadioButton>
                     <label :for="option.value" class="p-ml-2">{{ $t(option.label) }}</label>
                 </div>
             </div>
@@ -29,6 +29,7 @@ export default defineComponent({
     name: 'kpi-edit-document-type-card',
     components: { Card, RadioButton },
     props: { propChart: { type: Object as PropType<iChart> } },
+    emits: ['documentTypeChanged'],
     data() {
         return {
             kpiEditDocumentTypeCardDescriptor,

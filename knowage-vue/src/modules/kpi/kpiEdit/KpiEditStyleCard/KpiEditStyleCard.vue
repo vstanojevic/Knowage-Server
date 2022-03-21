@@ -39,8 +39,25 @@
                         <label class="kn-material-input-label"> {{ $t('kpi.kpiEdit.fontSize') }} </label>
                     </span>
                 </div>
-                <div class="p-col-6"></div>
-                <div class="p-col-6"></div>
+                <div class="p-col-6 p-fluid">
+                    <span class="p-float-label">
+                        <Dropdown class="kn-material-input" v-model="font.fontWeight" :options="kpiEditStyleCardDescriptor.fontWeightOptions" optionValue="value">
+                            <template #value="slotProps">
+                                <div v-if="slotProps.value">
+                                    <span>{{ getDropdownValueLabel(slotProps.value, kpiEditStyleCardDescriptor.fontWeightOptions) }}</span>
+                                </div>
+                            </template>
+                            <template #option="slotProps">
+                                <span :style="'font-weight: ' + slotProps.option.value">{{ $t(slotProps.option.label) }}</span>
+                            </template>
+                        </Dropdown>
+                        <label class="kn-material-input-label"> {{ $t('kpi.kpiEdit.fontWeight.title') }} </label>
+                    </span>
+                </div>
+                <div class="p-col-6 p-fluid">
+                    <label class="kn-material-input-label"> {{ $t('kpi.kpiEdit.color') }} </label>
+                    <ColorPicker v-model="font.color" format="rgb" :inline="false" />
+                </div>
             </div>
         </template>
     </Card>
@@ -49,12 +66,13 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { iFont, iStyle } from '../KpiEdit'
+import ColorPicker from 'primevue/colorpicker'
 import Dropdown from 'primevue/dropdown'
 import kpiEditStyleCardDescriptor from './KpiEditStyleCardDescriptor.json'
 
 export default defineComponent({
     name: 'kpi-edit-style-card',
-    components: { Dropdown },
+    components: { ColorPicker, Dropdown },
     props: { propStyle: { type: Object as PropType<iStyle>, required: true } },
     data() {
         return {
