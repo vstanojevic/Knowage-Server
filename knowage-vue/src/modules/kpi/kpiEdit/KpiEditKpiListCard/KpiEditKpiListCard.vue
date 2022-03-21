@@ -99,6 +99,7 @@
 import { defineComponent, PropType } from 'vue'
 import { iKpi, iKpiListItem } from '../KpiEdit'
 import { filterDefault } from '@/helpers/commons/filterHelper'
+import Card from 'primevue/card'
 import Column from 'primevue/column'
 import DataTable from 'primevue/datatable'
 import Dropdown from 'primevue/dropdown'
@@ -107,7 +108,7 @@ import KpiEditKpiSelectDialog from './KpiEditKpiSelectDialog.vue'
 
 export default defineComponent({
     name: 'kpi-edit-kpi-list-card',
-    components: { Column, DataTable, Dropdown, KpiEditKpiSelectDialog },
+    components: { Card, Column, DataTable, Dropdown, KpiEditKpiSelectDialog },
     props: { propData: { type: Object }, kpiList: { type: Array as PropType<iKpi[]> }, documentType: { type: String } },
     data() {
         return {

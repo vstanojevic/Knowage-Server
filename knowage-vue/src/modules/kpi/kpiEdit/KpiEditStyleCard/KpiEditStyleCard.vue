@@ -54,8 +54,8 @@
                         <label class="kn-material-input-label"> {{ $t('kpi.kpiEdit.fontWeight.title') }} </label>
                     </span>
                 </div>
-                <div class="p-col-6 p-fluid">
-                    <label class="kn-material-input-label"> {{ $t('kpi.kpiEdit.color') }} </label>
+                <div class="p-col-6 p-d-flex p-flex-column">
+                    <label class="kn-material-input-label"> {{ $t('kpi.kpiEdit.color') }}</label>
                     <ColorPicker v-model="font.color" format="rgb" :inline="false" />
                 </div>
             </div>

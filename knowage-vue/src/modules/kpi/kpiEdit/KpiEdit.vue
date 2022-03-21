@@ -12,7 +12,7 @@
                             <Button icon="pi pi-times" class="p-button-text p-button-rounded p-button-plain" @click="closeKpi" />
                         </template>
                     </Toolbar>
-                    <ProgressBar v-if="loading" class="kn-progress-bar" mode="indeterminate" />
+                    <ProgressBar v-if="loading" class="kn-progress-bar" mode="indeterminate" data-test="progress-bar" />
 
                     <div v-if="kpiDesigner" class="p-grid">
                         {{ kpiDesigner }}
@@ -69,20 +69,23 @@ export default defineComponent({
         showScorecards(): boolean {
             return (this.$store.state as any).user.functionalities.includes('ScorecardsManagement')
         },
-        saveButtonDisabled(): boolean | null {
-            return this.kpiDesigner && ((this.kpiDesigner.chart.type === 'kpi' && this.kpiTypeInvalid()) || (this.kpiDesigner.chart.type === 'scorecard' && this.scorecardTypeInvalid()))
+        saveButtonDisabled(): boolean {
+            return this.kpiDesigner !== null && ((this.kpiDesigner.chart.type === 'kpi' && this.kpiTypeInvalid()) || (this.kpiDesigner.chart.type === 'scorecard' && this.scorecardTypeInvalid()))
         }
     },
-    created() {
-        this.loadPage()
+    async created() {
+        await this.loadPage()
+        console.log('THIS ID: ', this.id)
     },
     methods: {
         async loadPage() {
             this.loading = true
+            console.log('LOADING: ', this.loading)
             await this.loadKpi()
             await this.loadKpiList()
             await this.loadScorecards()
             this.loading = false
+            console.log('LOADING AFTER: ', this.loading)
         },
         async loadKpiList() {
             await this.$http.get(process.env.VUE_APP_RESTFUL_SERVICES_PATH + `1.0/kpi/listKpi`).then((response: AxiosResponse<any>) => (this.kpiList = response.data))
@@ -96,39 +99,13 @@ export default defineComponent({
             this.loading = true
             if (this.id) {
                 await this.$http.post(process.env.VUE_APP_KPI_ENGINE_API_URL + `1.0/kpisTemplate/getKpiTemplate`, { id: this.id }).then((response: AxiosResponse<any>) => {
-                    this.kpiDesigner = JSON.parse(response.data.templateContent)
-                    this.formatKpiDesigner()
+                    this.kpiDesigner = response.data.templateContent ? JSON.parse(response.data.templateContent) : response.data
                 })
             } else {
                 this.kpiDesigner = this.initializeKpiDesigner()
             }
             this.loading = false
             console.log('LOADED KPI DESIGNER: ', this.kpiDesigner)
-        },
-        formatKpiDesigner() {
-            if (!this.kpiDesigner) return
-
-            this.kpiDesigner.chart.style.font.size = this.getPixelsInEm(this.kpiDesigner.chart.style.font.size)
-        },
-        getPixelsInEm(pixels: string | number) {
-            switch (pixels) {
-                case '8px':
-                    return '.6rem'
-                case '10px':
-                    return '.8rem'
-                case '14px':
-                    return '1rem'
-                case '16px':
-                    return '1.1rem'
-                case '18px':
-                    return '1.3rem'
-                case '24px':
-                    return '1.8rem'
-                case '40px':
-                    return '3rem'
-                default:
-                    return ''
-            }
         },
         initializeKpiDesigner() {
             return {
@@ -187,10 +164,25 @@ export default defineComponent({
         },
         saveKpi() {
             console.log('SAVE KPI!')
-            this.saveDialogVisible = true
+            if (!this.id) {
+                this.saveDialogVisible = true
+            } else {
+                this.onKpiSave('')
+            }
         },
         async onKpiSave(kpiName: string) {
             this.loading = true
+            console.log('ID: ', this.id)
+
+            if (this.id) {
+                await this.updateKpi()
+            } else {
+                await this.saveNewKpi(kpiName)
+            }
+
+            this.loading = false
+        },
+        async saveNewKpi(kpiName: string) {
             const postData = {
                 document: {
                     name: kpiName,
@@ -212,8 +204,29 @@ export default defineComponent({
                     })
                     if (this.kpiDesigner) this.kpiDesigner.id = response.data.id
                 })
+                .catch(() => {})
                 .finally(() => (this.saveDialogVisible = false))
             this.loading = false
+        },
+        async updateKpi() {
+            const postData = new URLSearchParams()
+            postData.append('docLabel', this.id as string)
+            postData.append('jsonTemplate', JSON.stringify(this.getFormattedKpiDesigner()))
+
+            await this.$http
+                .post(process.env.VUE_APP_RESTFUL_SERVICES_PATH + `1.0/documents/saveKpiTemplate`, postData, {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        Accept: 'application/json, text/plain, */*'
+                    }
+                })
+                .then(() => {
+                    this.$store.commit('setInfo', {
+                        title: this.$t('common.toast.updateTitle'),
+                        msg: this.$t('common.toast.success')
+                    })
+                })
+                .catch(() => {})
         },
         getFormattedKpiDesigner() {
             const tempDesigner = deepcopy(this.kpiDesigner)
