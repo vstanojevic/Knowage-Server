@@ -38,6 +38,10 @@ module.exports = {
                 target: process.env.VUE_APP_HOST_URL,
                 changeOrigin: true
             },
+            '^/knowagemeta': {
+                target: process.env.VUE_APP_HOST_URL,
+                changeOrigin: true
+            },
             '^/knowagecockpitengine/': {
                 target: process.env.VUE_APP_HOST_URL,
                 changeOrigin: true
@@ -45,6 +49,11 @@ module.exports = {
             '^/knowagewhatifengine/': {
                 target: process.env.VUE_APP_HOST_URL,
                 changeOrigin: true
+            },
+            '^/knowage-data-preparation/': {
+                target: process.env.VUE_APP_HOST_URL,
+                changeOrigin: true,
+                ws: true
             }
         }
     },

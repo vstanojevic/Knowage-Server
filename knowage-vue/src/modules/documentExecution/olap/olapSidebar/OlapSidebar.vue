@@ -1,7 +1,7 @@
 <template>
     <div id="olap-sidebar">
         <Toolbar id="kn-parameter-sidebar-toolbar" class="kn-toolbar kn-toolbar--secondary">
-            <template #left>
+            <template #start>
                 {{ $t('common.settings') }}
             </template>
         </Toolbar>
@@ -81,7 +81,7 @@
                             />
                         </div>
                         <div class="p-col-4">
-                            <Button icon="fas fa-save" class="p-button-plain kn-button--secondary" v-tooltip.top="$t('documentExecution.olap.sidebar.showCustomizedView')" :disabled="!isButtonVisible('BUTTON_SAVE_SUBOBJECT')" @click="$emit('openCustomViewDialog')" />
+                            <Button icon="fas fa-save" class="p-button-plain kn-button--secondary" v-tooltip.top="$t('documentExecution.olap.sidebar.saveCustomizedView')" :disabled="!isButtonVisible('BUTTON_SAVE_SUBOBJECT')" @click="$emit('openCustomViewDialog')" />
                         </div>
                     </div>
                 </div>
