@@ -18,8 +18,8 @@
                 breakpoint="960px"
                 @rowSelect="onRowSelect"
                 @rowUnselect="onRowUnselect"
-                @rowSelectAll="onRowSelect"
-                @rowUnselectAll="onRowUnselect"
+                @rowSelectAll="onAllRowSelectionChange"
+                @rowUnselectAll="onAllRowSelectionChange"
             >
                 <template #empty>
                     {{ $t('common.info.noDataFound') }}
@@ -86,9 +86,12 @@ export default defineComponent({
     },
     methods: {
         onRowSelect() {
-            setTimeout(() => this.$emit('changed', this.selectedRoles), 0)
+            this.$emit('changed', this.selectedRoles)
         },
         onRowUnselect() {
+            this.$emit('changed', this.selectedRoles)
+        },
+        onAllRowSelectionChange() {
             setTimeout(() => this.$emit('changed', this.selectedRoles), 0)
         }
     },

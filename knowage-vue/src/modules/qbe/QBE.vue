@@ -12,7 +12,7 @@
                 </template>
             </Toolbar>
         </template>
-        <ProgressSpinner class="qbe-overlay-spinner" v-if="loading" :style="qbeDescriptor.style.spinner" />
+        <ProgressSpinner class="kn-progress-spinner" v-if="loading" />
         <div v-if="!qbePreviewDialogVisible" class="kn-relative p-d-flex p-flex-row kn-height-full kn-width-full">
             <div v-if="parameterSidebarVisible" :style="qbeDescriptor.style.backdrop" @click="parameterSidebarVisible = false"></div>
             <div v-show="showEntitiesLists && qbeLoaded" :style="qbeDescriptor.style.entitiesLists">
@@ -333,11 +333,12 @@ export default defineComponent({
             Object.keys(loadedParameters.filterStatus).forEach((key: any) => {
                 const parameter = loadedParameters.filterStatus[key]
                 if (!parameter.multivalue) {
-                    parameters[parameter.urlName] = { value: parameter.parameterValue[0].value, description: parameter.parameterValue[0].description }
+                    parameters[parameter.urlName] = [{ value: parameter.parameterValue[0].value, description: parameter.parameterValue[0].description }]
                 } else {
-                    parameters[parameter.urlName] = { value: parameter.parameterValue?.map((el: any) => el.value), description: parameter.parameterDescription }
+                    parameters[parameter.urlName] = [{ value: parameter.parameterValue?.map((el: any) => el.value), description: parameter.parameterDescription }]
                 }
             })
+            console.log('END PARAMS', parameters)
             return parameters
         },
         async loadCustomizedDatasetFunctions() {
@@ -761,8 +762,5 @@ export default defineComponent({
 .qbe-scroll-panel .p-scrollpanel-bar {
     background-color: #43749eb6;
     width: 5px;
-}
-.qbe-overlay-spinner .p-progress-spinner-svg {
-    width: 125px;
 }
 </style>
