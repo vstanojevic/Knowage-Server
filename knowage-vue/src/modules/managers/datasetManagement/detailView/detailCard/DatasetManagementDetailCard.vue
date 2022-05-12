@@ -1,5 +1,5 @@
 <template>
-    <Card>
+    <Card class="p-m-2">
         <template #content>
             <form class="p-fluid p-formgrid p-grid">
                 <div class="p-field p-mt-1 p-col-6">
@@ -101,13 +101,13 @@
             </form>
         </template>
     </Card>
-    <Card class="p-mt-3">
+    <Card class="p-m-2">
         <template #header>
             <Toolbar class="kn-toolbar kn-toolbar--secondary">
-                <template #left>
+                <template #start>
                     {{ $t('managers.datasetManagement.oldVersions') }}
                 </template>
-                <template #right>
+                <template #end>
                     <Button icon="fas fa-eraser" class="p-button-text p-button-rounded p-button-plain" :disabled="noDatasetVersions" @click="deleteConfirm('deleteAll')" />
                 </template>
             </Toolbar>
@@ -127,8 +127,8 @@
                 </Column>
                 <Column @rowClick="false">
                     <template #body="slotProps">
-                        <Button icon="fas fa-retweet" class="p-button-link" @click="restoreVersionConfirm(slotProps.data)" />
-                        <Button icon="pi pi-trash" class="p-button-link" @click="deleteConfirm('deleteOne', slotProps.data)" />
+                        <Button v-if="slotProps.data.versNum !== 0" icon="fas fa-retweet" class="p-button-link" @click="restoreVersionConfirm(slotProps.data)" />
+                        <Button v-if="slotProps.data.versNum !== 0" icon="pi pi-trash" class="p-button-link" @click="deleteConfirm('deleteOne', slotProps.data)" />
                     </template>
                 </Column>
             </DataTable>
@@ -148,6 +148,7 @@ import Dropdown from 'primevue/dropdown'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import AutoComplete from 'primevue/autocomplete'
+import { formatDateWithLocale } from '@/helpers/commons/localeHelper'
 
 export default defineComponent({
     components: { Card, Dropdown, KnValidationMessages, DataTable, Column, AutoComplete },
@@ -199,6 +200,7 @@ export default defineComponent({
     methods: {
         //#region ===================== Delete Versions Functionality ====================================================
         deleteConfirm(deletetype, event) {
+            console.log(event)
             let msgDesc = ''
             deletetype === 'deleteOne' ? (msgDesc = 'managers.datasetManagement.deleteOneVersionMsg') : (msgDesc = 'managers.datasetManagement.deleteAllVersionsMsg')
             this.$confirm.require({
@@ -324,8 +326,7 @@ export default defineComponent({
         //#endregion ================================================================================================
 
         formatDate(date) {
-            let fDate = new Date(date)
-            return fDate.toLocaleString()
+            return formatDateWithLocale(date, { dateStyle: 'short', timeStyle: 'short' })
         },
         updateIdFromCd(optionsArray, fieldToUpdate, updatedField) {
             const selectedField = optionsArray.find((option) => option.VALUE_CD === updatedField)
