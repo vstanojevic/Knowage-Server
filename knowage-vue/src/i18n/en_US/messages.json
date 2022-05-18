@@ -252,6 +252,9 @@
         "everyWeekday": "Every Weekday",
         "everyday": "Every Day",
         "february": "February",
+        "fifth": "Fifth",
+        "first": "First",
+        "fourth": "Fourth",
         "friday": "Friday",
         "hour": "Hour",
         "hours": "Hours",
@@ -269,6 +272,7 @@
         "minutes": "Minutes",
         "monday": "Monday",
         "month": "Month",
+        "monthly": "Monthly",
         "months": "Months",
         "nextExecution": "Next execution",
         "november": "November",
@@ -276,6 +280,7 @@
         "quarter": "Quarter",
         "repeatInterval": "Repeat Interval",
         "saturday": "Saturday",
+        "second": "Second",
         "selectDays": "Select day(s)",
         "selectHours": "Select hour(s)",
         "selectMinutes": "Select minute(s)",
@@ -288,13 +293,16 @@
         "sunday": "Sunday",
         "theDay": "The day",
         "theWeek": "The week",
+        "third": "Third",
         "thursday": "Thursday",
         "tuesday": "Tuesday",
         "wednesday": "Wednesday",
         "week": "Week",
         "weekday": "Weekday",
         "weekdays": "Weekdays",
-        "year": "Year"
+        "weekly": "Weekly",
+        "year": "Year",
+        "yearly": "Yearly"
     },
     "documentBrowser": {
         "changeStateMessage": "Are you sure you want to change the state for this document?",
@@ -396,6 +404,12 @@
                 "title": "Output Parameters"
             },
             "subreports": {
+                "deleteError": "Error deleting subreport",
+                "deleteOk": "Subreport deleted",
+                "info": "Select the subreports you want to link to the document",
+                "persistError": "Error persisting subreport",
+                "persistOk": "Subreport persisted",
+                "tableName": "Available Subreports",
                 "title": "Subreports"
             },
             "title": "Document Details"
@@ -426,6 +440,7 @@
             "crossNavigationNoTargetError": "No cross navigation targets available",
             "currentRank": "Curent Rank is...",
             "customMetadata": "Custom Metadata",
+            "destinationSelectionTitle": "Selection of the destination document",
             "editCockpit": "Edit cockpit document",
             "editModeConfirm": "You are leaving edit mode. Continue?",
             "embedInHtml": "Embed in HTML",
@@ -493,7 +508,7 @@
                 "filterUsingDrivers": "Filter using drivers",
                 "infoMessage": "Selected items will be used as filters in the main table.",
                 "level": "Level",
-                "parentDisabledTooltip": "It is not possible to choose a parent. Unlock the tree to change the selection.",
+                "parentDisabledTooltip": "It is not possible to choose a parent. Press the Add button.",
                 "searchWarningMessage": "You need at least 3 letters to start search!",
                 "selectFields": "Select Fields",
                 "treeLockedInfoMessage": {
@@ -674,7 +689,7 @@
     },
     "infoDialog": {
         "aboutKnowage": "About Knowage",
-        "copyright": "© {year} Engineering Ingegneria Informatica S.p.A.",
+        "copyright": "Â© {year} Engineering Ingegneria Informatica S.p.A.",
         "sourceCode": "Source code available on "
     },
     "knScheduler": {
@@ -1155,6 +1170,7 @@
                 "schemaAttribute": "Multischema Attribute",
                 "testOk": "Tested parameters are correct!",
                 "urlConnection": "URL",
+                "useForDataprep": "Use for data preparation",
                 "user": "User",
                 "writeDefault": "Use as cache"
             },
@@ -1400,7 +1416,7 @@
                 "formula": "Formula",
                 "glossary": "Glossary",
                 "glossaryHint": "Edit the input to change the glossary name",
-                "help": "Select a Glossary from the combo box to show its word hierarchy structure or type a name to create a new one. You can edit it by adding nodes or by dropping words from the right side list",
+                "help": "Select a Glossary from the combo box to show its word hierarchy structure. You can edit it by adding nodes or by dropping words from the right side list",
                 "hint": "The Glossary definition page allows you to create glossary to identify a set of words to apply in different documents and datasets. It's also possible to create a word hierarchy for each glossary. Select one existing item from the dropdown, or press the \"+\" button to add one.",
                 "newNode": "New node",
                 "saveTitle": "New glossary",
@@ -2262,6 +2278,7 @@
         },
         "detailView": {
             "hideList": "Hide List",
+            "modifyCalcField": "Modify calculated field",
             "noPreview": "Nothing to preview",
             "parameterDuplicates": "There are parameters with a duplicate name!",
             "showList": "Show List",
@@ -2480,6 +2497,7 @@
             "schedulation": "Schedulation"
         },
         "myAnalysis": {
+            "editAnalysis": "Edit Analysis",
             "geoRef": "Geo-referenced analysis",
             "menuItems": {
                 "clone": "Clone Document",
