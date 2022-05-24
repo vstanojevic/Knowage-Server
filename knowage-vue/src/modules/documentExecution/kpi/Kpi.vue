@@ -1,15 +1,21 @@
 <template>
-    <h1>IT WORKS</h1>
+    <div v-if="kpi">
+        <h1>IT WORKS</h1>
+        <div v-for="(infoItem, index) in kpi.info" :key="index">
+            <KnPerspectiveCard class="p-m-4" v-for="(perspective, index) in infoItem.scorecard.perspectives" :key="index" :propPerspective="perspective"></KnPerspectiveCard>
+        </div>
+    </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { AxiosResponse } from 'axios'
 import { iKpiDesigner } from '@/modules/kpi/kpiDocumentDesigner/KpiDocumentDesigner'
+import KnPerspectiveCard from '@/components/UI/KnPerspectiveCard/KnPerspectiveCard.vue'
 
 export default defineComponent({
     name: 'kpi',
-    components: {},
+    components: { KnPerspectiveCard },
     props: { id: { type: String }, documentId: { type: String }, reloadTrigger: { type: Boolean } },
     data() {
         return {
