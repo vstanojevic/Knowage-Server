@@ -39,6 +39,7 @@
                     @applyCustomView="executeOlapCustomView"
                     @executeCrossNavigation="executeOLAPCrossNavigation"
                 ></Olap>
+                <Kpi v-else-if="mode === 'kpi'" :id="urlData?.sbiExecutionId" :documentId="document.id" :reloadTrigger="reloadTrigger"></Kpi>
             </template>
 
             <iframe
@@ -101,6 +102,7 @@ import Olap from '../olap/Olap.vue'
 import moment from 'moment'
 import DocumentExecutionSelectCrossNavigationDialog from './dialogs/documentExecutionSelectCrossNavigationDialog/DocumentExecutionSelectCrossNavigationDialog.vue'
 import DocumentExecutionCNContainerDialog from './dialogs/documentExecutionCNContainerDialog/DocumentExecutionCNContainerDialog.vue'
+import Kpi from '../kpi/Kpi.vue'
 
 const deepcopy = require('deepcopy')
 
@@ -121,7 +123,8 @@ export default defineComponent({
         Dossier,
         Olap,
         DocumentExecutionSelectCrossNavigationDialog,
-        DocumentExecutionCNContainerDialog
+        DocumentExecutionCNContainerDialog,
+        Kpi
     },
     props: { id: { type: String }, parameterValuesMap: { type: Object }, tabKey: { type: String }, propMode: { type: String } },
     emits: ['close', 'updateDocumentName', 'parametersChanged'],
@@ -441,6 +444,8 @@ export default defineComponent({
                 this.mode = 'dossier'
             } else if (this.document.typeCode === 'OLAP') {
                 this.mode = 'olap'
+            } else if (this.document.typeCode === 'KPI') {
+                this.mode = 'kpi'
             } else {
                 this.mode = 'iframe'
             }
@@ -652,7 +657,8 @@ export default defineComponent({
 
             this.hiddenFormData.append('documentMode', this.documentMode)
 
-            if (this.document.typeCode === 'DATAMART' || this.document.typeCode === 'DOSSIER' || this.document.typeCode === 'OLAP') {
+            console.log('DOCUMENT TYPE CODE: ', this.document.typeCode)
+            if (this.document.typeCode === 'DATAMART' || this.document.typeCode === 'DOSSIER' || this.document.typeCode === 'OLAP' || this.document.typeCode === 'KPI') {
                 await this.sendHiddenFormData()
             } else {
                 postForm.submit()
