@@ -657,6 +657,7 @@ export default defineComponent({
 
             this.hiddenFormData.append('documentMode', this.documentMode)
 
+            console.log('DOCUMENT: ', this.document)
             console.log('DOCUMENT TYPE CODE: ', this.document.typeCode)
             if (this.document.typeCode === 'DATAMART' || this.document.typeCode === 'DOSSIER' || this.document.typeCode === 'OLAP' || this.document.typeCode === 'KPI') {
                 await this.sendHiddenFormData()

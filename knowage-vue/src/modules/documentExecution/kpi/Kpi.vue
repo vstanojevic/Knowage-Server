@@ -2,7 +2,9 @@
     <div v-if="kpi">
         <h1>IT WORKS</h1>
         <div v-for="(infoItem, index) in kpi.info" :key="index">
-            <KnPerspectiveCard class="p-m-4" v-for="(perspective, index) in infoItem.scorecard.perspectives" :key="index" :propPerspective="perspective"></KnPerspectiveCard>
+            <template v-if="infoItem.scorecard">
+                <KnPerspectiveCard class="p-m-4" v-for="(perspective, index) in infoItem.scorecard.perspectives" :key="index" :propPerspective="perspective"></KnPerspectiveCard>
+            </template>
         </div>
     </div>
 </template>
