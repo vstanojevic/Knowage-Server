@@ -3,14 +3,14 @@
         <h1>IT WORKS</h1>
         <div v-for="(infoItem, index) in kpi.info" :key="index">
             <template v-if="infoItem.scorecard">
-                <KnPerspectiveCard class="p-m-4" v-for="(perspective, index) in infoItem.scorecard.perspectives" :key="index" :propPerspective="perspective"></KnPerspectiveCard>
+                <KnPerspectiveCard class="p-m-4" v-for="(perspective, index) in infoItem.scorecard.perspectives" :key="index" :mode="'execution'" :propPerspective="perspective"></KnPerspectiveCard>
             </template>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { AxiosResponse } from 'axios'
 import { iKpiDesigner } from '@/modules/kpi/kpiDocumentDesigner/KpiDocumentDesigner'
 import KnPerspectiveCard from '@/components/UI/KnPerspectiveCard/KnPerspectiveCard.vue'
@@ -18,10 +18,10 @@ import KnPerspectiveCard from '@/components/UI/KnPerspectiveCard/KnPerspectiveCa
 export default defineComponent({
     name: 'kpi',
     components: { KnPerspectiveCard },
-    props: { id: { type: String }, documentId: { type: String }, reloadTrigger: { type: Boolean } },
+    props: { id: { type: String }, documentId: { type: String }, reloadTrigger: { type: Boolean }, kpiTemplate: { type: Object as PropType<iKpiDesigner | null>, required: true } },
     data() {
         return {
-            kpiDesigner: null as iKpiDesigner | null,
+            template: null as iKpiDesigner | null,
             kpi: null as any
         }
     },
@@ -39,30 +39,21 @@ export default defineComponent({
     methods: {
         async loadPage() {
             this.$store.commit('setLoading', true)
-            console.log('LOADED ID: ', this.id)
-            console.log('LOADED DOCUMENT ID: ', this.documentId)
-            await this.loadKpi()
+            this.loadKpiTemplate()
             await this.readKpiTemplate()
             this.$store.commit('setLoading', false)
         },
-        async loadKpi() {
-            if (this.documentId) {
-                await this.$http
-                    .post(process.env.VUE_APP_KPI_ENGINE_API_URL + `1.0/kpisTemplate/getKpiTemplate`, { id: this.documentId })
-                    .then((response: AxiosResponse<any>) => {
-                        this.kpiDesigner = response.data.templateContent ? JSON.parse(response.data.templateContent) : response.data
-                    })
-                    .catch(() => {})
-                console.log('LOADED KPI DESIGNER: ', this.kpiDesigner)
-            }
+        loadKpiTemplate() {
+            this.template = this.kpiTemplate
+            console.log(' >>> LOADED KPI TEMPLATE: ', this.template)
         },
         async readKpiTemplate() {
-            if (this.kpiDesigner) {
+            if (this.template) {
                 await this.$http
-                    .post(process.env.VUE_APP_KPI_ENGINE_API_URL + `1.0/jsonKpiTemplate/readKpiTemplate`, this.kpiDesigner)
+                    .post(process.env.VUE_APP_KPI_ENGINE_API_URL + `1.0/jsonKpiTemplate/readKpiTemplate`, this.template)
                     .then((response: AxiosResponse<any>) => (this.kpi = response.data))
                     .catch(() => {})
-                console.log('LOADED KPI: ', this.kpi)
+                console.log(' >>> LOADED KPI: ', this.kpi)
             }
         }
     }

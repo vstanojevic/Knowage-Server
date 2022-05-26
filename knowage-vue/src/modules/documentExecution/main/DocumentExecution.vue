@@ -39,7 +39,7 @@
                     @applyCustomView="executeOlapCustomView"
                     @executeCrossNavigation="executeOLAPCrossNavigation"
                 ></Olap>
-                <Kpi v-else-if="mode === 'kpi'" :id="urlData?.sbiExecutionId" :documentId="document.id" :reloadTrigger="reloadTrigger"></Kpi>
+                <Kpi v-else-if="mode === 'kpi'" :id="urlData?.sbiExecutionId" :documentId="document.id" :reloadTrigger="reloadTrigger" :kpiTemplate="kpiTemplate"></Kpi>
             </template>
 
             <iframe
@@ -85,6 +85,7 @@ import { defineComponent } from 'vue'
 import { AxiosResponse } from 'axios'
 import { iParameter } from '@/components/UI/KnParameterSidebar/KnParameterSidebar'
 import { iURLData, iExporter, iSchedulation } from './DocumentExecution'
+import { getKpiTemplate } from '../kpi/KpiHelpers'
 import DocumentExecutionBreadcrumb from './breadcrumbs/DocumentExecutionBreadcrumb.vue'
 import DocumentExecutionHelpDialog from './dialogs/documentExecutionHelpDialog/DocumentExecutionHelpDialog.vue'
 import DocumentExecutionRankDialog from './dialogs/documentExecutionRankDialog/DocumentExecutionRankDialog.vue'
@@ -168,7 +169,9 @@ export default defineComponent({
             crossNavigationDocuments: [] as any[],
             angularData: null as any,
             crossNavigationContainerVisible: false,
-            crossNavigationContainerData: null as any
+            crossNavigationContainerData: null as any,
+            kpiTemplate: null as any,
+            getKpiTemplate
         }
     },
     async activated() {
@@ -444,7 +447,7 @@ export default defineComponent({
                 this.mode = 'dossier'
             } else if (this.document.typeCode === 'OLAP') {
                 this.mode = 'olap'
-            } else if (this.document.typeCode === 'KPI') {
+            } else if (this.document.typeCode === 'KPI' && (!this.kpiTemplate || this.kpiTemplate.chart?.type === 'scorecard')) {
                 this.mode = 'kpi'
             } else {
                 this.mode = 'iframe'
@@ -657,9 +660,15 @@ export default defineComponent({
 
             this.hiddenFormData.append('documentMode', this.documentMode)
 
-            console.log('DOCUMENT: ', this.document)
-            console.log('DOCUMENT TYPE CODE: ', this.document.typeCode)
-            if (this.document.typeCode === 'DATAMART' || this.document.typeCode === 'DOSSIER' || this.document.typeCode === 'OLAP' || this.document.typeCode === 'KPI') {
+            if (this.document.typeCode === 'KPI') {
+                this.kpiTemplate = (await this.getKpiTemplate(this.document.id, this.$http)) as any
+                if (this.kpiTemplate && this.kpiTemplate.chart && this.kpiTemplate.chart.type === 'scorecard') {
+                    await this.sendHiddenFormData()
+                } else {
+                    this.mode = 'iframe'
+                    postForm.submit()
+                }
+            } else if (this.document.typeCode === 'DATAMART' || this.document.typeCode === 'DOSSIER' || this.document.typeCode === 'OLAP') {
                 await this.sendHiddenFormData()
             } else {
                 postForm.submit()

@@ -33,7 +33,7 @@ const deepEqual = require('deep-equal')
 export default defineComponent({
     name: 'kn-perspective-card',
     components: { Card },
-    props: { propPerspective: { type: Object as PropType<iPerspective> } },
+    props: { propPerspective: { type: Object as PropType<iPerspective> }, mode: { type: String } },
     data() {
         return {
             perspective: null as iPerspective | null,
@@ -64,9 +64,11 @@ export default defineComponent({
         async loadPerspective() {
             this.perspective = this.propPerspective ? this.propPerspective : ({} as iPerspective)
 
-            if (this.perspective && this.perspective.criterion.valueId) {
+            if (this.perspective && this.perspective.criterion.valueId && this.mode !== 'execution') {
                 await this.evaluatePerspective()
                 this.evaluatePerspectiveTargets()
+            } else {
+                this.setPerspectiveToolbarClass()
             }
         },
         getTargetIconLetter(criterionValue: string | null) {
@@ -124,7 +126,7 @@ export default defineComponent({
         evaluatePerspectiveTargets() {
             if (!this.perspective) return
             this.perspective.targets?.forEach((target: iScorecardTarget) => {
-                if (target.updated || target.updated === undefined) {
+                if (target.updated || target.updated === undefined || this.mode !== 'execution') {
                     this.evaluateTarget(target)
                     target.updated = false
                 }
@@ -181,7 +183,9 @@ export default defineComponent({
             }
         },
         setPerspectiveToolbarClass() {
-            if (this.perspective?.statusColor) {
+            if (!this.perspective) return
+            this.perspective.statusColor = this.perspective.statusColor ?? this.perspective.status
+            if (this.perspective.statusColor) {
                 switch (this.perspective.statusColor) {
                     case 'RED':
                         this.toolbarBorderClass = 'perspective-toolbar-red'
@@ -200,7 +204,9 @@ export default defineComponent({
             }
         },
         getTargetStatusIconColor(target: iScorecardTarget) {
-            if (target?.statusColor) {
+            if (!target) return
+            target.statusColor = target.statusColor ?? target.status
+            if (target.statusColor) {
                 switch (target.statusColor) {
                     case 'RED':
                         return 'scorecard-icon-red'
