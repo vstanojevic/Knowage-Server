@@ -433,6 +433,11 @@
             "saveSuccess": "Activity successfully saved!",
             "title": "Dossier"
         },
+        "kpi": {
+            "evaluationCriterion": "Evaluation Criterion",
+            "listOfKpiTarget": "List of KPI on",
+            "priorityKpi": "Priority Kpi"
+        },
         "main": {
             "addToWorkspace": "Add to my workspace",
             "addToWorkspaceError": "This document cannot be added to Workspace. It already exists in the root folder of the Organizer",

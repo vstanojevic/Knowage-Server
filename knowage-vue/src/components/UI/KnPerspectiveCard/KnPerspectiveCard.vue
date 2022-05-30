@@ -8,7 +8,7 @@
             </div>
         </template>
         <template #content>
-            <div class="target-row p-d-flex p-flex-row p-ai-center p-p-3 p-my-2" :class="{ 'perspective-target-container': index !== perspective.targets.length - 1 }" v-for="(target, index) in perspective.targets" :key="index">
+            <div class="target-row p-d-flex p-flex-row p-ai-center p-p-3 p-my-2" :class="{ 'perspective-target-container': index !== perspective.targets.length - 1 }" v-for="(target, index) in perspective.targets" :key="index" @click="openKpiListDialog(target)">
                 <div class="p-d-flex p-flex-row">
                     <span class="p-mr-2 kn-flex">{{ target.name }}</span>
                     <span v-tooltip="getSelectedCriteriaTooltip(target.criterion?.valueCd)" class="p-ml-auto perspective-target-icon kn-cursor-pointer">{{ getTargetIconLetter(target.criterion?.valueCd) }}</span>
@@ -18,6 +18,8 @@
                     <i class="fas fa-square fa-2xl p-mr-2" :class="getTargetStatusIconColor(target)"></i>
                 </div>
             </div>
+
+            <KnPerpsectiveKpiListDialog :visible="kpiListDialogVisible" :selectedTarget="selectedTarget" @close="kpiListDialogVisible = false"></KnPerpsectiveKpiListDialog>
         </template>
     </Card>
 </template>
@@ -27,17 +29,20 @@ import { defineComponent, PropType } from 'vue'
 import { iPerspective, iScorecardTarget } from '@/modules/managers/scorecards/Scorecards'
 import { AxiosResponse } from 'axios'
 import Card from 'primevue/card'
+import KnPerpsectiveKpiListDialog from './KnPerpsectiveKpiListDialog.vue'
 
 const deepEqual = require('deep-equal')
 
 export default defineComponent({
     name: 'kn-perspective-card',
-    components: { Card },
+    components: { Card, KnPerpsectiveKpiListDialog },
     props: { propPerspective: { type: Object as PropType<iPerspective> }, mode: { type: String } },
     data() {
         return {
             perspective: null as iPerspective | null,
-            toolbarBorderClass: 'perspective-toolbar-light-grey'
+            toolbarBorderClass: 'perspective-toolbar-light-grey',
+            selectedTarget: null as iScorecardTarget | null,
+            kpiListDialogVisible: false
         }
     },
     computed: {
@@ -243,6 +248,12 @@ export default defineComponent({
             }
 
             return targets
+        },
+        openKpiListDialog(target: iScorecardTarget) {
+            if (this.mode !== 'execution') return
+
+            this.selectedTarget = target
+            this.kpiListDialogVisible = true
         }
     }
 })
