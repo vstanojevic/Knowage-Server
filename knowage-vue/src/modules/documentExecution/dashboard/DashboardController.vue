@@ -9,7 +9,7 @@
         </Transition>
 
         <Transition name="editorEnter" appear>
-            <DashboardGeneralSettings v-if="generalSettingsVisible" :datasets="datasets" :documentDrivers="[]" :profileAttributes="profileAttributes" @closeGeneralSettings="closeGeneralSettings" @saveGeneralSettings="generalSettingsVisible = false"></DashboardGeneralSettings>
+            <DashboardGeneralSettings v-if="generalSettingsVisible" :datasets="datasets" :documentDrivers="drivers" :profileAttributes="profileAttributes" @closeGeneralSettings="closeGeneralSettings" @saveGeneralSettings="generalSettingsVisible = false"></DashboardGeneralSettings>
         </Transition>
 
         <WidgetPickerDialog v-if="widgetPickerVisible" :visible="widgetPickerVisible" @openNewWidgetEditor="openNewWidgetEditor" @closeWidgetPicker="widgetPickerVisible = false" />
@@ -18,7 +18,7 @@
         v-if="widgetEditorVisible"
         :propWidget="selectedWidget"
         :datasets="datasets"
-        :documentDrivers="[]"
+        :documentDrivers="drivers"
         :variables="model ? model.configuration.variables : []"
         @close="closeWidgetEditor"
         @widgetSaved="closeWidgetEditor"
@@ -65,7 +65,8 @@ export default defineComponent({
             selectedWidget: null as any,
             crossNavigations: [] as any[],
             generalSettingsVisible: false,
-            profileAttributes: [] as { name: string; value: string }[]
+            profileAttributes: [] as { name: string; value: string }[],
+            drivers: [] as any[]
         }
     },
     provide() {
@@ -83,6 +84,7 @@ export default defineComponent({
         this.loadDatasets()
         this.loadCrossNavigations()
         this.loadOutputParameters()
+        this.loadDrivers()
         this.loadProfileAttributes()
         this.loadModel()
     },
@@ -100,7 +102,7 @@ export default defineComponent({
         loadModel() {
             // TODO
             // this.model = mock
-            this.model = formatModel(mockedDashboardModel, this.profileAttributes) as any
+            this.model = formatModel(mockedDashboardModel, this.drivers, this.profileAttributes) as any
             // this.model = formatModel(mock1) as any
             this.store.setDashboard(this.model)
         },
@@ -128,6 +130,24 @@ export default defineComponent({
             const mockedParameters = descriptor.mockedOutputParameters
             this.store.setOutputParameters(mockedParameters)
         },
+        loadDrivers() {
+            // TODO - remove mock
+            this.drivers = [
+                {
+                    name: 'Driver 1',
+                    type: 'static',
+                    multivalue: false,
+                    value: 'Driver 1'
+                },
+                {
+                    name: 'Driver 2',
+                    type: 'dynamic',
+                    multivalue: false,
+                    value: 'Driver 2'
+                }
+            ]
+        },
+
         loadProfileAttributes() {
             this.profileAttributes = []
             const user = this.appStore.getUser()

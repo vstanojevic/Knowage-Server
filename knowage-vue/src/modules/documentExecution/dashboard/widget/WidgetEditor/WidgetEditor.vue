@@ -35,13 +35,21 @@ export default defineComponent({
     name: 'widget-editor',
     components: { WidgetEditorPreview, WidgetEditorTabs },
     emits: ['close', 'widgetUpdated', 'widgetSaved'],
-    props: { propWidget: { type: Object as PropType<IWidget>, required: true }, datasets: { type: Array as PropType<IDataset[]> }, documentDrivers: { type: Array }, variables: { type: Array } },
+    props: {
+        propWidget: { type: Object as PropType<IWidget>, required: true },
+        datasets: { type: Array as PropType<IDataset[]> },
+        documentDrivers: { type: Array },
+        variables: { type: Array }
+    },
     data() {
         return {
             descriptor,
             widget: {} as any,
             previewData: null as any,
-            datasetFunctions: {} as { availableFunctions: string[]; nullifFunction: string[] },
+            datasetFunctions: {} as {
+                availableFunctions: string[]
+                nullifFunction: string[]
+            },
             selectedModelDatasets: [] as IModelDataset[],
             selectedDatasets: [] as IDataset[],
             drivers: [] as any[]
@@ -82,25 +90,18 @@ export default defineComponent({
             for (let i = 0; i < this.selectedModelDatasets.length; i++) {
                 const tempDataset = this.selectedModelDatasets[i]
                 const index = this.datasets.findIndex((dataset: any) => dataset.id.dsId === tempDataset.id)
-                if (index !== -1) this.selectedDatasets.push({ ...this.datasets[index], cache: tempDataset.cache, indexes: tempDataset.indexes ?? [], parameters: tempDataset.parameters as any[], drivers: tempDataset.drivers ?? [] })
+                if (index !== -1)
+                    this.selectedDatasets.push({
+                        ...this.datasets[index],
+                        cache: tempDataset.cache,
+                        indexes: tempDataset.indexes ?? [],
+                        parameters: tempDataset.parameters as any[],
+                        drivers: tempDataset.drivers ?? []
+                    })
             }
         },
         loadDrivers() {
-            // TODO - remove mock
-            this.drivers = [
-                {
-                    name: 'Driver 1',
-                    type: 'static',
-                    multivalue: false,
-                    value: 'Driver 1'
-                },
-                {
-                    name: 'Driver 2',
-                    type: 'dynamic',
-                    multivalue: false,
-                    value: 'Driver 2'
-                }
-            ]
+            this.drivers = this.documentDrivers as any[]
         },
         onDatasetSelected(dataset: IWidgetEditorDataset) {
             this.loadPreviewData(dataset)

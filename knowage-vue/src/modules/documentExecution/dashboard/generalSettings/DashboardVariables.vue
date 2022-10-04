@@ -1,10 +1,6 @@
 <template>
     <div id="variables-container" class="p-grid p-p-4 p-mt-3">
-        {{ selectedDatasets }}
-
-        <br />
-
-        {{ profileAttributes }}
+        {{ selectedDatasetsColumnsMap }}
 
         <div class="p-col-12">
             <label class="kn-material-input-label"> {{ $t('common.variables') }}</label>
@@ -24,7 +20,7 @@
             </div>
             <div class="p-col-3 p-d-flex p-flex-column">
                 <label class="kn-material-input-label"> {{ $t('common.type') }}</label>
-                <Dropdown class="kn-material-input" v-model="variable.type" :options="descriptor.variableTypes" optionValue="name">
+                <Dropdown class="kn-material-input" v-model="variable.type" :options="descriptor.variableTypes" optionValue="name" @change="onVariableTypeChange(variable)">
                     <template #value="slotProps">
                         <div>
                             <span>{{ getTranslatedLabel(slotProps.value, descriptor.variableTypes, $t) }}</span>
@@ -45,7 +41,7 @@
             <div v-if="variable.type === 'dataset'" class="p-col-6 p-grid">
                 <div class="p-col-6 p-d-flex p-flex-column">
                     <label class="kn-material-input-label"> {{ $t('common.dataset') }}</label>
-                    <Dropdown class="kn-material-input" v-model="variable.dataset" :options="selectedDatasetNames"> </Dropdown>
+                    <Dropdown class="kn-material-input" v-model="variable.dataset" :options="selectedDatasetOptions" optionLabel="name" optionValue="id"> </Dropdown>
                 </div>
                 <div class="p-col-6 p-d-flex p-flex-column">
                     <label class="kn-material-input-label"> {{ $t('common.column') }}</label>
@@ -78,7 +74,7 @@ export default defineComponent({
     props: {
         propVariables: { type: Array as PropType<IVariable[]>, required: true },
         selectedDatasets: { type: Array as PropType<IModelDataset[]>, required: true },
-        selectedDatasetsColumnsMap: { type: Object },
+        selectedDatasetsColumnsMap: { type: Object, required: true },
         drivers: { type: Array, required: true },
         profileAttributes: { type: Array as PropType<{ name: string; value: string }[]>, required: true }
     },
@@ -86,7 +82,7 @@ export default defineComponent({
         return {
             descriptor,
             variables: [] as IVariable[],
-            selectedDatasetNames: [] as string[],
+            selectedDatasetOptions: [] as { id: number; name: string }[],
             getTranslatedLabel
         }
     },
@@ -97,6 +93,7 @@ export default defineComponent({
     },
     created() {
         this.loadVariables()
+        this.loadSelectedDatasetNames()
     },
     methods: {
         loadVariables() {
@@ -104,11 +101,12 @@ export default defineComponent({
         },
         loadSelectedDatasetNames() {
             if (!this.selectedDatasetsColumnsMap) return
-            Object.keys(this.selectedDatasetsColumnsMap).forEach((key: string) => this.selectedDatasetNames.push(key))
+            Object.keys(this.selectedDatasetsColumnsMap).forEach((key: string) => this.selectedDatasetOptions.push({ id: +key, name: this.selectedDatasetsColumnsMap[key].name }))
         },
         getSelectionDatasetColumnOptions(variable: IVariable) {
-            return variable.dataset && this.selectedDatasetsColumnsMap ? this.selectedDatasetsColumnsMap[variable.dataset] : []
-        }
+            return variable.dataset && this.selectedDatasetsColumnsMap ? this.selectedDatasetsColumnsMap[variable.dataset].columns : []
+        },
+        onVariableTypeChange(variable: IVariable) {}
     }
 })
 </script>

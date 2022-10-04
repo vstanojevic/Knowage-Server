@@ -88,7 +88,13 @@ import TableWidgetLinkParameterList from './TableWidgetLinkParameterList.vue'
 
 export default defineComponent({
     name: 'table-widget-interactions-links',
-    components: { Checkbox, Dropdown, InputSwitch, TableWidgetLinkParameterList, WidgetEditorStyleToolbar },
+    components: {
+        Checkbox,
+        Dropdown,
+        InputSwitch,
+        TableWidgetLinkParameterList,
+        WidgetEditorStyleToolbar
+    },
     props: {
         widgetModel: { type: Object as PropType<IWidget>, required: true },
         datasets: { type: Array as PropType<IDataset[]> },
@@ -161,12 +167,22 @@ export default defineComponent({
         onLinkEnabledChange() {
             if (!this.linksModel) return
             if (this.linksModel.enabled && this.linksModel.links.length === 0) {
-                this.linksModel.links.push({ type: '', baseurl: '', action: '', parameters: [] })
+                this.linksModel.links.push({
+                    type: '',
+                    baseurl: '',
+                    action: '',
+                    parameters: []
+                })
             }
         },
         addLink() {
             if (!this.linksModel || this.linksDisabled) return
-            this.linksModel.links.push({ type: '', baseurl: '', action: '', parameters: [] })
+            this.linksModel.links.push({
+                type: '',
+                baseurl: '',
+                action: '',
+                parameters: []
+            })
         },
         removeLink(index: number) {
             if (!this.linksModel || this.linksDisabled) return

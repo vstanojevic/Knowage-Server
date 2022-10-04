@@ -11,7 +11,7 @@
 
             <div class="p-grid p-m-0 p-p-0">
                 <DashboardGeneralSettingsList class="p-col-3" @selectedOption="setSelectedOption"></DashboardGeneralSettingsList>
-                <DashboardVariables v-if="selectedOption === 'Variables'" class="p-col-9" :propVariables="variables" :selectedDatasets="selectedDatasets" :selectedDatasetColumnNameMap="selectedDatasetColumnNameMap" :drivers="drivers" :profileAttributes="profileAttributes"></DashboardVariables>
+                <DashboardVariables v-if="selectedOption === 'Variables'" class="p-col-9" :propVariables="variables" :selectedDatasets="selectedDatasets" :selectedDatasetsColumnsMap="selectedDatasetColumnsMap" :drivers="documentDrivers" :profileAttributes="profileAttributes"></DashboardVariables>
             </div>
         </div>
     </Teleport>
@@ -29,16 +29,15 @@ import deepcopy from 'deepcopy'
 export default defineComponent({
     name: 'dashboard-general-settings',
     components: { DashboardGeneralSettingsList, DashboardVariables },
-    props: { datasets: { type: Array as PropType<IDataset[]> }, documentDrivers: { type: Array }, profileAttributes: { type: Array as PropType<{ name: string; value: string }[]>, required: true } },
+    props: { datasets: { type: Array as PropType<IDataset[]>, required: true }, documentDrivers: { type: Array, required: true }, profileAttributes: { type: Array as PropType<{ name: string; value: string }[]>, required: true } },
     emits: ['closeGeneralSettings'],
     data() {
         return {
             selectedOption: '' as string,
             dashboardModel: null as any,
             variables: [] as IVariable[],
-            selectedDatasets: [] as IModelDataset[],
-            selectedDatasetColumnNameMap: {},
-            drivers: [] as any[]
+            selectedDatasets: [] as IDataset[],
+            selectedDatasetColumnsMap: {}
         }
     },
     watch: {},
@@ -60,34 +59,32 @@ export default defineComponent({
             if (this.dashboardModel && this.dashboardModel.configuration) this.variables = deepcopy(this.dashboardModel.configuration.variables)
         },
         loadSelectedDatasets() {
-            if (this.dashboardModel && this.dashboardModel.configuration) this.selectedDatasets = deepcopy(this.dashboardModel.configuration.datasets)
-        },
-        loadSelectedDatasetColumnNames() {
-            if (!this.datasets || this.datasets.length === 0) return
-            this.datasets.forEach((dataset: IDataset) => this.loadSelectedDatasetColumnName(dataset))
-        },
-        loadSelectedDatasetColumnName(dataset: IDataset) {
-            this.selectedDatasetColumnNameMap[dataset.name] = []
-            for (let i = 0; i < dataset.metadata.fieldsMeta.length; i++) {
-                this.selectedDatasetColumnNameMap[dataset.name].push(dataset.metadata.fieldsMeta[i].name)
+            this.selectedDatasets = [] as IDataset[]
+            if (this.dashboardModel && this.dashboardModel.configuration) {
+                const tempModelDatasets = deepcopy(this.dashboardModel.configuration.datasets)
+                for (let i = 0; i < tempModelDatasets.length; i++) {
+                    const tempDataset = tempModelDatasets[i]
+                    const index = this.datasets.findIndex((dataset: any) => dataset.id.dsId === tempDataset.id)
+                    if (index !== -1)
+                        this.selectedDatasets.push({
+                            ...this.datasets[index],
+                            cache: tempDataset.cache,
+                            indexes: tempDataset.indexes ?? [],
+                            parameters: tempDataset.parameters as any[],
+                            drivers: tempDataset.drivers ?? []
+                        })
+                }
             }
         },
-        loadDrivers() {
-            // TODO - remove mock
-            this.drivers = [
-                {
-                    name: 'Driver 1',
-                    type: 'static',
-                    multivalue: false,
-                    value: 'Driver 1'
-                },
-                {
-                    name: 'Driver 2',
-                    type: 'dynamic',
-                    multivalue: false,
-                    value: 'Driver 2'
-                }
-            ]
+        loadSelectedDatasetColumnNames() {
+            if (!this.selectedDatasets || this.selectedDatasets.length === 0) return
+            this.selectedDatasets.forEach((dataset: IDataset) => this.loadSelectedDatasetColumnName(dataset))
+        },
+        loadSelectedDatasetColumnName(dataset: IDataset) {
+            this.selectedDatasetColumnsMap[dataset.id.dsId] = { name: dataset.name, columns: [] }
+            for (let i = 0; i < dataset.metadata.fieldsMeta.length; i++) {
+                this.selectedDatasetColumnsMap[dataset.id.dsId].columns.push(dataset.metadata.fieldsMeta[i].name)
+            }
         },
         setSelectedOption(option: string) {
             this.selectedOption = option

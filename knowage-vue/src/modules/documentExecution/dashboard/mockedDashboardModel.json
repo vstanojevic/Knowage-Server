@@ -98,7 +98,7 @@
                 "type": "dataset"
             },
             {
-                "driver": "Driver",
+                "driver": "Driver 1",
                 "name": "Variable Driver",
                 "type": "driver"
             },

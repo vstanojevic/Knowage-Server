@@ -3,7 +3,7 @@ import cryptoRandomString from 'crypto-random-string'
 import { formatTableWidget } from './tableWidget/TableWidgetCompatibilityHelper'
 import { IDatasetParameter, IVariable, IWidgetEditorDataset } from '../Dashboard'
 
-export const formatModel = (model: any, profileAttributes: { name: string, value: string }[]) => {
+export const formatModel = (model: any, drivers: any[], profileAttributes: { name: string, value: string }[]) => {
     console.log('DashboardBackwardCompatibilityHelper - FORMAT MODEL CALLED WITH: ', model)
     if (!model.sheets) return
 
@@ -12,7 +12,7 @@ export const formatModel = (model: any, profileAttributes: { name: string, value
         id: 1,
         widgets: [],
         version: model.knowageVersion,
-        configuration: getFormattedModelConfiguration(model, profileAttributes),
+        configuration: getFormattedModelConfiguration(model, drivers, profileAttributes),
         sheets: []
     } as any
     for (let i = 0; i < model.sheets.length; i++) {
@@ -22,9 +22,9 @@ export const formatModel = (model: any, profileAttributes: { name: string, value
     return formattedModel
 }
 
-const getFormattedModelConfiguration = (model: any, profileAttributes: { name: string, value: string }[]) => {
+const getFormattedModelConfiguration = (model: any, drivers: any[], profileAttributes: { name: string, value: string }[]) => {
     // TODO - id, name, label, description
-    const formattedConfiguration = { id: '', name: '', label: '', description: '', associations: [], datasets: getFormattedDatasets(model), variables: getFormattedVariables(model, profileAttributes), themes: {} }
+    const formattedConfiguration = { id: '', name: '', label: '', description: '', associations: [], datasets: getFormattedDatasets(model), variables: getFormattedVariables(model, drivers, profileAttributes), themes: {} }
 
     return formattedConfiguration
 }
@@ -57,8 +57,7 @@ const getFormattedDatasetParameters = (dataset: any) => {
     return parameters
 }
 
-const getFormattedVariables = (model: any, profileAttributes: { name: string, value: string }[]) => {
-    console.log("TEEEEEEEEEEEEEEEST: ", profileAttributes)
+const getFormattedVariables = (model: any, drivers: any[], profileAttributes: { name: string, value: string }[]) => {
     const formattedVariables = [] as IVariable[]
     if (!model.configuration || !model.configuration.variables) return formattedVariables
     for (let i = 0; i < model.configuration.variables.length; i++) {
@@ -69,10 +68,14 @@ const getFormattedVariables = (model: any, profileAttributes: { name: string, va
                 formattedVariable.value = tempVariable.value;
                 break
             case 'dataset':
+                // TODO - ask about this
+                formattedVariable.dataset = tempVariable.dataset;
+                formattedVariable.column = tempVariable.column;
                 formattedVariable.value = tempVariable.column;
                 break
             case 'driver':
-                formattedVariable.value = tempVariable.driver;
+                formattedVariable.driver = tempVariable.driver;
+                formattedVariable.value = getDriverValue(tempVariable.driver, drivers);
                 break
             case 'profile':
                 formattedVariable.attribute = tempVariable.attribute
@@ -89,6 +92,12 @@ const getProfileAttributeValue = (profileAttributeName: string, profileAttribute
     if (!profileAttributes) return ''
     const index = profileAttributes.findIndex((profileAttribute: { name: string, value: string }) => profileAttribute.name === profileAttributeName)
     return index !== -1 ? profileAttributes[index].value : ''
+}
+
+const getDriverValue = (driverName: string, drivers: any[]) => {
+    if (!drivers) return ''
+    const index = drivers.findIndex((driver: any) => driver.name === driverName)
+    return index !== -1 ? drivers[index].value : ''
 }
 
 const formatSheet = (sheet: any, formattedModel: any) => {
