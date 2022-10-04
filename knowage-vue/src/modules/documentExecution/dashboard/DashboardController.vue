@@ -2,7 +2,7 @@
     <div class="dashboard-container" :id="`dashboard_${model.configuration.id}`">
         <Button label="DATASET" style="position: absolute; margin-left: 250px; z-index: 999" @click="datasetEditorVisible = true" />
         <Button label="WIDGET" style="position: absolute; margin-left: 400px; z-index: 999" @click="widgetPickerVisible = true" />
-        <DashboardRenderer :model="model" :datasets="datasets"></DashboardRenderer>
+        <DashboardRenderer v-if="!loading" :model="model" :datasets="datasets"></DashboardRenderer>
 
         <Transition name="editorEnter" appear>
             <DatasetEditor v-if="datasetEditorVisible" :availableDatasetsProp="datasets" :filtersDataProp="filtersData" @closeDatasetEditor="closeDatasetEditor" @datasetEditorSaved="datasetEditorVisible = false" />
@@ -16,6 +16,7 @@
     </div>
     <WidgetEditor
         v-if="widgetEditorVisible"
+        :dashboardId="dashboardId"
         :propWidget="selectedWidget"
         :datasets="datasets"
         :documentDrivers="drivers"
@@ -47,6 +48,7 @@ import DatasetEditor from './dataset/DatasetEditor.vue'
 import WidgetEditor from './widget/WidgetEditor/WidgetEditor.vue'
 import mockedDashboardModel from './mockedDashboardModel.json'
 import descriptor from './DashboardDescriptor.json'
+import cryptoRandomString from 'crypto-random-string'
 // import mock1 from './tempMocks/mock1.json'
 import DashboardGeneralSettings from './generalSettings/DashboardGeneralSettings.vue'
 
@@ -66,7 +68,9 @@ export default defineComponent({
             crossNavigations: [] as any[],
             generalSettingsVisible: false,
             profileAttributes: [] as { name: string; value: string }[],
-            drivers: [] as any[]
+            drivers: [] as any[],
+            dashboardId: '',
+            loading: false
         }
     },
     provide() {
@@ -79,32 +83,43 @@ export default defineComponent({
         const appStore = mainStore()
         return { store, appStore }
     },
-    created() {
+    async created() {
         this.setEventListeners()
-        this.loadDatasets()
-        this.loadCrossNavigations()
-        this.loadOutputParameters()
-        this.loadDrivers()
-        this.loadProfileAttributes()
-        this.loadModel()
+        await this.getData()
     },
     mounted() {
         this.loadCrossNavigations()
         this.loadOutputParameters()
     },
     unmounted() {
-        // TODO
-        // this.store.removeDashboard({ id: (this as any).dHash as any })
+        // TODO - dashboardId
+        this.store.removeDashboard(this.dashboardId)
         this.store.setCrosssNavigations([])
         this.store.setOutputParameters([])
     },
     methods: {
-        loadModel() {
+        async getData() {
+            this.loading = true
+            this.loadDatasets()
+            this.loadCrossNavigations()
+            this.loadOutputParameters()
+            await this.loadModel()
+            this.loading = false
+        },
+        async loadModel() {
+            let tempModel = null
+            await this.$http
+                .get(import.meta.env.VITE_RESTFUL_SERVICES_PATH + `3.0/documentexecution/` + this.document?.id + '/templates')
+                .then((response: AxiosResponse<any>) => (tempModel = response.data))
+                .catch(() => {})
+            console.log('>>>>>>>>>> TEEEEEEEEEEEEEEEEEEEEEST: ', tempModel)
             // TODO
             // this.model = mock
-            this.model = formatModel(mockedDashboardModel, this.drivers, this.profileAttributes) as any
+            // this.model = formatModel(mockedDashboardModel) as any
+            this.model = tempModel ? (formatModel(tempModel) as any) : {}
+            this.dashboardId = cryptoRandomString({ length: 16, type: 'base64' })
             // this.model = formatModel(mock1) as any
-            this.store.setDashboard(this.model)
+            this.store.setDashboard(this.dashboardId, this.model)
         },
         async loadDatasets() {
             this.appStore.setLoading(true)
@@ -118,7 +133,7 @@ export default defineComponent({
             // TODO - Remove mocked document label
             this.appStore.setLoading(true)
             await this.$http
-                .get(import.meta.env.VITE_RESTFUL_SERVICES_PATH + `1.0/crossNavigation/Test%20Drivers//loadCrossNavigationByDocument`)
+                .get(import.meta.env.VITE_RESTFUL_SERVICES_PATH + `1.0/crossNavigation/Test%20Drivers/loadCrossNavigationByDocument`)
                 .then((response: AxiosResponse<any>) => (this.crossNavigations = response.data))
                 .catch(() => {})
             this.appStore.setLoading(false)
