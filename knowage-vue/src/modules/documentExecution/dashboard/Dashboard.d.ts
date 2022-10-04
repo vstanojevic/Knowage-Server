@@ -541,3 +541,13 @@ export interface IWidgetStyleToolbarModel {
     'background-color'?: string
     icon?: string
 }
+
+export interface IVariable {
+    name: string,
+    type: string,
+    value: string,
+    dataset?: string,
+    column?: string,
+    attribute?: string,
+    driver?: string
+}

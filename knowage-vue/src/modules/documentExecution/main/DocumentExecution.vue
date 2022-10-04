@@ -1,6 +1,6 @@
 <template>
     <div class="kn-height-full detail-page-container">
-        <Toolbar v-if="!embed && !olapDesignerMode && !managementOpened" class="kn-toolbar kn-toolbar--primary p-col-12">
+        <Toolbar v-if="!embed && !olapDesignerMode && !managementOpened && !dashboardGeneralSettingsOpened" class="kn-toolbar kn-toolbar--primary p-col-12">
             <template #start>
                 <span>{{ document?.name }}</span>
             </template>
@@ -208,7 +208,8 @@ export default defineComponent({
             crossNavigationDocuments: [] as any[],
             angularData: null as any,
             crossNavigationContainerVisible: false,
-            crossNavigationContainerData: null as any
+            crossNavigationContainerData: null as any,
+            dashboardGeneralSettingsOpened: false
         }
     },
     watch: {
@@ -346,6 +347,7 @@ export default defineComponent({
             this.toolbarMenuItems = createToolbarMenuItems(
                 this.document,
                 {
+                    openDashboardGeneralSettings: this.openDashboardGeneralSettings,
                     print: this.print,
                     openRank: this.openRank,
                     export: this.export,
@@ -1229,6 +1231,13 @@ export default defineComponent({
             emitter.on('widgetEditorClosed', () => {
                 this.managementOpened = false
             })
+            emitter.on('dashboardGeneralSettingsClosed', () => {
+                this.dashboardGeneralSettingsOpened = false
+            })
+        },
+        openDashboardGeneralSettings() {
+            this.dashboardGeneralSettingsOpened = true
+            emitter.emit('openDashboardGeneralSettings')
         }
     }
 })

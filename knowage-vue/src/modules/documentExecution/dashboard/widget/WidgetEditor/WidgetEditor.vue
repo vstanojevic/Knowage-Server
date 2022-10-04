@@ -35,7 +35,7 @@ export default defineComponent({
     name: 'widget-editor',
     components: { WidgetEditorPreview, WidgetEditorTabs },
     emits: ['close', 'widgetUpdated', 'widgetSaved'],
-    props: { propWidget: { type: Object as PropType<IWidget>, required: true }, datasets: { type: Array as PropType<IDataset[]> }, drivers: { type: Array }, variables: { type: Array } },
+    props: { propWidget: { type: Object as PropType<IWidget>, required: true }, datasets: { type: Array as PropType<IDataset[]> }, documentDrivers: { type: Array }, variables: { type: Array } },
     data() {
         return {
             descriptor,

@@ -8,6 +8,10 @@
             <DatasetEditor v-if="datasetEditorVisible" :availableDatasetsProp="datasets" :filtersDataProp="filtersData" @closeDatasetEditor="closeDatasetEditor" @datasetEditorSaved="datasetEditorVisible = false" />
         </Transition>
 
+        <Transition name="editorEnter" appear>
+            <DashboardGeneralSettings v-if="generalSettingsVisible" :datasets="datasets" :documentDrivers="[]" :profileAttributes="profileAttributes" @closeGeneralSettings="closeGeneralSettings" @saveGeneralSettings="generalSettingsVisible = false"></DashboardGeneralSettings>
+        </Transition>
+
         <WidgetPickerDialog v-if="widgetPickerVisible" :visible="widgetPickerVisible" @openNewWidgetEditor="openNewWidgetEditor" @closeWidgetPicker="widgetPickerVisible = false" />
     </div>
     <WidgetEditor
@@ -44,10 +48,11 @@ import WidgetEditor from './widget/WidgetEditor/WidgetEditor.vue'
 import mockedDashboardModel from './mockedDashboardModel.json'
 import descriptor from './DashboardDescriptor.json'
 // import mock1 from './tempMocks/mock1.json'
+import DashboardGeneralSettings from './generalSettings/DashboardGeneralSettings.vue'
 
 export default defineComponent({
     name: 'dashboard-manager',
-    components: { DashboardRenderer, WidgetPickerDialog, DatasetEditor, WidgetEditor },
+    components: { DashboardRenderer, WidgetPickerDialog, DatasetEditor, WidgetEditor, DashboardGeneralSettings },
     props: { sbiExecutionId: { type: String }, document: { type: Object }, reloadTrigger: { type: Boolean }, hiddenFormData: { type: Object }, filtersData: { type: Object as PropType<{ filterStatus: iParameter[]; isReadyForExecution: boolean }> } },
     data() {
         return {
@@ -58,7 +63,9 @@ export default defineComponent({
             datasets: [] as any[],
             widgetEditorVisible: false,
             selectedWidget: null as any,
-            crossNavigations: [] as any[]
+            crossNavigations: [] as any[],
+            generalSettingsVisible: false,
+            profileAttributes: [] as { name: string; value: string }[]
         }
     },
     provide() {
@@ -76,6 +83,7 @@ export default defineComponent({
         this.loadDatasets()
         this.loadCrossNavigations()
         this.loadOutputParameters()
+        this.loadProfileAttributes()
         this.loadModel()
     },
     mounted() {
@@ -92,7 +100,7 @@ export default defineComponent({
         loadModel() {
             // TODO
             // this.model = mock
-            this.model = formatModel(mockedDashboardModel) as any
+            this.model = formatModel(mockedDashboardModel, this.profileAttributes) as any
             // this.model = formatModel(mock1) as any
             this.store.setDashboard(this.model)
         },
@@ -120,6 +128,13 @@ export default defineComponent({
             const mockedParameters = descriptor.mockedOutputParameters
             this.store.setOutputParameters(mockedParameters)
         },
+        loadProfileAttributes() {
+            this.profileAttributes = []
+            const user = this.appStore.getUser()
+            if (user && user.attributes) {
+                Object.keys(user.attributes).forEach((key: string) => this.profileAttributes.push({ name: key, value: user.attributes[key] }))
+            }
+        },
         setEventListeners() {
             emitter.on('openNewWidgetPicker', () => {
                 this.openNewWidgetPicker()
@@ -129,6 +144,9 @@ export default defineComponent({
             })
             emitter.on('openWidgetEditor', (widget) => {
                 this.openWidgetEditor(widget)
+            })
+            emitter.on('openDashboardGeneralSettings', () => {
+                this.openGeneralSettings()
             })
         },
         openNewWidgetPicker() {
@@ -158,6 +176,13 @@ export default defineComponent({
         closeDatasetEditor() {
             this.datasetEditorVisible = false
             emitter.emit('datasetManagementClosed')
+        },
+        openGeneralSettings() {
+            this.generalSettingsVisible = true
+        },
+        closeGeneralSettings() {
+            this.generalSettingsVisible = false
+            emitter.emit('dashboardGeneralSettingsClosed')
         }
     }
 })
