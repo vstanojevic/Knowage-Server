@@ -103,6 +103,8 @@ export default defineComponent({
             this.loadDatasets()
             this.loadCrossNavigations()
             this.loadOutputParameters()
+            this.loadDrivers()
+            this.loadProfileAttributes()
             await this.loadModel()
             this.loading = false
         },
@@ -116,7 +118,7 @@ export default defineComponent({
             // TODO
             // this.model = mock
             // this.model = formatModel(mockedDashboardModel) as any
-            this.model = tempModel ? (formatModel(tempModel) as any) : {}
+            this.model = tempModel ? (formatModel(tempModel, this.drivers, this.profileAttributes) as any) : {}
             this.dashboardId = cryptoRandomString({ length: 16, type: 'base64' })
             // this.model = formatModel(mock1) as any
             this.store.setDashboard(this.dashboardId, this.model)
