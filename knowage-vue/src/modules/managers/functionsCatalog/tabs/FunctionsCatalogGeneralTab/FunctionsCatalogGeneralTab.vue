@@ -71,11 +71,22 @@
                 <AccordionTab :header="$t('managers.functionsCatalog.benchmarks')">
                     <label for="benchmarks" class="kn-material-input-label"> {{ $t('managers.functionsCatalog.benchmarks') }}</label>
                     <Textarea v-if="showBenchmarksSource" v-model="selectedFunction.benchmark" :style="functionsCatalogGeneralTabDescriptor.editor.style" :readonly="readonly"></Textarea>
-                    <Editor v-else id="benchmarks" :editorStyle="functionsCatalogGeneralTabDescriptor.editor.style" v-model="selectedFunction.benchmark" :readonly="readonly" />
+                    <Editor v-else id="benchmarks" :editorStyle="functionsCatalogGeneralTabDescriptor.editor.style" v-model="selectedFunction.benchmark" :readonly="readonly" @text-change="onTextChange" @selection-change="onTextChange">
+                        <template v-slot:toolbar>
+                            <span class="ql-formats">
+                                <button class="ql-bold" v-tooltip.bottom="'Bold'"></button>
+                                <button class="ql-italic" v-tooltip.bottom="'Italic'"></button>
+                                <button class="ql-underline" v-tooltip.bottom="'Underline'"></button>
+                                <button class="ql-video" v-tooltip.bottom="'Underline'"></button>
+                                <button class="ql-font" v-tooltip.bottom="'Underline'"></button>
+                            </span> </template
+                    ></Editor>
                     <Button class="editor-switch-button" icon="pi pi-bars" :label="showBenchmarksSource ? 'wysiwyg' : $t('common.source')" @click="showBenchmarksSource = !showBenchmarksSource"></Button>
                 </AccordionTab>
             </Accordion>
         </div>
+
+        <div class="p-col-12" v-html="selectedFunction.benchmark"></div>
     </form>
 </template>
 
@@ -112,6 +123,9 @@ export default defineComponent({
             if (this.selectedFunction.tags && this.selectedFunction.tags[0] === '') {
                 this.selectedFunction.tags = []
             }
+        },
+        onTextChange(event: any) {
+            console.log('>>>>>> EVENT ON EDITOR CHANGE: ', event)
         }
     }
 })
