@@ -1,6 +1,6 @@
 <template>
     <div v-if="model" class="dashboard-container" :id="`dashboard_${model.configuration.id}`">
-        <hello-world></hello-world>
+        <hello-world title="bojan test" :testHttp="$http"></hello-world>
 
         <!-- <div style="testStyle" v-html="testHTML"></div> -->
 
@@ -155,7 +155,7 @@ export default defineComponent({
         this.$watch('model.configuration.datasets', (modelDatasets: IModelDataset[]) => {
             setDatasetIntervals(modelDatasets, this.datasets)
         })
-        console.log('>>>>>>>>>>>>>>>>>>> THIS $STYLE: ', this.$style)
+        // console.log('>>>>>>>>>>>>>>>>>>> THIS $STYLE: ', this.$style)
     },
     mounted() {
         this.loadCrossNavigations()
