@@ -15,7 +15,19 @@
                 <ProgressBar mode="indeterminate" class="kn-progress-bar" v-if="loading" data-test="progress-bar" />
                 <KnListBox :options="listOfDatasets" :settings="mainDescriptor.knListSettings" @click="showDetail" @clone.stop="emitCloneDataset" @delete.stop="deleteDataset" />
             </div>
+
             <div class="p-col-8 p-sm-8 p-md-9 p-p-0 p-m-0 kn-router-view">
+                <QuillEditor theme="snow" :options="editorOptions">
+                    <div id="toolbar">
+                        ... your other tool buttons here ...
+                        <select class="ql-font">
+                            <option selected></option>
+                            <option value="serif"></option>
+                            <option value="monospace"></option>
+                            <option value="myfont">My font</option>
+                        </select>
+                    </div>
+                </QuillEditor>
                 <router-view
                     :scopeTypes="scopeTypes"
                     :categoryTypes="categoryTypes"
@@ -50,10 +62,17 @@ import FabButton from '@/components/UI/KnFabButton.vue'
 import KnListBox from '@/components/UI/KnListBox/KnListBox.vue'
 import ProgressSpinner from 'primevue/progressspinner'
 import mainStore from '../../../App.store'
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
+
+import Quill from 'quill'
+let Font = Quill.import('formats/font')
+Font.whitelist = ['serif', 'monospace', 'myfont']
+Quill.register(Font, true)
 
 export default defineComponent({
     name: 'dataset-management',
-    components: { FabButton, KnListBox, ProgressSpinner },
+    components: { FabButton, KnListBox, ProgressSpinner, QuillEditor },
     data() {
         return {
             mainDescriptor,
@@ -74,7 +93,13 @@ export default defineComponent({
             rEnvironments: [] as any,
             metaSourceResource: [] as any,
             tags: [] as any,
-            datasetToCloneId: null
+            datasetToCloneId: null,
+            // define options for Quill and refer to toolbar
+            editorOptions: {
+                modules: {
+                    toolbar: '#toolbar'
+                }
+            }
         }
     },
     setup() {
@@ -209,3 +234,13 @@ export default defineComponent({
     }
 })
 </script>
+<style>
+@font-face {
+    font-family: 'MyFont';
+    src: url('/static/fonts/myfont.otf') format('opentype');
+}
+
+.ql-font-myfont {
+    font-family: MyFont;
+}
+</style>
