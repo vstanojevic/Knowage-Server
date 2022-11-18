@@ -1,14 +1,14 @@
 <template>
     <div v-show="model" ref="knowageStyleIcon" class="click-outside icon-container" :class="{ 'icon-disabled': disabled }">
-        <div id="color-picker-target" class="p-d-flex p-flex-row p-jc-center p-ai-center" v-tooltip.top="{ value: option.tooltip ? $t(option.tooltip) : getDefaultTooltip() }" @click="openAdditionalComponents">
+        <div class="p-d-flex p-flex-row p-jc-center p-ai-center" v-tooltip.top="{ value: option.tooltip ? $t(option.tooltip) : getDefaultTooltip() }" @click="openAdditionalComponents">
             <i :class="[getIconClass(), active ? 'active-icon' : '']" class="widget-editor-icon kn-cursor-pointer p-mr-2" @click="onIconClicked"></i>
-            <div v-show="showArowDown || showCircleIcon">
-                <div v-show="showCircleIcon" class="style-circle-icon" :style="{ 'background-color': newColor }"></div>
+            <div v-show="showArowDown || showCircleIcon" class="p-d-flex p-flex-column">
+                <ColorPicker id="color-picker" v-if="option.type === 'color' || option.type === 'background-color'" v-model:pure-color="color" shape="circle" @pureColorChange="onGradientColorChange" />
                 <i v-show="showArowDown" class="fas fa-arrow-down style-arrow-down-icon"></i>
             </div>
             <span v-if="option.type === 'font-size'" class="icon-display-value-span p-ml-1">{{ '(' + displayValue + ')' }}</span>
         </div>
-        <ColorPicker class="style-icon-color-picker" v-if="(option.type === 'color' || option.type === 'background-color') && colorPickerVisible" v-model="color" :inline="true" format="rgb" @change="onColorPickerChange" />
+        <!-- <ColorPicker class="style-icon-color-picker" v-if="(option.type === 'color' || option.type === 'background-color') && colorPickerVisible" v-model="color" :inline="true" format="rgb" @change="onColorPickerChange" /> -->
         <WidgetEditorToolbarContextMenu
             class="context-menu"
             v-show="(option.type === 'font-size' || option.type === 'justify-content' || option.type === 'font-family') && contextMenuVisible"
@@ -25,9 +25,11 @@ import { IWidgetStyleToolbarModel } from '@/modules/documentExecution/dashboard/
 import { emitter } from '../../../../../DashboardHelpers'
 import { getRGBColorFromString } from '../../../helpers/WidgetEditorHelpers'
 import { useClickOutside } from './useClickOutside'
-import ColorPicker from 'primevue/colorpicker'
+// import ColorPicker from 'primevue/colorpicker'
 import descriptor from './WidgetEditorStyleToolbarDescriptor.json'
 import WidgetEditorToolbarContextMenu from './WidgetEditorToolbarContextMenu.vue'
+import { ColorPicker } from 'vue3-colorpicker'
+import 'vue3-colorpicker/style.css'
 
 export default defineComponent({
     name: 'widget-editor-colo-picker-icon',
@@ -41,7 +43,7 @@ export default defineComponent({
             active: false,
             iconPickerDialogVisible: false,
             displayValue: '',
-            color: null as { r: number; g: number; b: number } | null,
+            color: '' as string,
             newColor: 'rgb(255, 255, 255)',
             colorPickTimer: null as any,
             useClickOutside
@@ -103,11 +105,12 @@ export default defineComponent({
                     this.displayValue = this.model['font-size'] ?? ''
                     break
                 case 'color':
-                    this.color = this.model.color ? getRGBColorFromString(this.model.color) : null
+                    console.log('>>>>>> LOADED COLOR: ', this.model.color)
+                    this.color = this.model.color as any
                     this.newColor = this.model.color ?? ''
                     break
                 case 'background-color':
-                    this.color = this.model['background-color'] ? getRGBColorFromString(this.model['background-color']) : null
+                    this.color = this.model['background-color'] as any
                     this.newColor = this.model['background-color'] ?? ''
             }
         },
@@ -211,10 +214,20 @@ export default defineComponent({
             this.model['font-size'] = item
             this.displayValue = item
             this.$emit('change')
+        },
+        onGradientColorChange(event: any) {
+            console.log('EVENT: ', event)
         }
     }
 })
 </script>
+
+<style lang="scss">
+.vc-color-wrap {
+    width: 10px !important;
+    height: 10px !important;
+}
+</style>
 
 <style lang="scss" scoped>
 .active-icon {
