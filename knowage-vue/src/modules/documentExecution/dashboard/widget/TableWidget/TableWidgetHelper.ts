@@ -28,27 +28,31 @@ export const getWidgetStyleByTypeWithoutValidation = (propWidget: IWidget, style
         .join(';')
     return styleString + ';'
 }
-
-export const getColumnConditionalStyles = (propWidget: IWidget, colId: string, valueToCompare: any, returnString?: boolean) => {
-    var conditionalStyles = propWidget.settings.conditionalStyles
+export const getColumnConditionalStyles = (colId: string, cellParams: any) => {
     var styleString = null as any
+    var cellColumnConditionalStyles = cellParams.columnsWithConditionalStyles.filter((condition) => condition.target.includes(colId))
+    var brothersColumnConditionalStyles = cellParams.columnsWithConditionalStyles.filter((condition) => !condition.target.includes(colId))
 
-    var columnConditionalStyles = conditionalStyles.conditions.filter((condition) => condition.target.includes(colId))
-    if (columnConditionalStyles.length > 0) {
-        for (let i = 0; i < columnConditionalStyles.length; i++) {
-            if (isConditionMet(columnConditionalStyles[i].condition, valueToCompare)) {
-                if (columnConditionalStyles[i].applyToWholeRow && !returnString) {
-                    styleString = columnConditionalStyles[i].properties
-                } else if (returnString) {
-                    styleString = Object.entries(columnConditionalStyles[i].properties)
-                        .map(([k, v]) => `${k}:${v}`)
-                        .join(';')
-                }
+    if (cellColumnConditionalStyles.length > 0) {
+        for (let i = 0; i < cellColumnConditionalStyles.length; i++) {
+            if (isConditionMet(cellColumnConditionalStyles[i].condition, cellParams.value)) {
+                styleString = styleString = cellColumnConditionalStyles[i].properties
                 break
+            } else styleString = isBrotherConditionMet(brothersColumnConditionalStyles, cellParams.columnDataMap, cellParams)
+        }
+    } else styleString = isBrotherConditionMet(brothersColumnConditionalStyles, cellParams.columnDataMap, cellParams)
+
+    return styleString
+}
+
+const isBrotherConditionMet = (brothersColumnConditionalStyles, columnDataMap, cellParams) => {
+    if (brothersColumnConditionalStyles.length > 0) {
+        for (let i = 0; i < brothersColumnConditionalStyles.length; i++) {
+            if (brothersColumnConditionalStyles[i].applyToWholeRow && isConditionMet(brothersColumnConditionalStyles[i].condition, cellParams.data[columnDataMap[brothersColumnConditionalStyles[i].target]])) {
+                return brothersColumnConditionalStyles[i].properties
             }
         }
     }
-    return styleString
 }
 
 export const isConditionMet = (condition, valueToCompare) => {

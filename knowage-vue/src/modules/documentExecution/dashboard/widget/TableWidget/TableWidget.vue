@@ -155,7 +155,6 @@ export default defineComponent({
 
                 // CALLBACKS
                 onGridReady: this.onGridReady,
-                getRowStyle: this.getRowStyle,
                 getRowHeight: this.getRowHeight
             }
         },
@@ -177,7 +176,7 @@ export default defineComponent({
                 const gridColumns = this.createGridColumns(this.tableData?.metaData?.fields)
                 this.toggleHeaders(this.propWidget.settings.configuration.headers)
                 this.gridApi?.setColumnDefs(gridColumns)
-                this.gridApi?.redrawRows()
+                // this.gridApi?.redrawRows()
             }
         },
         toggleHeaders(headersConfiguration) {
@@ -211,6 +210,14 @@ export default defineComponent({
                 })
             }
 
+            //ASSIGN DATA FOR CONDITIONAL STYLES -----------------------------------------------------------------
+            var conditionalStyles = this.propWidget.settings.conditionalStyles
+            var columnDataMap = Object.fromEntries(this.propWidget.columns.map((column, index) => [column.id, `column_${index + 1}`]))
+            var selectedColumnsIds = this.propWidget.columns.map((currElement) => {
+                return currElement.id
+            })
+            var columnsWithConditionalStyles = conditionalStyles.conditions.filter((condition) => selectedColumnsIds.includes(condition.target))
+
             for (var datasetColumn in this.propWidget.columns) {
                 for (var responseField in responseFields) {
                     var thisColumn = this.propWidget.columns[datasetColumn]
@@ -227,12 +234,12 @@ export default defineComponent({
                             headerComponent: HeaderRenderer,
                             headerComponentParams: { colId: this.propWidget.columns[datasetColumn].id, propWidget: this.propWidget },
                             cellRenderer: CellRenderer,
-                            cellRendererParams: { colId: this.propWidget.columns[datasetColumn].id, propWidget: this.propWidget, multiSelectedCells: this.multiSelectedCells, selectedColumnArray: this.selectedColumnArray }
+                            cellRendererParams: { colId: this.propWidget.columns[datasetColumn].id, propWidget: this.propWidget, multiSelectedCells: this.multiSelectedCells, selectedColumnArray: this.selectedColumnArray, columnDataMap, columnsWithConditionalStyles }
                         } as any
 
                         if (tempCol.measure === 'MEASURE') tempCol.aggregationSelected = this.propWidget.columns[datasetColumn].aggregation
 
-                        //ROWSPAN MANAGEMENT
+                        //ROWSPAN MANAGEMENT -----------------------------------------------------------------
                         if (this.propWidget.settings.configuration.rows.rowSpan.enabled && this.propWidget.settings.configuration.rows.rowSpan.column === this.propWidget.columns[datasetColumn].id) {
                             var previousValue
                             var previousIndex
@@ -340,7 +347,6 @@ export default defineComponent({
                     }
                 }
             }
-            console.log('CREATED COLUMNS', columns)
             return columns
         },
         getColumnGroup(col) {
@@ -362,25 +368,6 @@ export default defineComponent({
             })
 
             return columntooltipConfig
-        },
-        getRowStyle(params) {
-            var rowStyles = this.propWidget.settings.style.rows
-            var rowData = Object.entries(params.data).filter((row) => row[0].includes('column_'))
-            if (this.propWidget.settings.conditionalStyles.enabled) {
-                for (let i = 0; i < rowData.length; i++) {
-                    var conditionalColumnStyle = getColumnConditionalStyles(this.propWidget, this.propWidget.columns[i].id!, rowData[i][1], false)
-                    if (conditionalColumnStyle) return conditionalColumnStyle
-                }
-            }
-
-            if (rowStyles.alternatedRows && rowStyles.alternatedRows.enabled) {
-                if (rowStyles.alternatedRows.oddBackgroundColor && params.node.rowIndex % 2 === 0) {
-                    return { background: rowStyles.alternatedRows.oddBackgroundColor }
-                }
-                if (rowStyles.alternatedRows.evenBackgroundColor && params.node.rowIndex % 2 != 0) {
-                    return { background: rowStyles.alternatedRows.evenBackgroundColor }
-                }
-            }
         },
         getColumnVisibilityCondition(colId) {
             var visCond = this.propWidget.settings.visualization.visibilityConditions

@@ -1,5 +1,5 @@
 <template>
-    <div class="custom-cell-container p-d-flex kn-height-full" :style="getCellStyle()">
+    <div class="custom-cell-container p-d-flex kn-height-full" :style="cellStyle">
         <div v-if="isColumnOfType('date')" class="custom-cell-label">{{ dateFormatter(params.value) }}</div>
         <div v-else-if="isColumnOfType('timestamp')" class="custom-cell-label">{{ dateTimeFormatter(params.value) }}</div>
         <div v-else class="custom-cell-label">{{ params.value }} {{ params.data.span > 1 ? params.data.span : '' }}</div>
@@ -28,10 +28,13 @@ export default defineComponent({
         }
     },
     data() {
-        return { helpersDecriptor }
+        return {
+            helpersDecriptor,
+            cellStyle: null as any
+        }
     },
     created() {
-        this.getCellStyle()
+        this.cellStyle = this.getCellStyle()
     },
     methods: {
         getColumnStyle() {
@@ -67,7 +70,7 @@ export default defineComponent({
         },
         getConditionalStyle() {
             if (this.params.propWidget.settings.conditionalStyles.enabled) {
-                return getColumnConditionalStyles(this.params.propWidget, this.params.colId, this.params.value, true)
+                return getColumnConditionalStyles(this.params.colId, this.params)
             } else return null
         },
         getMultiselectStyle() {
@@ -86,14 +89,40 @@ export default defineComponent({
                 }
             } else return null
         },
+        getRowStyle() {
+            var rowStyles = this.params.propWidget.settings.style.rows
+            if (rowStyles.alternatedRows && rowStyles.alternatedRows.enabled) {
+                if (rowStyles.alternatedRows.oddBackgroundColor && this.params.node.rowIndex % 2 === 0) {
+                    return { background: rowStyles.alternatedRows.oddBackgroundColor }
+                }
+                if (rowStyles.alternatedRows.evenBackgroundColor && this.params.node.rowIndex % 2 != 0) {
+                    return { background: rowStyles.alternatedRows.evenBackgroundColor }
+                }
+            }
+        },
         getCellStyle() {
+            let multiselectStyle = this.getMultiselectStyle()
+            if (multiselectStyle) return multiselectStyle
+
+            let conditionalStyle = this.getConditionalStyle()
+            if (conditionalStyle) return conditionalStyle
+
+            let columnStyle = this.getColumnStyle()
             var defaultColumnStyle = Object.entries(this.helpersDecriptor.defaultColumnStyles.styles[0].properties)
                 .map(([k, v]) => `${k}:${v}`)
                 .join(';')
-            if (this.getMultiselectStyle()) return this.getMultiselectStyle()
-            if (this.getConditionalStyle()) return this.getConditionalStyle()
-            if (this.getColumnStyle() != defaultColumnStyle) return this.getColumnStyle()
-            if (this.getRowspanRowColor()) return this.getRowspanRowColor()
+            if (columnStyle && columnStyle != defaultColumnStyle) return columnStyle
+
+            let rowStyles = this.getRowStyle()
+            if (rowStyles) return rowStyles
+
+            let rowspanRowStyle = this.getRowspanRowColor()
+            if (rowspanRowStyle) return rowspanRowStyle
+        },
+        createDefaultColumnStyleString() {
+            return Object.entries(this.helpersDecriptor.defaultColumnStyles.styles[0].properties)
+                .map(([k, v]) => `${k}:${v}`)
+                .join(';')
         },
         isColumnOfType(columnType: string) {
             let widgetColumns = this.params.propWidget.columns
