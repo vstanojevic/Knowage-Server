@@ -1,8 +1,10 @@
 <template>
-    <div class="kn-page">
+    <div class="kn-page" style="overflow: auto">
         <div>HERE</div>
-
-        <thead></thead>
+        <button @click="testSomething">Click me</button>
+        <table>
+            <Row v-for="(row, index) in tableData" :key="index" :propRow="row"></Row>
+        </table>
     </div>
 </template>
 
@@ -12,10 +14,13 @@ import { defineComponent } from 'vue'
 import testData from './test.json'
 
 import Pivot from 'quick-pivot'
+import Row from './documentBrowserHome/row/Row.vue'
+import demoData from './documentBrowserHome/row/demoData.json'
+import demoData2 from './documentBrowserHome/row/demoData2.js'
 
 export default defineComponent({
     name: 'document-browser',
-    components: {},
+    components: { Row },
     props: { selectedMenuItem: { type: Object }, menuItemClickedTrigger: { type: Boolean } },
     data() {
         return {
@@ -28,7 +33,8 @@ export default defineComponent({
             colTotals: [] as any,
             colKeys: [] as any,
             tree: {} as any,
-            aggregators: {}
+            aggregators: {},
+            tableData: [] as any[]
         }
     },
     watch: {},
@@ -39,8 +45,10 @@ export default defineComponent({
     async created() {
         // console.log('--------- testData: ', testData)
         testData.formattedTestData.forEach((record: any) => this.processRecord(record))
-        console.log('----- THIS TREE: ', this.tree)
+        // console.log('----- THIS TREE: ', this.tree)
+        this.testSomething()
     },
+
     methods: {
         processRecord(record: any) {
             // this code is called in a tight loop
@@ -85,7 +93,6 @@ export default defineComponent({
                 }
                 this.tree[flatRowKey][flatColKey].push(record)
             }
-            this.testSomething()
         },
         spanSize(arr: any, i: number, j: number) {
             // helper function for setting row/col-span in pivotTableRenderer
@@ -120,8 +127,8 @@ export default defineComponent({
         },
         testSomething() {
             if (!this.tree) return
-            const rowKeysFromTree = Object.keys(this.tree)
-            //  console.log('-------- rowKeysFromTree: ', rowKeysFromTree)
+            // const rowKeysFromTree = Object.keys(this.tree)
+            // console.log('-------- rowKeysFromTree: ', rowKeysFromTree)
             // rowKeysFromTree?.forEach((rowKeys: string) => console.log(rowKeys.split(String.fromCharCode(0))))
 
             const dataArray = [
@@ -139,12 +146,28 @@ export default defineComponent({
 
             const rowsToPivot = ['gender']
             const colsToPivot = ['name', 'house']
-            const aggregationDimension = ['age', 'test']
-            const aggregator = ['sum', 'count']
+            const aggregationDimension = 'age'
+            const aggregator = 'sum'
+
+            // const pivot = new Pivot(dataArray, rowsToPivot, colsToPivot, aggregationDimension, aggregator)
+
+            // demoData.data[0] = ['Entity', 'Product', 'Manufacturer', 'Class', 'Category', 'Quantity', 'Amount'] as any
+
+            // const dataArray = demoData2
+
+            // console.log('demoData: ', demoData2)
+
+            // console.log('dataARray.lengtjh', dataArray.length)
+
+            // const rowsToPivot = ['Payer Gender', 'Payer Smoker']
+            // const colsToPivot = ['Day of Week', 'Meal']
+            // const aggregationDimension = ['Tip']
+            // const aggregator = ['sum']
 
             const pivot = new Pivot(dataArray, rowsToPivot, colsToPivot, aggregationDimension, aggregator)
 
             console.log('pivot.data', pivot.data, 'pivot.data.table', pivot.data.table)
+            this.tableData = pivot.data.table
         }
     }
 })
