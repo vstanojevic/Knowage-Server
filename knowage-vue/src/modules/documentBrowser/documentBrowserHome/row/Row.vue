@@ -3,10 +3,10 @@
         <th v-for="(value, index) in uniqueColumnHeaders" :colspan="columnHeadersMap[value]" :key="index">{{ value }}</th>
     </tr>
     <tr v-else-if="propRow.type === 'rowHeader'" class="kn-cursor-pointer" @click="$emit('rowClicked', propRow)">
-        <td v-for="(value, index) in propRow.value" :key="index" width="10%" :style="index === 0 ? style : ''" class="p-text-center">{{ value }}</td>
+        <td v-for="(value, index) in propRow.value" :key="index" width="10%" :style="index === 0 ? style : ''" class="p-text-center">{{ value + ' | ' }} {{ propRow.value2 ? propRow.value2[index] : '' }}</td>
     </tr>
     <tr v-else-if="propRow.type === 'data'" @click="$emit('rowClicked', propRow)">
-        <td v-for="(value, index) in propRow.value" :key="index" width="10%" :style="index === 0 ? style : ''" class="p-text-center">{{ value }}</td>
+        <td v-for="(value, index) in propRow.value" :key="index" width="10%" :style="index === 0 ? style : ''" class="p-text-center">{{ value + ' | ' }} {{ propRow.value2 ? propRow.value2[index] : '' }}</td>
     </tr>
 </template>
 

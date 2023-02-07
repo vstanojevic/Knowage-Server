@@ -4,6 +4,10 @@
         <table class="p-m-2">
             <Row v-for="(row, index) in tableData" :key="index" :propRow="row" :parentRow="tableData[index - 1]" @rowClicked="onRowClick"></Row>
         </table>
+
+        <table class="p-m-2">
+            <Row v-for="(row, index) in tableData2" :key="index" :propRow="row" :parentRow="tableData[index - 1]" @rowClicked="onRowClick"></Row>
+        </table>
     </div>
 </template>
 
@@ -37,7 +41,8 @@ export default defineComponent({
             aggregators: {},
             tableData: [] as any[],
             pivot: {} as any,
-            columnHeadersMap: {} as any
+            columnHeadersMap: {} as any,
+            tableData2: [] as any[]
         }
     },
     watch: {},
@@ -50,6 +55,7 @@ export default defineComponent({
         testData.formattedTestData.forEach((record: any) => this.processRecord(record))
         // console.log('----- THIS TREE: ', this.tree)
         this.testSomething()
+        this.testSomething2()
     },
 
     methods: {
@@ -97,37 +103,6 @@ export default defineComponent({
                 this.tree[flatRowKey][flatColKey].push(record)
             }
         },
-        spanSize(arr: any, i: number, j: number) {
-            // helper function for setting row/col-span in pivotTableRenderer
-            let x
-            if (i !== 0) {
-                let asc, end
-                let noDraw = true
-                for (x = 0, end = j, asc = end >= 0; asc ? x <= end : x >= end; asc ? x++ : x--) {
-                    if (arr[i - 1][x] !== arr[i][x]) {
-                        noDraw = false
-                    }
-                }
-                if (noDraw) {
-                    return -1
-                }
-            }
-            let len = 0
-            while (i + len < arr.length) {
-                let asc1, end1
-                let stop = false
-                for (x = 0, end1 = j, asc1 = end1 >= 0; asc1 ? x <= end1 : x >= end1; asc1 ? x++ : x--) {
-                    if (arr[i][x] !== arr[i + len][x]) {
-                        stop = true
-                    }
-                }
-                if (stop) {
-                    break
-                }
-                len++
-            }
-            return len
-        },
         testSomething() {
             if (!this.tree) return
             // const rowKeysFromTree = Object.keys(this.tree)
@@ -171,6 +146,8 @@ export default defineComponent({
 
             console.log('pivot.data', this.pivot.data, 'pivot.data.table', this.pivot.data.table)
             this.tableData = this.pivot.data.table
+
+            this.testSomething2()
         },
         onRowClick(row: any) {
             console.log('-------- ROW CLICKED: ', row)
@@ -185,6 +162,38 @@ export default defineComponent({
             //     this.pivot.expand(row.row)
             //     this.tableData = this.pivot.data.table
             // }, 5000)
+        },
+        testSomething2() {
+            const dataArray = demoData2
+
+            console.log('demoData: ', demoData2)
+
+            console.log('dataARray.lengtjh', dataArray.length)
+
+            const rowsToPivot = ['Payer Gender', 'Payer Smoker']
+            const colsToPivot = ['Meal', 'Day of Week']
+            let aggregationDimension = 'Tip'
+            let aggregator = 'count'
+
+            const pivot = new Pivot(dataArray, rowsToPivot, colsToPivot, aggregationDimension, aggregator)
+            aggregationDimension = 'Total Bill'
+            aggregator = 'sum'
+            const pivot2 = new Pivot(dataArray, rowsToPivot, colsToPivot, aggregationDimension, aggregator)
+
+            console.log('pivot.data', pivot.data, 'pivot.data.table', pivot.data.table)
+            console.log('pivot.data2', pivot2.data, 'pivot.data.table2', pivot2.data.table)
+            this.mergeTables(pivot.data.table, pivot2.data.table)
+
+            // this.tableData2 = this.pivot.data.table
+        },
+        mergeTables(pivotTable1: any, pivotTable2: any) {
+            pivotTable1.forEach((row: any, index: number) => {
+                if (row.type === 'data' || row.type === 'rowHeader' || row.type === 'aggregated') {
+                    row.value2 = pivotTable2[index].value
+                }
+            })
+            console.log('-------- pivotTable 1: ', pivotTable1)
+            this.tableData2 = pivotTable1
         }
     }
 })
