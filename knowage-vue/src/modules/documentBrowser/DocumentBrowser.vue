@@ -1,7 +1,8 @@
 <template>
     <div class="kn-page">
         <div>HERE</div>
-        {{ treeBojan }}
+
+        <thead></thead>
     </div>
 </template>
 
@@ -9,6 +10,8 @@
 import { defineComponent } from 'vue'
 
 import testData from './test.json'
+
+import Pivot from 'quick-pivot'
 
 export default defineComponent({
     name: 'document-browser',
@@ -82,6 +85,66 @@ export default defineComponent({
                 }
                 this.tree[flatRowKey][flatColKey].push(record)
             }
+            this.testSomething()
+        },
+        spanSize(arr: any, i: number, j: number) {
+            // helper function for setting row/col-span in pivotTableRenderer
+            let x
+            if (i !== 0) {
+                let asc, end
+                let noDraw = true
+                for (x = 0, end = j, asc = end >= 0; asc ? x <= end : x >= end; asc ? x++ : x--) {
+                    if (arr[i - 1][x] !== arr[i][x]) {
+                        noDraw = false
+                    }
+                }
+                if (noDraw) {
+                    return -1
+                }
+            }
+            let len = 0
+            while (i + len < arr.length) {
+                let asc1, end1
+                let stop = false
+                for (x = 0, end1 = j, asc1 = end1 >= 0; asc1 ? x <= end1 : x >= end1; asc1 ? x++ : x--) {
+                    if (arr[i][x] !== arr[i + len][x]) {
+                        stop = true
+                    }
+                }
+                if (stop) {
+                    break
+                }
+                len++
+            }
+            return len
+        },
+        testSomething() {
+            if (!this.tree) return
+            const rowKeysFromTree = Object.keys(this.tree)
+            //  console.log('-------- rowKeysFromTree: ', rowKeysFromTree)
+            // rowKeysFromTree?.forEach((rowKeys: string) => console.log(rowKeys.split(String.fromCharCode(0))))
+
+            const dataArray = [
+                ['name', 'gender', 'house', 'age', 'test'],
+                ['Jon', 'm', 'Stark', 14, 140],
+                ['Arya', 'f', 'Stark', 10, 140],
+                ['Cersei', 'f', 'Baratheon', 38, 140],
+                ['Tywin', 'm', 'Lannister', 67, 140],
+                ['Tyrion', 'm', 'Lannister', 34, 140],
+                ['Joffrey', 'm', 'Baratheon', 18, 140],
+                ['Bran', 'm', 'Stark', 8, 140],
+                ['Jaime', 'm', 'Lannister', 32, 140],
+                ['Sansa', 'f', 'Stark', 12, 140]
+            ]
+
+            const rowsToPivot = ['gender']
+            const colsToPivot = ['name', 'house']
+            const aggregationDimension = ['age', 'test']
+            const aggregator = ['sum', 'count']
+
+            const pivot = new Pivot(dataArray, rowsToPivot, colsToPivot, aggregationDimension, aggregator)
+
+            console.log('pivot.data', pivot.data, 'pivot.data.table', pivot.data.table)
         }
     }
 })

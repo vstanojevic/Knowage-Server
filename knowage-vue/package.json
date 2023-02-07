@@ -44,6 +44,7 @@
         "primeicons": "^5.0.0",
         "primevue": "3.17.0",
         "qs": "^6.10.2",
+        "quick-pivot": "^2.7.0",
         "quill": "^1.3.7",
         "reflect-metadata": "^0.1.13",
         "sanitize-html": "^2.7.3",
