@@ -2,7 +2,7 @@
     <div class="kn-page" style="overflow: auto">
         <button style="width: 200px" @click="testSomething">Click me</button>
         <table class="p-m-2">
-            <Row v-for="(row, index) in tableData" :key="index" :propRow="row"></Row>
+            <Row v-for="(row, index) in tableData" :key="index" :propRow="row" @rowClicked="onRowClick"></Row>
         </table>
     </div>
 </template>
@@ -16,6 +16,8 @@ import Pivot from 'quick-pivot'
 import Row from './documentBrowserHome/row/Row.vue'
 import demoData from './documentBrowserHome/row/demoData.json'
 import demoData2 from './documentBrowserHome/row/demoData2.js'
+
+import * as deepEqual from 'deep-equal'
 
 export default defineComponent({
     name: 'document-browser',
@@ -33,7 +35,8 @@ export default defineComponent({
             colKeys: [] as any,
             tree: {} as any,
             aggregators: {},
-            tableData: [] as any[]
+            tableData: [] as any[],
+            pivot: {} as any
         }
     },
     watch: {},
@@ -158,15 +161,29 @@ export default defineComponent({
 
             console.log('dataARray.lengtjh', dataArray.length)
 
-            const rowsToPivot = ['Payer Gender']
-            const colsToPivot = ['Meal', 'Payer Smoker', 'Day of Week']
+            const rowsToPivot = ['Payer Gender', 'Payer Smoker']
+            const colsToPivot = ['Meal', 'Day of Week']
             const aggregationDimension = ['Tip']
             const aggregator = ['sum']
 
-            const pivot = new Pivot(dataArray, rowsToPivot, colsToPivot, aggregationDimension, aggregator)
+            this.pivot = new Pivot(dataArray, rowsToPivot, colsToPivot, aggregationDimension, aggregator)
 
-            console.log('pivot.data', pivot.data, 'pivot.data.table', pivot.data.table)
-            this.tableData = pivot.data.table
+            console.log('pivot.data', this.pivot.data, 'pivot.data.table', this.pivot.data.table)
+            this.tableData = this.pivot.data.table
+        },
+        onRowClick(row: any) {
+            console.log('-------- ROW CLICKED: ', row)
+            const index = this.tableData.findIndex((tempRow: any) => deepEqual(tempRow, row))
+            console.log('-------- INDEX: ', index)
+            this.pivot.toggle(index)
+            this.tableData = this.pivot.data.table
+            // this.pivot.collapse(row.row)
+            // this.tableData = this.pivot.data.table
+            // setTimeout(() => {
+            //     console.log('-------- PIVOT: ', this.pivot)
+            //     this.pivot.expand(row.row)
+            //     this.tableData = this.pivot.data.table
+            // }, 5000)
         }
     }
 })

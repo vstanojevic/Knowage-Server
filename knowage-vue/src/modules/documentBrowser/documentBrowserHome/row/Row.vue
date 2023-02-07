@@ -1,11 +1,11 @@
 <template>
-    <tr v-if="propRow.type === 'colHeader'">
+    <tr v-if="propRow.type === 'colHeader'" @click="$emit('rowClicked', propRow)">
         <th v-for="(value, index) in propRow.value" :key="index">{{ value }}</th>
     </tr>
-    <tr v-else-if="propRow.type === 'rowHeader'">
+    <tr v-else-if="propRow.type === 'rowHeader'" @click="$emit('rowClicked', propRow)">
         <td v-for="(value, index) in propRow.value" :key="index" width="10%" :style="index === 0 ? style : ''" class="p-text-center">{{ value }}</td>
     </tr>
-    <tr v-else-if="propRow.type === 'data'">
+    <tr v-else-if="propRow.type === 'data'" @click="$emit('rowClicked', propRow)">
         <td v-for="(value, index) in propRow.value" :key="index" width="10%" :style="index === 0 ? style : ''" class="p-text-center">{{ value }}</td>
     </tr>
 </template>
