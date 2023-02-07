@@ -1,12 +1,12 @@
 <template>
     <tr v-if="propRow.type === 'colHeader'">
-        <th v-for="(value, index) in propRow.value" :key="index" width="10%">{{ value }}</th>
+        <th v-for="(value, index) in propRow.value" :key="index">{{ value }}</th>
     </tr>
     <tr v-else-if="propRow.type === 'rowHeader'">
-        <td v-for="(value, index) in propRow.value" :key="index" width="10%">{{ value }}</td>
+        <td v-for="(value, index) in propRow.value" :key="index" width="10%" :style="index === 0 ? style : ''" class="p-text-center">{{ value }}</td>
     </tr>
     <tr v-else-if="propRow.type === 'data'">
-        <td v-for="(value, index) in propRow.value" :key="index" width="10%" :style="index === 0 ? style : ''">{{ value }}</td>
+        <td v-for="(value, index) in propRow.value" :key="index" width="10%" :style="index === 0 ? style : ''" class="p-text-center">{{ value }}</td>
     </tr>
 </template>
 

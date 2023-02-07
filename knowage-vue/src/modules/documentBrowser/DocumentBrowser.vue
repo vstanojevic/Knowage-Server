@@ -1,8 +1,7 @@
 <template>
     <div class="kn-page" style="overflow: auto">
-        <div>HERE</div>
-        <button @click="testSomething">Click me</button>
-        <table>
+        <button style="width: 200px" @click="testSomething">Click me</button>
+        <table class="p-m-2">
             <Row v-for="(row, index) in tableData" :key="index" :propRow="row"></Row>
         </table>
     </div>
@@ -131,38 +130,38 @@ export default defineComponent({
             // console.log('-------- rowKeysFromTree: ', rowKeysFromTree)
             // rowKeysFromTree?.forEach((rowKeys: string) => console.log(rowKeys.split(String.fromCharCode(0))))
 
-            const dataArray = [
-                ['name', 'gender', 'house', 'age', 'test'],
-                ['Jon', 'm', 'Stark', 14, 140],
-                ['Arya', 'f', 'Stark', 10, 140],
-                ['Cersei', 'f', 'Baratheon', 38, 140],
-                ['Tywin', 'm', 'Lannister', 67, 140],
-                ['Tyrion', 'm', 'Lannister', 34, 140],
-                ['Joffrey', 'm', 'Baratheon', 18, 140],
-                ['Bran', 'm', 'Stark', 8, 140],
-                ['Jaime', 'm', 'Lannister', 32, 140],
-                ['Sansa', 'f', 'Stark', 12, 140]
-            ]
+            // const dataArray = [
+            //     ['name', 'gender', 'house', 'age', 'test'],
+            //     ['Jon', 'm', 'Stark', 14, 140],
+            //     ['Arya', 'f', 'Stark', 10, 140],
+            //     ['Cersei', 'f', 'Baratheon', 38, 140],
+            //     ['Tywin', 'm', 'Lannister', 67, 140],
+            //     ['Tyrion', 'm', 'Lannister', 34, 140],
+            //     ['Joffrey', 'm', 'Baratheon', 18, 140],
+            //     ['Bran', 'm', 'Stark', 8, 140],
+            //     ['Jaime', 'm', 'Lannister', 32, 140],
+            //     ['Sansa', 'f', 'Stark', 12, 140]
+            // ]
 
-            const rowsToPivot = ['gender']
-            const colsToPivot = ['name', 'house']
-            const aggregationDimension = 'age'
-            const aggregator = 'sum'
+            // const rowsToPivot = ['gender', 'house']
+            // const colsToPivot = ['name']
+            // const aggregationDimension = 'age'
+            // const aggregator = 'sum'
 
-            // const pivot = new Pivot(dataArray, rowsToPivot, colsToPivot, aggregationDimension, aggregator)
+            //const pivot = new Pivot(dataArray, rowsToPivot, colsToPivot, aggregationDimension, aggregator)
 
-            // demoData.data[0] = ['Entity', 'Product', 'Manufacturer', 'Class', 'Category', 'Quantity', 'Amount'] as any
+            //demoData.data[0] = ['Entity', 'Product', 'Manufacturer', 'Class', 'Category', 'Quantity', 'Amount'] as any
 
-            // const dataArray = demoData2
+            const dataArray = demoData2
 
-            // console.log('demoData: ', demoData2)
+            console.log('demoData: ', demoData2)
 
-            // console.log('dataARray.lengtjh', dataArray.length)
+            console.log('dataARray.lengtjh', dataArray.length)
 
-            // const rowsToPivot = ['Payer Gender', 'Payer Smoker']
-            // const colsToPivot = ['Day of Week', 'Meal']
-            // const aggregationDimension = ['Tip']
-            // const aggregator = ['sum']
+            const rowsToPivot = ['Payer Gender']
+            const colsToPivot = ['Meal', 'Payer Smoker', 'Day of Week']
+            const aggregationDimension = ['Tip']
+            const aggregator = ['sum']
 
             const pivot = new Pivot(dataArray, rowsToPivot, colsToPivot, aggregationDimension, aggregator)
 
@@ -173,4 +172,11 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+table,
+th,
+td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+</style>
