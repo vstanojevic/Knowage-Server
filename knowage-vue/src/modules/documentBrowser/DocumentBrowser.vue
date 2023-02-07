@@ -2,7 +2,7 @@
     <div class="kn-page" style="overflow: auto">
         <button style="width: 200px" @click="testSomething">Click me</button>
         <table class="p-m-2">
-            <Row v-for="(row, index) in tableData" :key="index" :propRow="row" @rowClicked="onRowClick"></Row>
+            <Row v-for="(row, index) in tableData" :key="index" :propRow="row" :parentRow="tableData[index - 1]" @rowClicked="onRowClick"></Row>
         </table>
     </div>
 </template>
@@ -36,7 +36,8 @@ export default defineComponent({
             tree: {} as any,
             aggregators: {},
             tableData: [] as any[],
-            pivot: {} as any
+            pivot: {} as any,
+            columnHeadersMap: {} as any
         }
     },
     watch: {},
