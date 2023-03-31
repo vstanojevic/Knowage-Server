@@ -1,5 +1,5 @@
 <template>
-    <div class="pivot-widget-container p-d-flex p-d-row kn-flex">Enterprise Pivot Widget</div>
+    <div class="pivot-widget-container p-d-flex p-d-row kn-flex">Enterprise Pivot Widget 123</div>
 </template>
 
 <script lang="ts">
