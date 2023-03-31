@@ -4,7 +4,7 @@ dev-dist
 /dist
 /dev-dist
 /src/overlay
-
+enterprise-workspace
 
 # local env files
 .env.local
