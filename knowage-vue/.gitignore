@@ -4,7 +4,6 @@ dev-dist
 /dist
 /dev-dist
 /src/overlay
-enterprise-workspace
 
 # local env files
 .env.local
@@ -29,3 +28,5 @@ pnpm-debug.log*
 *.sw?
 /.apt_generated/
 /.apt_generated_tests/
+enterprise-workspace/package.json
+enterprise-workspace/pivotGrid/DxPivotGrid.vue
