@@ -1,0 +1,13 @@
+{
+    "author": "Darko Bulatovic",
+    "dependencies": {},
+    "description": "knowage enterprise version",
+    "devDependencies": {},
+    "license": "ISC",
+    "main": "index.js",
+    "name": "enterprise-workspace",
+    "scripts": {
+        "test": "test"
+    },
+    "version": "1.0.0"
+}
