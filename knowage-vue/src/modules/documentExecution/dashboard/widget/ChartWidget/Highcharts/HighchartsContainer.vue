@@ -85,7 +85,26 @@ export default defineComponent({
             if (!this.chartModel) return
             Highcharts.setOptions({ lang: { noData: this.chartModel.lang.noData } })
 
-            this.widgetModel.settings.chartModel.setData(this.dataToShow, this.widgetModel)
+            // TODO - Remove Mock/Uncomment this
+            //     this.widgetModel.settings.chartModel.setData(this.dataToShow, this.widgetModel)
+            this.chartModel.series = [
+                {
+                    type: 'column',
+                    name: 'Column',
+                    data: [8, 7, 6, 5, 4, 3, 2, 1],
+                    pointPlacement: 'between'
+                },
+                {
+                    type: 'line',
+                    name: 'Line',
+                    data: [1, 2, 3, 4, 5, 6, 7, 8]
+                },
+                {
+                    type: 'area',
+                    name: 'Area',
+                    data: [1, 8, 2, 7, 3, 6, 4, 5]
+                }
+            ]
 
             this.widgetModel.settings.chartModel.updateSeriesAccessibilitySettings(this.widgetModel)
             if (this.chartModel.chart.type !== 'heatmap') this.widgetModel.settings.chartModel.updateSeriesLabelSettings(this.widgetModel)
@@ -99,8 +118,91 @@ export default defineComponent({
 
             this.setSeriesEvents()
 
+            // TODO - Remove Mock/Uncomment this
+            this.chartModel.series = [
+                {
+                    type: 'column',
+                    name: 'Column',
+                    data: [8, 7, 6, 5, 4, 3, 2, 1],
+                    pointPlacement: 'between'
+                },
+                {
+                    type: 'line',
+                    name: 'Line',
+                    data: [1, 2, 3, 4, 5, 6, 7, 8]
+                },
+                {
+                    type: 'area',
+                    name: 'Area',
+                    data: [1, 8, 2, 7, 3, 6, 4, 5]
+                }
+            ]
+
             const modelToRender = this.getModelForRender()
             modelToRender.chart.backgroundColor = null
+
+            console.log('-------- MODEL TO RENDER: ', modelToRender)
+            // const tempModelToRender = {
+            //     chart: {
+            //         polar: true
+            //     },
+
+            //     title: {
+            //         text: 'Highcharts Polar Chart'
+            //     },
+
+            //     subtitle: {
+            //         text: 'Also known as Radar Chart'
+            //     },
+
+            //     pane: {
+            //         startAngle: 0,
+            //         endAngle: 360
+            //     },
+
+            //     xAxis: {
+            //         tickInterval: 45,
+            //         min: 0,
+            //         max: 360,
+            //         labels: {
+            //             format: '{value}°'
+            //         }
+            //     },
+
+            //     yAxis: {
+            //         min: 0
+            //     },
+
+            //     plotOptions: {
+            //         series: {
+            //             pointStart: 0,
+            //             pointInterval: 45
+            //         },
+            //         column: {
+            //             pointPadding: 0,
+            //             groupPadding: 0
+            //         }
+            //     },
+
+            //     series: [
+            //         {
+            //             type: 'column',
+            //             name: 'Column',
+            //             data: [8, 7, 6, 5, 4, 3, 2, 1],
+            //             pointPlacement: 'between'
+            //         },
+            //         {
+            //             type: 'line',
+            //             name: 'Line',
+            //             data: [1, 2, 3, 4, 5, 6, 7, 8]
+            //         },
+            //         {
+            //             type: 'area',
+            //             name: 'Area',
+            //             data: [1, 8, 2, 7, 3, 6, 4, 5]
+            //         }
+            //     ]
+            // }
 
             try {
                 this.highchartsInstance = Highcharts.chart(this.chartID, modelToRender as any)

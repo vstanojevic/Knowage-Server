@@ -1,4 +1,3 @@
-import { KnowageHighchartsHeatmapChart } from './../../../widget/ChartWidget/classes/highcharts/KnowageHighchartsHeatmapChart';
 import { IWidget, IWidgetExports, IWidgetInteractions } from '../../../Dashboard'
 import { IHighchartsWidgetConfiguration, IHighchartsWidgetSettings } from '../../../interfaces/highcharts/DashboardHighchartsWidget'
 import { KnowageHighchartsPieChart } from '../../../widget/ChartWidget/classes/highcharts/KnowageHighchartsPieChart'
@@ -10,12 +9,16 @@ import { KnowageHighchartsGaugeSeriesChart } from '../../../widget/ChartWidget/c
 import { KnowageHighchartsSolidGaugeChart } from '../../../widget/ChartWidget/classes/highcharts/KnowageHighchartsSolidGaugeChart'
 import { KnowageHighchartsActivityGaugeChart } from '../../../widget/ChartWidget/classes/highcharts/KnowageHighchartsActivityGaugeChart'
 import { getFormattedSerieLabelsSettings } from './HighchartsSeriesSettingsCompatibilityHelper'
+import { KnowageHighchartsHeatmapChart } from './../../../widget/ChartWidget/classes/highcharts/KnowageHighchartsHeatmapChart';
+import { KnowageHighchartsRadarChart } from '../../../widget/ChartWidget/classes/highcharts/KnowageHighchartsRadarChart';
 import * as widgetCommonDefaultValues from '../../../widget/WidgetEditor/helpers/common/WidgetCommonDefaultValues'
 import * as highchartsDefaultValues from '../../../widget/WidgetEditor/helpers/chartWidget/highcharts/HighchartsDefaultValues'
 
 const columnNameIdMap = {}
 
 export const formatHighchartsWidget = (widget: any) => {
+    console.log('-------- OLD WIDGET: ', widget)
+
     const chartType = widget.content?.chartTemplate?.CHART?.type ?? ''
     const formattedWidget = {
         id: widget.id,
@@ -30,6 +33,7 @@ export const formatHighchartsWidget = (widget: any) => {
     getFiltersForColumns(formattedWidget, widget)
     formattedWidget.settings.chartModel = createChartModel(widget, chartType)
 
+    console.log('-------- FORMATTED WIDGET: ', formattedWidget)
     return formattedWidget
 }
 
@@ -107,6 +111,8 @@ const createChartModel = (widget: any, chartType: string) => {
             return createGaugeChartInstance(widgetContentChartTemplate)
         case 'HEATMAP':
             return new KnowageHighchartsHeatmapChart(widgetContentChartTemplate)
+        case "RADAR":
+            return new KnowageHighchartsRadarChart(widgetContentChartTemplate)
         default:
             return null
     }
