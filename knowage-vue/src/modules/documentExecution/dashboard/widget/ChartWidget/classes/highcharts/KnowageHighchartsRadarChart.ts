@@ -27,28 +27,172 @@ export class KnowageHighchartsRadarChart extends KnowageHighcharts {
     }
 
     setSpecificOptionsDefaultValues() {
+        this.setHeatmapXAxis()
+        this.setHeatmapYAxis()
     }
 
     setData(data: any, widgetModel: IWidget) {
         // TODO
         if (this.model.series.length === 0) this.getSeriesFromWidgetModel(widgetModel)
 
-        this.model.series.map((item, serieIndex) => {
-            this.range[serieIndex] = { serie: item.name }
-            item.data = []
-            data?.rows?.forEach((row: any) => {
-                const serieElement = {
-                    id: row.id,
-                    name: row['column_1'],
-                    y: row['column_2'],
-                    drilldown: false
+        this.model.series = [{
+            "label": {
+                "enabled": false
+            },
+            "selected": true,
+            "initiallySelected": true,
+            "name": "Food",
+            "type": "",
+            "connectNulls": true,
+            "data": [
+                {
+                    "y": 930864,
+                    "name": "Q2",
+                    "datetype": "string"
+                },
+                {
+                    "y": 1147708,
+                    "name": "Q3",
+                    "datetype": "string"
+                },
+                {
+                    "y": 1047654,
+                    "name": "Q1",
+                    "datetype": "string"
+                },
+                {
+                    "y": 965621,
+                    "name": "Q4",
+                    "datetype": "string"
                 }
-                this.range[serieIndex].min = this.range[serieIndex].min ? Math.min(this.range[serieIndex].min, row['column_2']) : row['column_2']
-                this.range[serieIndex].max = this.range[serieIndex].max ? Math.max(this.range[serieIndex].max, row['column_2']) : row['column_2']
-                if (this.model.settings.drilldown) serieElement.drilldown = true
-                item.data.push(serieElement)
-            })
-        })
+            ],
+            "dataLabels": {
+                "enabled": true,
+                "labelFormat": "{y:,.0f}"
+            },
+            "tooltip": {
+                "valueDecimals": 0,
+                "scaleFactor": "empty",
+                "ttBackColor": "#D6D6D6"
+            }
+        },
+        {
+            "label": {
+                "enabled": false
+            },
+            "selected": true,
+            "initiallySelected": true,
+            "name": "Drink",
+            "connectNulls": true,
+            "data": [
+                {
+                    "y": 194835,
+                    "name": "Q2",
+                    "datetype": "string"
+                },
+                {
+                    "y": 202356,
+                    "name": "Q3",
+                    "datetype": "string"
+                },
+                {
+                    "y": 128144,
+                    "name": "Q1",
+                    "datetype": "string"
+                },
+                {
+                    "y": 102185,
+                    "name": "Q4",
+                    "datetype": "string"
+                }
+            ],
+            "dataLabels": {
+                "enabled": true,
+                "labelFormat": "{y:,.0f}"
+            },
+            "tooltip": {
+                "valueDecimals": 0,
+                "scaleFactor": "empty",
+                "ttBackColor": "#D6D6D6"
+            }
+        },
+        {
+            "label": {
+                "enabled": false
+            },
+            "selected": true,
+            "initiallySelected": true,
+            "name": "Non-Consumable",
+            "connectNulls": true,
+            "data": [
+                {
+                    "y": 540265,
+                    "name": "Q2",
+                    "datetype": "string"
+                },
+                {
+                    "y": 714384,
+                    "name": "Q3",
+                    "datetype": "string"
+                },
+                {
+                    "y": 568789,
+                    "name": "Q1",
+                    "datetype": "string"
+                },
+                {
+                    "y": 578788,
+                    "name": "Q4",
+                    "datetype": "string"
+                }
+            ],
+            "dataLabels": {
+                "enabled": true,
+                "labelFormat": "{y:,.0f}"
+            },
+            "tooltip": {
+                "valueDecimals": 0,
+                "scaleFactor": "empty",
+                "ttBackColor": "#D6D6D6"
+            }
+        },
+        {
+            "label": {
+                "enabled": false
+            },
+            "selected": true,
+            "initiallySelected": true,
+            "name": "Car",
+            "connectNulls": true,
+            "data": [
+                {
+                    "name": "Q2",
+                    "datetype": "string"
+                },
+                {
+                    "y": 17812,
+                    "name": "Q3",
+                    "datetype": "string"
+                },
+                {
+                    "name": "Q1",
+                    "datetype": "string"
+                },
+                {
+                    "name": "Q4",
+                    "datetype": "string"
+                }
+            ],
+            "dataLabels": {
+                "enabled": true,
+                "labelFormat": "{y:,.0f}"
+            },
+            "tooltip": {
+                "valueDecimals": 0,
+                "scaleFactor": "empty",
+                "ttBackColor": "#D6D6D6"
+            }
+        }]
         return this.model.series
     }
 
@@ -83,6 +227,14 @@ export class KnowageHighchartsRadarChart extends KnowageHighcharts {
         //         }
         //     })
         // })
+    }
+
+    setHeatmapXAxis() {
+        this.model.xAxis = highchartsDefaultValues.getDefaultHeatmapXAxis()
+    }
+
+    setHeatmapYAxis() {
+        this.model.yAxis = highchartsDefaultValues.getDefaultHeatmapYAxis()
     }
 
     formatSeriesFromOtherChartTypeSeries() {

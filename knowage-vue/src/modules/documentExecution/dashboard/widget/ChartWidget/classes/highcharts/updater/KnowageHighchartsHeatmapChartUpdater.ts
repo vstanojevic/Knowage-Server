@@ -14,7 +14,7 @@ export const updateHeatmapChartModel = (oldModel: any, newModel: IHighchartsChar
 
 const getFormattedAxisSettings = (oldModel: any, newModel: IHighchartsChartModel, axis: 'x' | 'y') => {
     const oldAxis = axis === 'x' ? oldModel.CHART.AXES_LIST.AXIS[1] : oldModel.CHART.AXES_LIST.AXIS[0]
-    const newModelAxis = highchartsDefaultValues.getDefaultHeatmapXAxis()
+    const newModelAxis = axis === 'x' ? highchartsDefaultValues.getDefaultHeatmapXAxis() : highchartsDefaultValues.getDefaultHeatmapYAxis()
     if (!oldAxis) return
     setFormattedAxisLabels(oldAxis, newModelAxis)
     setFormattedAxisTitle(oldAxis, newModelAxis)

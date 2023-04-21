@@ -34,12 +34,12 @@
                 <WidgetCrossNavigation v-else-if="accordion.type === 'CrossNavigation'" :widget-model="widgetModel" :datasets="datasets" :selected-datasets="selectedDatasets" :dashboard-id="dashboardId"></WidgetCrossNavigation>
                 <WidgetInteractionsLinks v-else-if="accordion.type === 'Link'" :widget-model="widgetModel" :datasets="datasets" :selected-datasets="selectedDatasets" :dashboard-id="dashboardId"></WidgetInteractionsLinks>
                 <WidgetPreview v-else-if="accordion.type === 'Preview'" :widget-model="widgetModel" :datasets="datasets" :selected-datasets="selectedDatasets" :dashboard-id="dashboardId"></WidgetPreview>
-                <HighchartsHeatmapAxisSettings v-else-if="accordion.type === 'HeatmapXAxisSettings'" :widget-model="widgetModel" axis="x"></HighchartsHeatmapAxisSettings>
-                <HighchartsHeatmapAxisSettings v-else-if="accordion.type === 'HeatmapYAxisSettings'" :widget-model="widgetModel" axis="y"></HighchartsHeatmapAxisSettings>
-                <HighchartsHeatmapAxisTitleSettings v-else-if="accordion.type === 'HeatmapXAxisTitleSettings'" :widget-model="widgetModel" axis="x"></HighchartsHeatmapAxisTitleSettings>
-                <HighchartsHeatmapAxisTitleSettings v-else-if="accordion.type === 'HeatmapYAxisTitleSettings'" :widget-model="widgetModel" axis="y"></HighchartsHeatmapAxisTitleSettings>
+                <HighchartsAxisSettings v-else-if="accordion.type === 'HeatmapXAxisSettings'" :widget-model="widgetModel" axis="x"></HighchartsAxisSettings>
+                <HighchartsAxisSettings v-else-if="accordion.type === 'HeatmapYAxisSettings'" :widget-model="widgetModel" axis="y"></HighchartsAxisSettings>
+                <HighchartsAxisTitleSettings v-else-if="accordion.type === 'HeatmapXAxisTitleSettings'" :widget-model="widgetModel" axis="x"></HighchartsAxisTitleSettings>
+                <HighchartsAxisTitleSettings v-else-if="accordion.type === 'HeatmapYAxisTitleSettings'" :widget-model="widgetModel" axis="y"></HighchartsAxisTitleSettings>
                 <HighchartsHeatmapNullSettings v-else-if="accordion.type === 'HeatmapNullSettings'" :widget-model="widgetModel"></HighchartsHeatmapNullSettings>
-                <HighchartsHeatmapDatetypeSettings v-else-if="accordion.type === 'DatetypeSettings'" :widget-model="widgetModel"></HighchartsHeatmapDatetypeSettings>
+                <HighchartsDatetypeSettings v-else-if="accordion.type === 'DatetypeSettings'" :widget-model="widgetModel"></HighchartsDatetypeSettings>
             </AccordionTab>
         </Accordion>
     </div>
@@ -80,10 +80,10 @@ import HighchartsGaugeTickSettings from './gauge/settings/HighchartsGaugeTickSet
 import HighchartsStopsSettings from './gauge/settings/HighchartsStopsSettings.vue'
 import HighchartsGaugeBandsSettings from './gauge/settings/HighchartsGaugeBandsSettings.vue'
 import HighchartsWidgetSettingsAccordionHeader from './HighchartsWidgetSettingsAccordionHeader.vue'
-import HighchartsHeatmapAxisSettings from './heatmap/HighchartsHeatmapAxisSettings.vue'
-import HighchartsHeatmapAxisTitleSettings from './heatmap/HighchartsHeatmapAxisTitleSettings.vue'
+import HighchartsAxisSettings from './axis/HighchartsAxisSettings.vue'
+import HighchartsAxisTitleSettings from './axis/HighchartsAxisTitleSettings.vue'
 import HighchartsHeatmapNullSettings from './heatmap/HighchartsHeatmapNullSettings.vue'
-import HighchartsHeatmapDatetypeSettings from './heatmap/HighchartsHeatmapDatetypeSettings.vue'
+import HighchartsDatetypeSettings from './configuration/HighchartsDatetypeSettings.vue'
 
 export default defineComponent({
     name: 'hihgcharts-widget-configuration-container',
@@ -119,10 +119,10 @@ export default defineComponent({
         HighchartsStopsSettings,
         HighchartsGaugeBandsSettings,
         HighchartsWidgetSettingsAccordionHeader,
-        HighchartsHeatmapAxisSettings,
-        HighchartsHeatmapAxisTitleSettings,
+        HighchartsAxisSettings,
+        HighchartsAxisTitleSettings,
         HighchartsHeatmapNullSettings,
-        HighchartsHeatmapDatetypeSettings
+        HighchartsDatetypeSettings
     },
     props: {
         widgetModel: { type: Object as PropType<IWidget>, required: true },

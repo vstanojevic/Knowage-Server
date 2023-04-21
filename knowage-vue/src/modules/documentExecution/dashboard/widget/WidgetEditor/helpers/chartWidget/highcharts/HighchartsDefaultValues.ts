@@ -125,3 +125,11 @@ export const getDefaultDateTypeSettings = () => {
 export const getDefaultHeatmapLegendSettings = () => {
     return deepcopy(descriptor.defaultHeatmapLegendSettings)
 }
+
+export const getDefaultRadarXAxis = () => {
+    return deepcopy(descriptor.defaultRadarXAxis)
+}
+
+export const getDefaultRadarYAxis = () => {
+    return deepcopy(descriptor.defaultRadarYAxis)
+}

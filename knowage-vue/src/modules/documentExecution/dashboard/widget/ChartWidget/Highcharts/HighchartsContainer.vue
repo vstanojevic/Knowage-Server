@@ -85,26 +85,7 @@ export default defineComponent({
             if (!this.chartModel) return
             Highcharts.setOptions({ lang: { noData: this.chartModel.lang.noData } })
 
-            // TODO - Remove Mock/Uncomment this
-            //     this.widgetModel.settings.chartModel.setData(this.dataToShow, this.widgetModel)
-            this.chartModel.series = [
-                {
-                    type: 'column',
-                    name: 'Column',
-                    data: [8, 7, 6, 5, 4, 3, 2, 1],
-                    pointPlacement: 'between'
-                },
-                {
-                    type: 'line',
-                    name: 'Line',
-                    data: [1, 2, 3, 4, 5, 6, 7, 8]
-                },
-                {
-                    type: 'area',
-                    name: 'Area',
-                    data: [1, 8, 2, 7, 3, 6, 4, 5]
-                }
-            ]
+            this.widgetModel.settings.chartModel.setData(this.dataToShow, this.widgetModel)
 
             this.widgetModel.settings.chartModel.updateSeriesAccessibilitySettings(this.widgetModel)
             if (this.chartModel.chart.type !== 'heatmap') this.widgetModel.settings.chartModel.updateSeriesLabelSettings(this.widgetModel)
@@ -117,26 +98,6 @@ export default defineComponent({
             this.widgetModel.settings.chartModel.updateChartColorSettings(this.widgetModel)
 
             this.setSeriesEvents()
-
-            // TODO - Remove Mock/Uncomment this
-            this.chartModel.series = [
-                {
-                    type: 'column',
-                    name: 'Column',
-                    data: [8, 7, 6, 5, 4, 3, 2, 1],
-                    pointPlacement: 'between'
-                },
-                {
-                    type: 'line',
-                    name: 'Line',
-                    data: [1, 2, 3, 4, 5, 6, 7, 8]
-                },
-                {
-                    type: 'area',
-                    name: 'Area',
-                    data: [1, 8, 2, 7, 3, 6, 4, 5]
-                }
-            ]
 
             const modelToRender = this.getModelForRender()
             modelToRender.chart.backgroundColor = null
@@ -207,8 +168,9 @@ export default defineComponent({
             try {
                 this.highchartsInstance = Highcharts.chart(this.chartID, modelToRender as any)
                 this.highchartsInstance.reflow()
-            } catch (error) {
-                this.setError({ title: this.$t('common.toast.errorTitle'), msg: error })
+            } catch (error: any) {
+                console.log('--------- EROR: ', error)
+                this.setError({ title: this.$t('common.toast.errorTitle'), msg: error ? error.message : '' })
             }
         },
         updateLegendSettings() {

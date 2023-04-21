@@ -1,5 +1,8 @@
 <template>
     <div v-if="axisModel" class="p-grid p-jc-center p-ai-center p-p-4">
+        <div class="p-col-12">
+            {{ axisModel }}
+        </div>
         <div class="p-col-12 p-md-3 p-d-flex p-flex-column">
             <label class="kn-material-input-label p-mr-2">{{ $t('common.min') }}</label>
             <div class="p-d-flex p-flex-row p-ai-center p-fluid">
@@ -72,7 +75,7 @@ import { defineComponent, PropType } from 'vue'
 import { IWidget, IWidgetStyleToolbarModel } from '@/modules/documentExecution/dashboard/Dashboard'
 import { emitter } from '@/modules/documentExecution/dashboard/DashboardHelpers'
 import { getTranslatedLabel } from '@/helpers/commons/dropdownHelper'
-import descriptor from './HighchartsHeatmapAxisSettingsDescriptor.json'
+import descriptor from './HighchartsAxisSettingsDescriptor.json'
 import settingsDescriptor from '../HighchartsWidgetSettingsDescriptor.json'
 import Dropdown from 'primevue/dropdown'
 import InputNumber from 'primevue/inputnumber'
@@ -82,7 +85,7 @@ import Textarea from 'primevue/textarea'
 import Message from 'primevue/message'
 
 export default defineComponent({
-    name: 'highcharts-heatmap-axis-settings',
+    name: 'highcharts-axis-settings',
     components: { Dropdown, InputNumber, WidgetEditorStyleToolbar, HighchartsFormatterCodeMirror, Textarea, Message },
     props: { widgetModel: { type: Object as PropType<IWidget>, required: true }, axis: { type: String, required: true } },
     data() {
@@ -95,6 +98,7 @@ export default defineComponent({
             getTranslatedLabel
         }
     },
+    computed: {},
     created() {
         this.loadModel()
     },
