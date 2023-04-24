@@ -174,7 +174,7 @@
         "max": null,
         "min": null,
         "title": {
-            "align": "center",
+            "align": "middle",
             "enabled": true,
             "style": {
                 "color": "",
@@ -200,7 +200,7 @@
         "max": null,
         "min": null,
         "title": {
-            "align": "center",
+            "align": "middle",
             "enabled": true,
             "style": {
                 "color": "",
@@ -261,7 +261,6 @@
         "showInLegend": true
     },
     "defaultRadarXAxis": {
-        "categories": [],
         "labels": {
             "align": "center",
             "rotation": null,
@@ -272,10 +271,8 @@
                 "fontWeight": ""
             }
         },
-        "max": null,
-        "min": null,
         "title": {
-            "align": "center",
+            "align": "middle",
             "enabled": true,
             "style": {
                 "color": "",
@@ -287,7 +284,6 @@
         }
     },
     "defaultRadarYAxis": {
-        "categories": [],
         "labels": {
             "align": "center",
             "rotation": null,
@@ -298,10 +294,8 @@
                 "fontWeight": ""
             }
         },
-        "max": null,
-        "min": null,
         "title": {
-            "align": "center",
+            "align": "middle",
             "enabled": true,
             "style": {
                 "color": "",

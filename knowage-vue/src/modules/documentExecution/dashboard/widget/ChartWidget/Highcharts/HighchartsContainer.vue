@@ -243,12 +243,7 @@ export default defineComponent({
             this.highchartsInstance.addSeriesAsDrilldown(event.point, { data: tempSeries, name: event.point.name })
             console.log(' this.chartModel: ', this.chartModel)
 
-            // const modelToRender = this.getModelForRender()
-            // modelToRender.chart.backgroundColor = null
-            // this.highchartsInstance = Highcharts.chart(this.chartID, modelToRender as any)
-            // this.highchartsInstance.reflow()
-
-            // TODO - Keep
+            // TODO - Keep/Uncomment
             // if (this.widgetModel.settings.interactions.crossNavigation.enabled) {
             //     const formattedOutputParameters = formatForCrossNavigation(event, this.widgetModel.settings.interactions.crossNavigation, this.dataToShow, this.chartModel.chart.type)
             //     executeChartCrossNavigation(formattedOutputParameters, this.widgetModel.settings.interactions.crossNavigation, this.dashboardId)
@@ -285,6 +280,8 @@ export default defineComponent({
                 formatActivityGauge(formattedChartModel, this.widgetModel)
             } else if (formattedChartModel.chart.type === 'heatmap') {
                 formatHeatmap(formattedChartModel)
+            } else if (formattedChartModel.chart.type === 'radar') {
+                formattedChartModel.chart.type = ''
             }
             return formattedChartModel
         }
