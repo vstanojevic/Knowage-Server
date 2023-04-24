@@ -123,6 +123,8 @@ export default defineComponent({
         async loadPreview() {
             this.loadDataset()
 
+            console.log('---- this.dataset.drivers : ', this.dataset.drivers)
+
             if (this.dataset.drivers && this.dataset.drivers.length > 0) {
                 if (this.userRole) {
                     await this.loadDatasetDrivers()

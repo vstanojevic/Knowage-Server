@@ -82,7 +82,8 @@ export interface IHighchartsChartModel {
         options3d: IHighchartsOptions3D
         type: string,
         backgroundColor?: any,
-        polar?: boolean
+        polar?: boolean,
+        events?: any
     },
     noData: IHighchartsNoDataConfiguration,
     accessibility: IHighchartsAccessibilitySettings,
