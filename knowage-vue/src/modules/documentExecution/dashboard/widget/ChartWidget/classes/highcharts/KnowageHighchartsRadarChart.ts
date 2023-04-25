@@ -1,6 +1,6 @@
 import { KnowageHighcharts } from './KnowageHighcharts'
 import { IWidget, IWidgetColumn } from '@/modules/documentExecution/dashboard/Dashboard'
-import { IHighchartsChartSerie, IHighchartsChartSerieData } from '@/modules/documentExecution/dashboard/interfaces/highcharts/DashboardHighchartsWidget'
+import { IHighchartsChartSerie, IHighchartsChartSerieData, IHighchartsSeriesLabelsSetting } from '@/modules/documentExecution/dashboard/interfaces/highcharts/DashboardHighchartsWidget'
 import { createSerie } from './updater/KnowageHighchartsCommonUpdater'
 import { updateRadarChartModel } from './updater/KnowageHighchartsRadarChartUpdater'
 import * as highchartsDefaultValues from '../../../WidgetEditor/helpers/chartWidget/highcharts/HighchartsDefaultValues'
@@ -39,194 +39,106 @@ export class KnowageHighchartsRadarChart extends KnowageHighcharts {
             "label": {
                 "enabled": false
             },
-            "selected": true,
-            "initiallySelected": true,
-            "name": "Food",
+            "name": "UNITS_ORDERED",
+            "pointPlacement": "on",
             "type": "",
-            "connectNulls": true,
+            "legendIndex": 1,
             "data": [
                 {
-                    "y": 930864,
-                    "name": "Q2",
-                    "datetype": "string"
-                },
-                {
-                    "y": 1147708,
-                    "name": "Q3",
-                    "datetype": "string"
-                },
-                {
-                    "y": 1047654,
+                    "drilldown": true,
+                    "y": 1744587,
                     "name": "Q1",
                     "datetype": "string"
                 },
                 {
-                    "y": 965621,
+                    "drilldown": true,
+                    "y": 1665964,
+                    "name": "Q2",
+                    "datetype": "string"
+                },
+                {
+                    "drilldown": true,
+                    "y": 2082260,
+                    "name": "Q3",
+                    "datetype": "string"
+                },
+                {
+                    "drilldown": true,
+                    "y": 1646594,
                     "name": "Q4",
                     "datetype": "string"
                 }
             ],
-            "dataLabels": {
-                "enabled": true,
-                "labelFormat": "{y:,.0f}"
-            },
+            "selected": true,
+            "initiallySelected": true,
             "tooltip": {
-                "valueDecimals": 0,
-                "scaleFactor": "empty",
-                "ttBackColor": "#D6D6D6"
-            }
+                "valuePrefix": "P -",
+                "valueSuffix": "- S",
+                "valueDecimals": 1,
+                "scaleFactor": "k",
+                "ttBackColor": "#CACFD0",
+                "ttColor": "#00F56E",
+                "ttAlign": "right",
+                "ttFont": "Arial",
+                "ttFontWeight": "bold",
+                "ttFontSize": "20px"
+            },
+            "cropThreshold": 4
         },
         {
             "label": {
                 "enabled": false
             },
-            "selected": true,
-            "initiallySelected": true,
-            "name": "Drink",
-            "connectNulls": true,
+            "name": "UNITS_SHIPPED",
+            "type": "",
+            "legendIndex": 2,
             "data": [
                 {
-                    "y": 194835,
-                    "name": "Q2",
-                    "datetype": "string"
-                },
-                {
-                    "y": 202356,
-                    "name": "Q3",
-                    "datetype": "string"
-                },
-                {
-                    "y": 128144,
+                    "drilldown": true,
+                    "y": 1616511,
                     "name": "Q1",
                     "datetype": "string"
                 },
                 {
-                    "y": 102185,
-                    "name": "Q4",
-                    "datetype": "string"
-                }
-            ],
-            "dataLabels": {
-                "enabled": true,
-                "labelFormat": "{y:,.0f}"
-            },
-            "tooltip": {
-                "valueDecimals": 0,
-                "scaleFactor": "empty",
-                "ttBackColor": "#D6D6D6"
-            }
-        },
-        {
-            "label": {
-                "enabled": false
-            },
-            "selected": true,
-            "initiallySelected": true,
-            "name": "Non-Consumable",
-            "connectNulls": true,
-            "data": [
-                {
-                    "y": 540265,
+                    "drilldown": true,
+                    "y": 1517603,
                     "name": "Q2",
                     "datetype": "string"
                 },
                 {
-                    "y": 714384,
+                    "drilldown": true,
+                    "y": 1908710,
                     "name": "Q3",
                     "datetype": "string"
                 },
                 {
-                    "y": 568789,
-                    "name": "Q1",
-                    "datetype": "string"
-                },
-                {
-                    "y": 578788,
+                    "drilldown": true,
+                    "y": 1473639,
                     "name": "Q4",
                     "datetype": "string"
                 }
             ],
-            "dataLabels": {
-                "enabled": true,
-                "labelFormat": "{y:,.0f}"
-            },
-            "tooltip": {
-                "valueDecimals": 0,
-                "scaleFactor": "empty",
-                "ttBackColor": "#D6D6D6"
-            }
-        },
-        {
-            "label": {
-                "enabled": false
-            },
             "selected": true,
             "initiallySelected": true,
-            "name": "Car",
-            "connectNulls": true,
-            "data": [
-                {
-                    "name": "Q2",
-                    "datetype": "string"
-                },
-                {
-                    "y": 17812,
-                    "name": "Q3",
-                    "datetype": "string"
-                },
-                {
-                    "name": "Q1",
-                    "datetype": "string"
-                },
-                {
-                    "name": "Q4",
-                    "datetype": "string"
-                }
-            ],
-            "dataLabels": {
-                "enabled": true,
-                "labelFormat": "{y:,.0f}"
-            },
             "tooltip": {
-                "valueDecimals": 0,
-                "scaleFactor": "empty",
-                "ttBackColor": "#D6D6D6"
-            }
+                "valuePrefix": "A",
+                "valueSuffix": "B",
+                "valueDecimals": 3,
+                "scaleFactor": "k",
+                "style": {
+                    "backroundColor": "red"
+                }
+            },
+            "cropThreshold": 4
         }]
         return this.model.series
     }
 
     getSeriesFromWidgetModel(widgetModel: IWidget) {
         // TODO
-        // const measureColumn = widgetModel.columns.find((column: IWidgetColumn) => column.fieldType === 'MEASURE')
-        // if (!measureColumn) return
-        // this.model.series = [createSerie(measureColumn.columnName, measureColumn.aggregation, true)]
-    }
-
-    // TODO
-    updateSeriesLabelSettings(widgetModel: IWidget) {
-        // if (!widgetModel || !widgetModel.settings.series || !widgetModel.settings.series.seriesLabelsSettings || !widgetModel.settings.series.seriesLabelsSettings[0]) return
-        // const seriesLabelSetting = widgetModel.settings.series.seriesLabelsSettings[0]
-        // if (!seriesLabelSetting.label.enabled) return
-        // this.model.series.forEach((serie: IHighchartsChartSerie) => {
-        //     serie.data.forEach((data: IHighchartsChartSerieData) => {
-        //         data.dataLabels = {
-        //             backgroundColor: seriesLabelSetting.label.backgroundColor ?? '',
-        //             distance: 30,
-        //             enabled: true,
-        //             position: '',
-        //             style: {
-        //                 fontFamily: seriesLabelSetting.label.style.fontFamily,
-        //                 fontSize: seriesLabelSetting.label.style.fontSize,
-        //                 fontWeight: seriesLabelSetting.label.style.fontWeight,
-        //                 color: seriesLabelSetting.label.style.color ?? ''
-        //             },
-        //             formatter: function () {
-        //                 return KnowageHighchartsPieChart.prototype.handleFormatter(this, seriesLabelSetting.label)
-        //             }
-        //         }
-        //     })
-        // })
+        const measureColumn = widgetModel.columns.find((column: IWidgetColumn) => column.fieldType === 'MEASURE')
+        if (!measureColumn) return
+        this.model.series = [createSerie(measureColumn.columnName, measureColumn.aggregation, true)]
     }
 
     setHeatmapXAxis() {
@@ -236,6 +148,66 @@ export class KnowageHighchartsRadarChart extends KnowageHighcharts {
     setHeatmapYAxis() {
         this.model.yAxis = highchartsDefaultValues.getDefaultHeatmapYAxis()
     }
+
+    // TODO
+    updateSeriesLabelSettings(widgetModel: IWidget) {
+        if (!widgetModel || !widgetModel.settings.series || !widgetModel.settings.series.seriesLabelsSettings) return
+        this.setAllSeriesSettings(widgetModel)
+        this.setSpecificSeriesSettings(widgetModel)
+    }
+
+    setAllSeriesSettings(widgetModel: IWidget) {
+        const allSeriesSettings = widgetModel.settings.series.seriesLabelsSettings[0]
+        if (allSeriesSettings.label.enabled) {
+            this.model.series.forEach((serie: any, index: number) =>
+                this.updateSeriesDataWithSerieSettings(serie, allSeriesSettings, index))
+        } else {
+            this.resetSeriesSettings()
+        }
+    }
+
+    resetSeriesSettings() {
+        this.model.series.forEach((serie: any) => {
+            serie.data.forEach((data: any) => {
+                data.dataLabels = { ...highchartsDefaultValues.getDefaultSerieLabelSettings(), position: '' }
+                data.dataLabels.formatter = undefined
+            })
+        })
+    }
+
+    setSpecificSeriesSettings(widgetModel: IWidget) {
+        for (let i = 1; i < widgetModel.settings.series.seriesLabelsSettings.length; i++) {
+            const seriesSettings = widgetModel.settings.series.seriesLabelsSettings[i] as IHighchartsSeriesLabelsSetting
+            if (seriesSettings.label.enabled) seriesSettings.names.forEach((serieName: string) => this.updateSpecificSeriesLabelSettings(serieName, seriesSettings))
+        }
+    }
+
+    updateSpecificSeriesLabelSettings(serieName: string, seriesSettings: IHighchartsSeriesLabelsSetting) {
+        const index = this.model.series.findIndex((serie: any) => serie.name === serieName)
+        if (index !== -1) this.updateSeriesDataWithSerieSettings(this.model.series[index], seriesSettings, index)
+
+    }
+
+    updateSeriesDataWithSerieSettings(serie: any, seriesSettings: IHighchartsSeriesLabelsSetting, index: number) {
+        serie.data.forEach((data: any) => {
+            data.dataLabels = {
+                y: index * 40,
+                backgroundColor: seriesSettings.label.backgroundColor ?? '',
+                enabled: true,
+                position: '',
+                style: {
+                    fontFamily: seriesSettings.label.style.fontFamily,
+                    fontSize: seriesSettings.label.style.fontSize,
+                    fontWeight: seriesSettings.label.style.fontWeight,
+                    color: seriesSettings.label.style.color ?? ''
+                },
+                formatter: function () {
+                    return KnowageHighchartsRadarChart.prototype.handleFormatter(this, seriesSettings.label)
+                }
+            }
+        })
+    }
+
 
     formatSeriesFromOtherChartTypeSeries() {
         this.model.series = this.model.series.map((serie: any) => { return this.getFormattedSerieFromOtherChartTypeSerie(serie) })

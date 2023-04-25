@@ -507,6 +507,42 @@ const getPieChartData = async (widget: IWidget, datasets: IDashboardDataset[], $
     }
 }
 
+// TODO - Darko
+export const getPieChartDrilldownData = async (widget: IWidget, datasets: IDashboardDataset[], $http: any, initialCall: boolean, selections: ISelection[], likeSelections: any, drillDownLevel: number) => {
+    const datasetIndex = datasets.findIndex((dataset: IDashboardDataset) => widget.dataset === dataset.id)
+    const selectedDataset = datasets[datasetIndex]
+
+    // Ovde formatiram ove likeSelections, likeSelections imae vrednost "parceta" koje je korisnik kliknuo i naziv kolone, od toga kreiram objekat, pozicija u nizu je drill nivo - 1 (trebalo bi :/)
+    const formattedLikeSelections = {}
+    likeSelections.forEach((likeSelection: any) => {
+        const key = Object.keys(likeSelection)[0]
+        console.log(' !!!!!! key: ', key)
+        formattedLikeSelections[key] = likeSelection[key]
+    })
+    const datasetLabel = selectedDataset.dsLabel as any
+    const formattedSelections = { [datasetLabel]: formattedLikeSelections }
+
+    if (selectedDataset) {
+        const url = `2.0/datasets/${selectedDataset.dsLabel}/data?offset=-1&size=-1&nearRealtime=true`
+        const postData = formatChartWidgetForGet(widget, selectedDataset, initialCall, selections, {}, drillDownLevel)
+        // dodajem like selections
+        postData.likeSelections = formattedSelections
+        let tempResponse = null as any
+
+        if (widget.dataset || widget.dataset === 0) clearDatasetInterval(widget.dataset)
+        await $http
+            .post(import.meta.env.VITE_RESTFUL_SERVICES_PATH + url, postData, { headers: { 'X-Disable-Errors': 'true' } })
+            .then((response: AxiosResponse<any>) => {
+                tempResponse = response.data
+                tempResponse.initialCall = initialCall
+            })
+            .catch((error: any) => {
+                showGetDataError(error, selectedDataset.dsLabel)
+            })
+        return tempResponse
+    }
+}
+
 export const getGaugeChartData = async (widget: IWidget, datasets: IDashboardDataset[], $http: any, initialCall: boolean, selections: ISelection[], associativeResponseSelections?: any) => {
     const datasetIndex = datasets.findIndex((dataset: IDashboardDataset) => widget.dataset === dataset.id)
     const selectedDataset = datasets[datasetIndex]
@@ -536,7 +572,7 @@ export const getGaugeChartData = async (widget: IWidget, datasets: IDashboardDat
     }
 }
 
-const formatChartWidgetForGet = (propWidget: IWidget, dataset: IDashboardDataset, initialCall: boolean, selections: ISelection[], associativeResponseSelections?: any) => {
+const formatChartWidgetForGet = (propWidget: IWidget, dataset: IDashboardDataset, initialCall: boolean, selections: ISelection[], associativeResponseSelections?: any, drillDownLevel?: number) => {
     const dataToSend = {
         aggregations: {
             dataset: '',
@@ -578,8 +614,10 @@ const formatChartWidgetForGet = (propWidget: IWidget, dataset: IDashboardDataset
             })
         } else {
             //FIRST CATEGORY LOGIC - TODO: Make it grab the drilldown Category instead of the first one.
+            // TODO - Darko Drill down level
+            // uzimam kategoriju na osnovu drill nivoa, ako ga nema (pocetno stanje) uzimam ovako kako smo radili, ali bi to TREBALO da je uvek prva kolona 
             const categoryIndex = propWidget.columns.findIndex((column: any) => column.fieldType !== 'MEASURE')
-            const category = propWidget.columns[categoryIndex]
+            const category = propWidget.columns[drillDownLevel ?? categoryIndex]
             const categoryToPush = { id: category.alias, alias: category.alias, columnName: category.columnName, orderType: '', funct: 'NONE' } as any
             dataToSend.aggregations.categories.push(categoryToPush)
         }

@@ -174,7 +174,7 @@
         "max": null,
         "min": null,
         "title": {
-            "align": "center",
+            "align": "middle",
             "enabled": true,
             "style": {
                 "color": "",
@@ -200,7 +200,7 @@
         "max": null,
         "min": null,
         "title": {
-            "align": "center",
+            "align": "middle",
             "enabled": true,
             "style": {
                 "color": "",
@@ -260,8 +260,12 @@
         "depth": 100,
         "showInLegend": true
     },
+    "defaultPlotLinesSetting": {
+        "color": "",
+        "value": 0,
+        "width": 2
+    },
     "defaultRadarXAxis": {
-        "categories": [],
         "labels": {
             "align": "center",
             "rotation": null,
@@ -272,10 +276,8 @@
                 "fontWeight": ""
             }
         },
-        "max": null,
-        "min": null,
         "title": {
-            "align": "center",
+            "align": "middle",
             "enabled": true,
             "style": {
                 "color": "",
@@ -284,10 +286,10 @@
                 "fontWeight": ""
             },
             "text": ""
-        }
+        },
+        "type": "category"
     },
     "defaultRadarYAxis": {
-        "categories": [],
         "labels": {
             "align": "center",
             "rotation": null,
@@ -298,10 +300,10 @@
                 "fontWeight": ""
             }
         },
-        "max": null,
-        "min": null,
+        "plotBands": [],
+        "plotLines": [],
         "title": {
-            "align": "center",
+            "align": "middle",
             "enabled": true,
             "style": {
                 "color": "",
