@@ -33,6 +33,8 @@ import mainDescriptor from '@/modules/workspace/WorkspaceDescriptor.json'
 import workspaceDataPreviewDialogDescriptor from '@/modules/workspace/views/dataView/dialogs/WorkspaceDataPreviewDialogDescriptor.json'
 import mainStore from '../../../../../App.store'
 
+import deepcopy from 'deepcopy'
+
 export default defineComponent({
     name: 'kpi-scheduler-save-dialog',
     components: { Dialog, DatasetPreviewTable, Message },
@@ -86,7 +88,23 @@ export default defineComponent({
 
             if (this.sort) postData.sorting = this.sort
             if (this.filter) postData.filters = this.filter
-            if (this.dataset.pars.length > 0) postData.pars = [...this.dataset.pars]
+
+            if (this.dataset.pars && this.dataset.pars.length > 0) {
+                postData.pars = deepcopy(this.dataset.pars)
+                const paramRegex = /[^$P{]+(?=\})/
+                postData.pars.forEach((param: any) => {
+                    const matched = paramRegex.exec(param.value)
+                    if (matched && matched[0]) {
+                        const documentDrivers = this.dataset.drivers
+                        for (let index = 0; index < documentDrivers.length; index++) {
+                            const driver = documentDrivers[index]
+                            if (driver.label == matched[0]) {
+                                param.value = driver.parameterValue
+                            }
+                        }
+                    } else param.value = param.defaultValue
+                })
+            }
 
             if (this.dataset.drivers?.length > 0) {
                 const formattedDrivers = {}
