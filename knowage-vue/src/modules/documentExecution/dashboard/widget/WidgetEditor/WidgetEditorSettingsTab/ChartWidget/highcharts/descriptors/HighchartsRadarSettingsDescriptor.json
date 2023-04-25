@@ -46,12 +46,6 @@
                 "type": "Responsive"
             }
         ],
-        "Settings": [
-            {
-                "title": "dashboard.widgetEditor.highcharts.bands.title",
-                "type": "BandsSettings"
-            }
-        ],
         "Style": [
             {
                 "title": "dashboard.widgetEditor.titles.title",
@@ -98,6 +92,14 @@
             {
                 "title": "common.title",
                 "type": "HeatmapYAxisTitleSettings"
+            },
+            {
+                "title": "dashboard.widgetEditor.highcharts.bands.title",
+                "type": "BandsSettings"
+            },
+            {
+                "title": "dashboard.widgetEditor.highcharts.lines.title",
+                "type": "LinesSettings"
             }
         ]
     },
@@ -106,11 +108,6 @@
             "icon": "fa fa-cogs",
             "label": "dashboard.widgetEditor.configuration",
             "value": "Configuration"
-        },
-        {
-            "icon": "fa fa-cogs",
-            "label": "common.settings",
-            "value": "Settings"
         },
         {
             "icon": "pi pi-table",

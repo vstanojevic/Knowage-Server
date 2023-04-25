@@ -260,6 +260,11 @@
         "depth": 100,
         "showInLegend": true
     },
+    "defaultPlotLinesSetting": {
+        "color": "",
+        "value": 0,
+        "width": 2
+    },
     "defaultRadarXAxis": {
         "labels": {
             "align": "center",
@@ -296,6 +301,7 @@
             }
         },
         "plotBands": [],
+        "plotLines": [],
         "title": {
             "align": "middle",
             "enabled": true,
