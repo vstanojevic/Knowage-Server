@@ -1,6 +1,6 @@
 import { KnowageHighcharts } from './KnowageHighcharts'
 import { IWidget, IWidgetColumn } from '@/modules/documentExecution/dashboard/Dashboard'
-import { IHighchartsChartSerie, IHighchartsChartSerieData, IHighchartsSeriesLabelsSetting } from '@/modules/documentExecution/dashboard/interfaces/highcharts/DashboardHighchartsWidget'
+import { IHighchartsChartSerie, IHighchartsSeriesLabelsSetting } from '@/modules/documentExecution/dashboard/interfaces/highcharts/DashboardHighchartsWidget'
 import { createSerie } from './updater/KnowageHighchartsCommonUpdater'
 import { updateRadarChartModel } from './updater/KnowageHighchartsRadarChartUpdater'
 import * as highchartsDefaultValues from '../../../WidgetEditor/helpers/chartWidget/highcharts/HighchartsDefaultValues'
@@ -33,104 +33,47 @@ export class KnowageHighchartsRadarChart extends KnowageHighcharts {
 
     setData(data: any, widgetModel: IWidget) {
         // TODO
+        console.log('----------------------- DATA: ', data)
         if (this.model.series.length === 0) this.getSeriesFromWidgetModel(widgetModel)
+        const measureColumns = widgetModel.columns.filter((column: IWidgetColumn) => column.fieldType === 'MEASURE')
+        console.log('----------------------- measureColumns: ', measureColumns)
 
-        this.model.series = [{
-            "label": {
-                "enabled": false
-            },
-            "name": "UNITS_ORDERED",
-            "pointPlacement": "on",
-            "type": "",
-            "legendIndex": 1,
-            "data": [
-                {
-                    "drilldown": true,
-                    "y": 1744587,
-                    "name": "Q1",
-                    "datetype": "string"
-                },
-                {
-                    "drilldown": true,
-                    "y": 1665964,
-                    "name": "Q2",
-                    "datetype": "string"
-                },
-                {
-                    "drilldown": true,
-                    "y": 2082260,
-                    "name": "Q3",
-                    "datetype": "string"
-                },
-                {
-                    "drilldown": true,
-                    "y": 1646594,
-                    "name": "Q4",
-                    "datetype": "string"
-                }
-            ],
-            "selected": true,
-            "initiallySelected": true,
-            "tooltip": {
-                "valuePrefix": "P -",
-                "valueSuffix": "- S",
-                "valueDecimals": 1,
-                "scaleFactor": "k",
-                "ttBackColor": "#CACFD0",
-                "ttColor": "#00F56E",
-                "ttAlign": "right",
-                "ttFont": "Arial",
-                "ttFontWeight": "bold",
-                "ttFontSize": "20px"
-            },
-            "cropThreshold": 4
-        },
-        {
-            "label": {
-                "enabled": false
-            },
-            "name": "UNITS_SHIPPED",
-            "type": "",
-            "legendIndex": 2,
-            "data": [
-                {
-                    "drilldown": true,
-                    "y": 1616511,
-                    "name": "Q1",
-                    "datetype": "string"
-                },
-                {
-                    "drilldown": true,
-                    "y": 1517603,
-                    "name": "Q2",
-                    "datetype": "string"
-                },
-                {
-                    "drilldown": true,
-                    "y": 1908710,
-                    "name": "Q3",
-                    "datetype": "string"
-                },
-                {
-                    "drilldown": true,
-                    "y": 1473639,
-                    "name": "Q4",
-                    "datetype": "string"
-                }
-            ],
-            "selected": true,
-            "initiallySelected": true,
-            "tooltip": {
-                "valuePrefix": "A",
-                "valueSuffix": "B",
-                "valueDecimals": 3,
-                "scaleFactor": "k",
-                "style": {
-                    "backroundColor": "red"
-                }
-            },
-            "cropThreshold": 4
-        }]
+
+        // TODO - see if needed
+        const formattedFields = [] as any[]
+        data.metaData.fields.forEach((field: any, index: number) => {
+            if (index !== 0) {
+                const index = widgetModel.columns.findIndex((column: IWidgetColumn) => field.header.startsWith(column.columnName))
+                if (index !== -1) formattedFields.push({ name: widgetModel.columns[index].columnName, dataIndex: field.dataIndex, type: widgetModel.columns[index].fieldType })
+            }
+        })
+
+        console.log('----------------------- formattedFields: ', formattedFields)
+        this.model.series.map((serie) => {
+            console.log('------ SERIE: ', serie)
+            const index = formattedFields.findIndex((field: any) => serie.name === field.name)
+            const dataIndex = index !== -1 ? formattedFields[index].dataIndex : ''
+            console.log('------ DATA INDEX: ', dataIndex)
+            serie.data = []
+            // TODO
+            // const serieElement = {
+            //     id: serie.name,// TODO
+            //     name: serie.name,
+            //     y: '', // TODO
+            //     data: []
+            // }
+            data?.rows?.forEach((row: any) => {
+                serie.data.push({
+                    name: row[formattedFields[0].dataIndex],
+                    y: row[dataIndex],
+                    drilldown: false // TODO 
+                })
+            })
+        })
+
+
+        console.log('----------------------- this.model.series: ', this.model.series)
+
         return this.model.series
     }
 
