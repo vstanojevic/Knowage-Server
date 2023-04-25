@@ -647,11 +647,16 @@
                     "verticalAlignHint": "The vertical alignment of the legend box. Can be one of top, middle or bottom. Vertical position can be further determined by the y option. In the case that the legend is aligned in a corner position, the layout option will determine whether to place it above/below or on the side of the plot area. When the layout option is proximate, the verticalAlign option doesn't apply."
                 },
                 "lines": {
+                    "lineColor": "Line Color",
+                    "lineInterval": "Line Interval",
+                    "lineType": "Line Type",
                     "linesHint": "An array of lines stretching across the plot area, marking a specific value on one of the axes.",
                     "title": "Lines",
                     "valueHint": "The position of the line in axis units.",
                     "widthHint": "The width or thickness of the plot line."
                 },
+                "majorGridDetails": "Axis major grid details",
+                "minorGridDetails": "Axis minor grid details",
                 "paneSettings": {
                     "centralHorizontalPosition": "Centar Horizontal Position",
                     "centralVerticalPosition": "Centar Vertical Position",

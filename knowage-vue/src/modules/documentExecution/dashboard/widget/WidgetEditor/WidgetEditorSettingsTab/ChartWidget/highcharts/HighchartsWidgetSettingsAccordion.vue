@@ -41,6 +41,8 @@
                 <HighchartsHeatmapNullSettings v-else-if="accordion.type === 'HeatmapNullSettings'" :widget-model="widgetModel"></HighchartsHeatmapNullSettings>
                 <HighchartsDatetypeSettings v-else-if="accordion.type === 'DatetypeSettings'" :widget-model="widgetModel"></HighchartsDatetypeSettings>
                 <HighchartsLineSettings v-else-if="accordion.type === 'LinesSettings'" :widget-model="widgetModel"></HighchartsLineSettings>
+                <HighchartsAxisGridSettings v-else-if="accordion.type === 'MajorGridSettings'" :widget-model="widgetModel" type="major"></HighchartsAxisGridSettings>
+                <HighchartsAxisGridSettings v-else-if="accordion.type === 'MinorGridSettings'" :widget-model="widgetModel" type="minor"></HighchartsAxisGridSettings>
             </AccordionTab>
         </Accordion>
     </div>
@@ -86,6 +88,7 @@ import HighchartsAxisTitleSettings from './axis/HighchartsAxisTitleSettings.vue'
 import HighchartsHeatmapNullSettings from './heatmap/HighchartsHeatmapNullSettings.vue'
 import HighchartsDatetypeSettings from './configuration/HighchartsDatetypeSettings.vue'
 import HighchartsLineSettings from './settings/HighchartsLineSettings.vue'
+import HighchartsAxisGridSettings from './axis/HighchartsAxisGridSettings.vue'
 
 export default defineComponent({
     name: 'hihgcharts-widget-configuration-container',
@@ -125,7 +128,8 @@ export default defineComponent({
         HighchartsAxisTitleSettings,
         HighchartsHeatmapNullSettings,
         HighchartsDatetypeSettings,
-        HighchartsLineSettings
+        HighchartsLineSettings,
+        HighchartsAxisGridSettings
     },
     props: {
         widgetModel: { type: Object as PropType<IWidget>, required: true },

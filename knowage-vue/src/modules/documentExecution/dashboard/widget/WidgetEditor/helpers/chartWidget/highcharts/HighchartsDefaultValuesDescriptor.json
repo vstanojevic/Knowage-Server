@@ -290,6 +290,8 @@
         "type": "category"
     },
     "defaultRadarYAxis": {
+        "gridLineColor": "",
+        "gridLineDashStyle": "",
         "labels": {
             "align": "center",
             "rotation": null,
@@ -300,8 +302,12 @@
                 "fontWeight": ""
             }
         },
+        "minorGridLineColor": "",
+        "minorGridLineDashStyle": "",
+        "minorTickInterval": null,
         "plotBands": [],
         "plotLines": [],
+        "tickInterval": null,
         "title": {
             "align": "middle",
             "enabled": true,

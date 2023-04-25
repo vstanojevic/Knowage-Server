@@ -100,6 +100,14 @@
             {
                 "title": "dashboard.widgetEditor.highcharts.lines.title",
                 "type": "LinesSettings"
+            },
+            {
+                "title": "dashboard.widgetEditor.highcharts.majorGridDetails",
+                "type": "MajorGridSettings"
+            },
+            {
+                "title": "dashboard.widgetEditor.highcharts.minorGridDetails",
+                "type": "MinorGridSettings"
             }
         ]
     },
