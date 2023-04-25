@@ -1,5 +1,5 @@
 import { IHighchartsChartModel } from '@/modules/documentExecution/dashboard/interfaces/highcharts/DashboardHighchartsWidget'
-import { getFormattedNoDataConfiguration, getFormattedSeries, setFormattedAxisLabels, setFormattedAxisTitle } from './KnowageHighchartsCommonUpdater'
+import { getFormattedLegend, getFormattedNoDataConfiguration, getFormattedSeries, setFormattedAxisLabels, setFormattedAxisTitle } from './KnowageHighchartsCommonUpdater'
 import * as highchartsDefaultValues from '../../../../WidgetEditor/helpers/chartWidget/highcharts/HighchartsDefaultValues'
 
 export const updateRadarChartModel = (oldModel: any, newModel: IHighchartsChartModel) => {
@@ -7,7 +7,7 @@ export const updateRadarChartModel = (oldModel: any, newModel: IHighchartsChartM
     getFormattedNoDataConfiguration(oldModel, newModel)
     getFormattedAxisSettings(oldModel, newModel, 'x')
     getFormattedAxisSettings(oldModel, newModel, 'y')
-    //getFormattedLegend(oldModel, newModel)
+    getFormattedLegend(oldModel, newModel)
     getFormattedSeries(oldModel, newModel, null)
 
     console.log('   ----- NEW CHART MODEL: ', newModel)

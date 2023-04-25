@@ -21,6 +21,15 @@
             <label class="kn-material-input-label p-mr-2">{{ $t('dashboard.widgetEditor.highcharts.heatmap.labelRotation') }}</label>
             <InputNumber v-model="axisModel.labels.rotation" class="kn-material-input p-inputtext-sm" @blur="onInputNumberChanged" />
         </div>
+
+        <div class="p-col-12 p-md-4 p-d-flex p-flex-column">
+            <label class="kn-material-input-label p-mr-2">{{ $t('dashboard.widgetEditor.highcharts.tick.minorTickInterval') }}</label>
+            <InputNumber v-model="axisModel.minorTickInterval" class="kn-material-input p-inputtext-sm" @blur="onInputNumberChanged" />
+        </div>
+        <!-- <div class="p-col-12 p-md-6 p-lg-6 p-px-2 p-pt-4">
+            <WidgetEditorColorPicker :initial-value="model.yAxis.tickColor" :label="$t('dashboard.widgetEditor.highcharts.tick.tickColor')" @change="onSelectionColorChanged"></WidgetEditorColorPicker>
+        </div> -->
+
         <div class="p-col-12 p-d-flex p-flex-column kn-flex p-m-2" :class="{ 'p-md-3': chartType === 'heatmap', 'p-md-6': chartType === 'radar' }">
             <label class="kn-material-input-label p-mr-2">{{ $t('common.align') }}</label>
             <Dropdown v-model="axisModel.labels.align" class="kn-material-input" :options="settingsDescriptor.alignmentOptions" option-value="value" @change="modelChanged">
