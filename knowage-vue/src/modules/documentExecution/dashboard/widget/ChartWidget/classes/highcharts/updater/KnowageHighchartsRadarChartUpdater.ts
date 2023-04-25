@@ -19,9 +19,19 @@ export const updateRadarChartModel = (oldModel: any, newModel: IHighchartsChartM
 
 const getFormattedAxisSettings = (oldModel: any, newModel: IHighchartsChartModel, axis: 'x' | 'y') => {
     const oldAxis = axis === 'x' ? oldModel.CHART.AXES_LIST.AXIS[1] : oldModel.CHART.AXES_LIST.AXIS[0]
-    const newModelAxis = axis === 'x' ? highchartsDefaultValues.getDefaultHeatmapXAxis() : highchartsDefaultValues.getDefaultHeatmapYAxis()
+    const newModelAxis = axis === 'x' ? highchartsDefaultValues.getDefaultRadarXAxis() : highchartsDefaultValues.getDefaultRadarYAxis()
     if (!oldAxis) return
     setFormattedAxisLabels(oldAxis, newModelAxis)
     setFormattedAxisTitle(oldAxis, newModelAxis)
+
+    axis === 'x' ? setXAxisSpecificValues(newModelAxis) : setYAxisSpecificValues(newModelAxis)
     axis === 'x' ? newModel.xAxis = newModelAxis : newModel.yAxis = newModelAxis
+}
+
+const setXAxisSpecificValues = (newModelAxis: any) => {
+    newModelAxis.type = "category"
+}
+
+const setYAxisSpecificValues = (newModelAxis: any) => {
+    newModelAxis.plotBands = []
 }

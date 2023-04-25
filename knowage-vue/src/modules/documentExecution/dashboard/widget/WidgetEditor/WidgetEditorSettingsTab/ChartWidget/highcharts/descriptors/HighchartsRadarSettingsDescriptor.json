@@ -22,10 +22,6 @@
                 "type": "DatetypeSettings"
             },
             {
-                "title": "dashboard.widgetEditor.highcharts.heatmap.nullValues.title",
-                "type": "HeatmapNullSettings"
-            },
-            {
                 "title": "dashboard.widgetEditor.noData.title",
                 "type": "NoDataMessageConfiguration"
             },
@@ -48,6 +44,12 @@
             {
                 "title": "dashboard.widgetEditor.responsive.title",
                 "type": "Responsive"
+            }
+        ],
+        "Settings": [
+            {
+                "title": "dashboard.widgetEditor.highcharts.bands.title",
+                "type": "BandsSettings"
             }
         ],
         "Style": [
@@ -104,6 +106,11 @@
             "icon": "fa fa-cogs",
             "label": "dashboard.widgetEditor.configuration",
             "value": "Configuration"
+        },
+        {
+            "icon": "fa fa-cogs",
+            "label": "common.settings",
+            "value": "Settings"
         },
         {
             "icon": "pi pi-table",

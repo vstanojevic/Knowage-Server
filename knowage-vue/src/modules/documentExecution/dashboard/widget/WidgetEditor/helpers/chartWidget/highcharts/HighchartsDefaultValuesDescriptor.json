@@ -281,7 +281,8 @@
                 "fontWeight": ""
             },
             "text": ""
-        }
+        },
+        "type": "category"
     },
     "defaultRadarYAxis": {
         "labels": {
@@ -294,6 +295,7 @@
                 "fontWeight": ""
             }
         },
+        "plotBands": [],
         "title": {
             "align": "middle",
             "enabled": true,

@@ -1,7 +1,9 @@
 <template>
     <div v-if="model?.yAxis" class="p-grid p-jc-center p-ai-center p-p-4">
+        {{ model.yAxis }}
+        {{ 'bandsGaugeHint' }}
         <div v-if="model.yAxis.plotBands.length === 0" class="p-grid p-col-12 p-pl-2">
-            <Message class="p-col-11" :closable="false">{{ $t('dashboard.widgetEditor.highcharts.bands.bandsHint') }}</Message>
+            <Message class="p-col-11" :closable="false">{{ bandsHint }}</Message>
             <div class="p-col-1 p-text-right">
                 <i class="pi pi-plus-circle kn-cursor-pointer p-pt-4" @click="addPlotBand()"></i>
             </div>
@@ -49,11 +51,11 @@ import { emitter } from '@/modules/documentExecution/dashboard/DashboardHelpers'
 import { IWidget } from '@/modules/documentExecution/dashboard/Dashboard'
 import { IHighchartsChartModel } from '@/modules/documentExecution/dashboard/interfaces/highcharts/DashboardHighchartsWidget'
 import { getTranslatedLabel } from '@/helpers/commons/dropdownHelper'
-import descriptor from '../../HighchartsWidgetSettingsDescriptor.json'
+import descriptor from '../HighchartsWidgetSettingsDescriptor.json'
 import InputNumber from 'primevue/inputnumber'
 import Message from 'primevue/message'
-import WidgetEditorColorPicker from '../../../../common/WidgetEditorColorPicker.vue'
-import * as highchartsDefaultValues from '../../../../../helpers/chartWidget/highcharts/HighchartsDefaultValues'
+import WidgetEditorColorPicker from '../../../common/WidgetEditorColorPicker.vue'
+import * as highchartsDefaultValues from '../../../../helpers/chartWidget/highcharts/HighchartsDefaultValues'
 
 export default defineComponent({
     name: 'hihgcharts-gauge-bands-settings',
@@ -66,7 +68,16 @@ export default defineComponent({
             getTranslatedLabel
         }
     },
-    computed: {},
+    computed: {
+        chartType() {
+            return this.widgetModel.settings.chartModel?.model?.chart?.type
+        },
+        bandsHint() {
+            let commonHint = this.$t('dashboard.widgetEditor.highcharts.bands.bandsHint')
+            if (this.chartType !== 'radar') commonHint += this.$t('dashboard.widgetEditor.highcharts.bands.bandsGaugeHint')
+            return commonHint
+        }
+    },
     created() {
         this.loadModel()
     },

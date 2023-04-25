@@ -20,7 +20,7 @@
                 <HighchartsGaugeScaleSettings v-else-if="accordion.type === 'ScaleSettings'" :widget-model="widgetModel"></HighchartsGaugeScaleSettings>
                 <HighchartsGaugeTickSettings v-else-if="accordion.type === 'TickSettings'" :widget-model="widgetModel"></HighchartsGaugeTickSettings>
                 <HighchartsStopsSettings v-else-if="accordion.type === 'StopsSettings'" :widget-model="widgetModel"></HighchartsStopsSettings>
-                <HighchartsGaugeBandsSettings v-else-if="accordion.type === 'BandsSettings'" :widget-model="widgetModel"></HighchartsGaugeBandsSettings>
+                <HighchartsBandsSettings v-else-if="accordion.type === 'BandsSettings'" :widget-model="widgetModel"></HighchartsBandsSettings>
                 <ChartColorSettings v-else-if="accordion.type === 'Colors'" :widget-model="widgetModel"></ChartColorSettings>
                 <WidgetExport v-else-if="accordion.type === 'Export'" :widget-model="widgetModel"></WidgetExport>
                 <WidgetTitleStyle v-else-if="accordion.type === 'Title'" :widget-model="widgetModel" :toolbar-style-settings="settingsTabDescriptor.defaultToolbarStyleOptions"></WidgetTitleStyle>
@@ -78,7 +78,7 @@ import HighchartsGaugeGeneralSettings from './gauge/settings/HighchartsGaugeGene
 import HighchartsGaugeScaleSettings from './gauge/settings/HighchartsGaugeScaleSettings.vue'
 import HighchartsGaugeTickSettings from './gauge/settings/HighchartsGaugeTickSettings.vue'
 import HighchartsStopsSettings from './gauge/settings/HighchartsStopsSettings.vue'
-import HighchartsGaugeBandsSettings from './gauge/settings/HighchartsGaugeBandsSettings.vue'
+import HighchartsBandsSettings from './settings/HighchartsBandsSettings.vue'
 import HighchartsWidgetSettingsAccordionHeader from './HighchartsWidgetSettingsAccordionHeader.vue'
 import HighchartsAxisSettings from './axis/HighchartsAxisSettings.vue'
 import HighchartsAxisTitleSettings from './axis/HighchartsAxisTitleSettings.vue'
@@ -117,7 +117,7 @@ export default defineComponent({
         HighchartsGaugeScaleSettings,
         HighchartsGaugeTickSettings,
         HighchartsStopsSettings,
-        HighchartsGaugeBandsSettings,
+        HighchartsBandsSettings,
         HighchartsWidgetSettingsAccordionHeader,
         HighchartsAxisSettings,
         HighchartsAxisTitleSettings,

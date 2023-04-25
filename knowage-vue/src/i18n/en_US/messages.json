@@ -601,7 +601,8 @@
                     "valuesTableHint": "Measures only."
                 },
                 "bands": {
-                    "bandsHint": "An array of colored bands stretching across the plot area marking an interval on the axis. In a gauge, a plot band on the Y axis (value axis) will stretch along the perimeter of the gauge.",
+                    "bandsGaugeHint": "In a gauge, a plot band on the Y axis (value axis) will stretch along the perimeter of the gauge.",
+                    "bandsHint": "An array of colored bands stretching across the plot area marking an interval on the axis.",
                     "colorHint": "The color of the plot band.",
                     "fromHint": "The start position of the plot band in axis units.",
                     "thickness": "Thickness",
