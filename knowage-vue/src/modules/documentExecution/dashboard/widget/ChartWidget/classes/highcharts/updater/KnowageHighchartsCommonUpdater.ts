@@ -40,6 +40,7 @@ export const getFormattedSeries = (oldModel: any, newModel: IHighchartsChartMode
             const serie = oldModel.CHART.VALUES.SERIE[i]
             switch (oldModel.CHART.type) {
                 case 'PIE':
+                case 'RADAR':
                     newModel.series.push(createSerie(serie.name, serie.groupingFunction, colorByPoint))
                     break;
                 case 'HEATMAP':

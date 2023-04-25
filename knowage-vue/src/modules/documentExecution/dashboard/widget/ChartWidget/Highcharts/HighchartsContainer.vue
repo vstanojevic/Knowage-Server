@@ -9,7 +9,7 @@ import { ISelection, IWidget, IWidgetColumn } from '../../../Dashboard'
 import { IHighchartsChartModel } from '../../../interfaces/highcharts/DashboardHighchartsWidget'
 import { mapActions } from 'pinia'
 import { updateStoreSelections, executeChartCrossNavigation } from '../../interactionsHelpers/InteractionHelper'
-import { formatActivityGauge, formatHeatmap } from './HighchartsModelFormattingHelpers'
+import { formatActivityGauge, formatHeatmap, formatRadar } from './HighchartsModelFormattingHelpers'
 import { formatForCrossNavigation } from './HighchartsContainerHelpers'
 import { getPieChartDrilldownData } from '../../../DataProxyHelper'
 import Highcharts from 'highcharts'
@@ -281,7 +281,7 @@ export default defineComponent({
             } else if (formattedChartModel.chart.type === 'heatmap') {
                 formatHeatmap(formattedChartModel)
             } else if (formattedChartModel.chart.type === 'radar') {
-                formattedChartModel.chart.type = ''
+                formatRadar(formattedChartModel)
             }
             return formattedChartModel
         }

@@ -46,6 +46,12 @@
                 "type": "Responsive"
             }
         ],
+        "Series": [
+            {
+                "title": "dashboard.widgetEditor.series.title",
+                "type": "SeriesLabel"
+            }
+        ],
         "Style": [
             {
                 "title": "dashboard.widgetEditor.titles.title",
@@ -66,12 +72,6 @@
             {
                 "title": "dashboard.widgetEditor.shadows.title",
                 "type": "ShadowsStyle"
-            }
-        ],
-        "Tooltip": [
-            {
-                "title": "dashboard.widgetEditor.tooltip.title",
-                "type": "Tooltip"
             }
         ],
         "XAxis": [
@@ -131,8 +131,8 @@
         },
         {
             "icon": "pi pi-table",
-            "label": "dashboard.widgetEditor.tooltip.title",
-            "value": "Tooltip"
+            "label": "dashboard.widgetEditor.series.title",
+            "value": "Series"
         },
         {
             "icon": "pi pi-table",
