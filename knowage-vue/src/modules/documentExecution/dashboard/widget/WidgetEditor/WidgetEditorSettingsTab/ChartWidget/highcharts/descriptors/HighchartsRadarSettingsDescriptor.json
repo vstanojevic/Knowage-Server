@@ -74,6 +74,12 @@
                 "type": "ShadowsStyle"
             }
         ],
+        "Tooltip": [
+            {
+                "title": "dashboard.widgetEditor.tooltip.title",
+                "type": "Tooltip"
+            }
+        ],
         "XAxis": [
             {
                 "title": "dashboard.widgetEditor.axis",
@@ -136,6 +142,11 @@
             "icon": "fa-solid fa-arrow-right",
             "label": "dashboard.widgetEditor.xAxis",
             "value": "XAxis"
+        },
+        {
+            "icon": "pi pi-table",
+            "label": "dashboard.widgetEditor.tooltip.title",
+            "value": "Tooltip"
         },
         {
             "icon": "pi pi-table",

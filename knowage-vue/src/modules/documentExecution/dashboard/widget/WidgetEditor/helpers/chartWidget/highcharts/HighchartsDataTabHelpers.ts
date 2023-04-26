@@ -84,7 +84,7 @@ const addMeasureColumnToTableRows = (tempColumn: IWidgetColumn, rows: IWidgetCol
         rows[0] = tempColumn
     }
     addColumnToRows(rows, tempColumn)
-    widgetModel.settings.chartModel.addSerie(tempColumn)
+    widgetModel.settings.chartModel.addSerie(tempColumn, chartType)
     emitter.emit('seriesAdded', tempColumn)
 }
 

@@ -44,6 +44,8 @@ export class KnowageHighchartsRadarChart extends KnowageHighcharts {
             }
         })
 
+        console.log('----------     this.model.series: ', this.model.series)
+
         this.model.series.map((serie) => {
             const index = formattedFields.findIndex((field: any) => serie.name === field.name)
             const dataIndex = index !== -1 ? formattedFields[index].dataIndex : ''
@@ -75,7 +77,6 @@ export class KnowageHighchartsRadarChart extends KnowageHighcharts {
         this.model.yAxis = highchartsDefaultValues.getDefaultHeatmapYAxis()
     }
 
-    // TODO
     updateSeriesLabelSettings(widgetModel: IWidget) {
         if (!widgetModel || !widgetModel.settings.series || !widgetModel.settings.series.seriesLabelsSettings) return
         this.setAllSeriesSettings(widgetModel)
@@ -85,8 +86,8 @@ export class KnowageHighchartsRadarChart extends KnowageHighcharts {
     setAllSeriesSettings(widgetModel: IWidget) {
         const allSeriesSettings = widgetModel.settings.series.seriesLabelsSettings[0]
         if (allSeriesSettings.label.enabled) {
-            this.model.series.forEach((serie: any, index: number) =>
-                this.updateSeriesDataWithSerieSettings(serie, allSeriesSettings, index))
+            this.model.series.forEach((serie: any) =>
+                this.updateSeriesDataWithSerieSettings(serie, allSeriesSettings))
         } else {
             this.resetSeriesSettings()
         }
@@ -94,10 +95,7 @@ export class KnowageHighchartsRadarChart extends KnowageHighcharts {
 
     resetSeriesSettings() {
         this.model.series.forEach((serie: any) => {
-            serie.data.forEach((data: any) => {
-                data.dataLabels = { ...highchartsDefaultValues.getDefaultSerieLabelSettings(), position: '' }
-                data.dataLabels.formatter = undefined
-            })
+            serie.dataLabels = { ...highchartsDefaultValues.getDefaultSerieLabelSettings(), position: '' }
         })
     }
 
@@ -110,28 +108,26 @@ export class KnowageHighchartsRadarChart extends KnowageHighcharts {
 
     updateSpecificSeriesLabelSettings(serieName: string, seriesSettings: IHighchartsSeriesLabelsSetting) {
         const index = this.model.series.findIndex((serie: any) => serie.name === serieName)
-        if (index !== -1) this.updateSeriesDataWithSerieSettings(this.model.series[index], seriesSettings, index)
+        if (index !== -1) this.updateSeriesDataWithSerieSettings(this.model.series[index], seriesSettings)
 
     }
 
-    updateSeriesDataWithSerieSettings(serie: any, seriesSettings: IHighchartsSeriesLabelsSetting, index: number) {
-        serie.data.forEach((data: any) => {
-            data.dataLabels = {
-                y: index * 40,
-                backgroundColor: seriesSettings.label.backgroundColor ?? '',
-                enabled: true,
-                position: '',
-                style: {
-                    fontFamily: seriesSettings.label.style.fontFamily,
-                    fontSize: seriesSettings.label.style.fontSize,
-                    fontWeight: seriesSettings.label.style.fontWeight,
-                    color: seriesSettings.label.style.color ?? ''
-                },
-                formatter: function () {
-                    return KnowageHighchartsRadarChart.prototype.handleFormatter(this, seriesSettings.label)
-                }
+    updateSeriesDataWithSerieSettings(serie: any, seriesSettings: IHighchartsSeriesLabelsSetting) {
+        serie.dataLabels = {
+            backgroundColor: seriesSettings.label.backgroundColor ?? '',
+            enabled: true,
+            position: '',
+            style: {
+                fontFamily: seriesSettings.label.style.fontFamily,
+                fontSize: seriesSettings.label.style.fontSize,
+                fontWeight: seriesSettings.label.style.fontWeight,
+                color: seriesSettings.label.style.color ?? ''
+            },
+            formatter: function () {
+                return KnowageHighchartsRadarChart.prototype.handleFormatter(this, seriesSettings.label)
             }
-        })
+        }
+
     }
 
 
