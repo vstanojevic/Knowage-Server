@@ -16,12 +16,14 @@ export const getFormattedSerieLabelsSettings = (widget: any) => {
         const formattedSettings = { names: [oldModelSerie.name] } as IHighchartsSeriesLabelsSetting
         setFormattedSerieLabelSettings(oldModelSerie, formattedSettings)
         setSerieSettingsForGaugeChart(oldModelSerie, formattedSettings, widget)
+        if (widget.content.chartTemplate.CHART.type === 'RADAR') formattedSettings.type = oldModelSerie.type
         formattedSerieSettings.push(formattedSettings)
     }
     return formattedSerieSettings
 }
 
 const setFormattedSerieLabelSettings = (oldModelSerie: any, formattedSettings: IHighchartsSeriesLabelsSetting) => {
+    console.log(' !!!!!!! OLD MODEL SERIE: ', oldModelSerie)
     formattedSettings.label = {
         enabled: oldModelSerie.showValue,
         style: {

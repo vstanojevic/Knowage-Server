@@ -154,41 +154,41 @@ export default defineComponent({
             this.likeSelections = this.likeSelections.slice(0, this.drillLevel)
         },
         async executeInteractions(event: any) {
-            if (this.chartModel.chart.type !== 'pie' && this.chartModel.chart.type !== 'heatmap') return
-            const dashboardDatasets = this.getDashboardDatasets(this.dashboardId as any)
-            // console.log(' this.datasets: ', dashboardDatasets)
-            // console.log(' event: ', event)
-            // console.log(' event.point.name: ', event.point.name)
-            this.drillLevel++
-            const category = this.widgetModel.columns[this.drillLevel - 1]
-            this.likeSelections.push({ [category.columnName]: event.point.name })
-            this.highchartsInstance.showLoading(this.$t('common.info.dataLoading'))
-            const temp = await getPieChartDrilldownData(this.widgetModel, dashboardDatasets, this.$http, false, this.propActiveSelections, this.likeSelections, this.drillLevel)
-            console.log(' resp: ', temp)
+            if (!['pie', 'heatmap', 'radar'].includes(this.chartModel.chart.type)) return
 
-            const tempSeries = [] as any[]
-            temp?.rows?.forEach((row: any) => {
-                const serieElement = {
-                    id: row.id,
-                    name: row['column_1'],
-                    y: row['column_2'],
-                    drilldown: false
-                }
-                serieElement.drilldown = true
-                tempSeries.push(serieElement)
-            })
-            // console.log('--------- TEMP SERIES: ', tempSeries)
-            this.highchartsInstance.hideLoading()
-            this.highchartsInstance.addSeriesAsDrilldown(event.point, { data: tempSeries, name: event.point.name })
-            console.log(' this.chartModel: ', this.chartModel)
+            // TODO - refactor
+            if (this.widgetModel.settings.interactions.drilldown?.enabled) {
+                const dashboardDatasets = this.getDashboardDatasets(this.dashboardId as any)
+                // console.log(' this.datasets: ', dashboardDatasets)
+                // console.log(' event: ', event)
+                // console.log(' event.point.name: ', event.point.name)
+                this.drillLevel++
+                const category = this.widgetModel.columns[this.drillLevel - 1]
+                this.likeSelections.push({ [category.columnName]: event.point.name })
+                this.highchartsInstance.showLoading(this.$t('common.info.dataLoading'))
+                const temp = await getPieChartDrilldownData(this.widgetModel, dashboardDatasets, this.$http, false, this.propActiveSelections, this.likeSelections, this.drillLevel)
+                console.log(' resp: ', temp)
 
-            // TODO - Keep/Uncomment
-            // if (this.widgetModel.settings.interactions.crossNavigation.enabled) {
-            //     const formattedOutputParameters = formatForCrossNavigation(event, this.widgetModel.settings.interactions.crossNavigation, this.dataToShow, this.chartModel.chart.type)
-            //     executeChartCrossNavigation(formattedOutputParameters, this.widgetModel.settings.interactions.crossNavigation, this.dashboardId)
-            // } else if (this.chartModel.chart.type === 'pie') {
-            //     this.setSelection(event)
-            // }
+                const tempSeries = [] as any[]
+                temp?.rows?.forEach((row: any) => {
+                    const serieElement = {
+                        id: row.id,
+                        name: row['column_1'],
+                        y: row['column_2'],
+                        drilldown: false
+                    }
+                    serieElement.drilldown = true
+                    tempSeries.push(serieElement)
+                })
+                // console.log('--------- TEMP SERIES: ', tempSeries)
+                this.highchartsInstance.hideLoading()
+                this.highchartsInstance.addSeriesAsDrilldown(event.point, { data: tempSeries, name: event.point.name })
+            } else if (this.widgetModel.settings.interactions.crossNavigation.enabled) {
+                const formattedOutputParameters = formatForCrossNavigation(event, this.widgetModel.settings.interactions.crossNavigation, this.dataToShow, this.chartModel.chart.type)
+                executeChartCrossNavigation(formattedOutputParameters, this.widgetModel.settings.interactions.crossNavigation, this.dashboardId)
+            } else if (['pie', 'radar'].includes(this.chartModel.chart.type)) {
+                this.setSelection(event)
+            }
         },
         setSelection(event: any) {
             if (this.editorMode || !this.widgetModel.settings.interactions.selection || !this.widgetModel.settings.interactions.selection.enabled) return

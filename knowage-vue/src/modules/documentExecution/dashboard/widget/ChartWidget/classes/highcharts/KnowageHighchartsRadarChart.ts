@@ -44,7 +44,6 @@ export class KnowageHighchartsRadarChart extends KnowageHighcharts {
             const attribute = data.metaData.fields[1]
             serie.data = []
             data?.rows?.forEach((row: any) => {
-                console.log('------ TEST: ', this.getFormattedDateCategoryValue(row[attribute.dataIndex], dateFormat, attribute.type))
                 serie.data.push({
                     name: dateFormat && ['date', 'timestamp'].includes(attribute.type) ? this.getFormattedDateCategoryValue(row[attribute.dataIndex], dateFormat, attribute.type) : row[attribute.dataIndex],
                     y: row[dataIndex],
