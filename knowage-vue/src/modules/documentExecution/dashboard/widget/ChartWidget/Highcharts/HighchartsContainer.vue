@@ -94,8 +94,9 @@ export default defineComponent({
             this.widgetModel.settings.chartModel.setData(this.dataToShow, this.widgetModel)
 
             this.widgetModel.settings.chartModel.updateSeriesAccessibilitySettings(this.widgetModel)
-            if (this.chartModel.chart.type !== 'heatmap') this.widgetModel.settings.chartModel.updateSeriesLabelSettings(this.widgetModel)
-            this.chartModel.chart.type === 'heatmap' ? this.updateAxisLabels() : this.updateDataLabels()
+            if (this.chartModel.chart.type !== 'heatmap' && this.chartModel.chart.type !== 'radar') this.widgetModel.settings.chartModel.updateSeriesLabelSettings(this.widgetModel)
+            if (this.chartModel.chart.type === 'heatmap') this.updateAxisLabels()
+            else if (this.chartModel.chart.type !== 'radar') this.updateDataLabels()
             this.error = this.updateLegendSettings()
             if (this.error) return
             this.error = this.updateTooltipSettings()

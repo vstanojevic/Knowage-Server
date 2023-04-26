@@ -302,6 +302,7 @@
                 "fontWeight": ""
             }
         },
+        "min": 0,
         "minorGridLineColor": "",
         "minorGridLineDashStyle": "",
         "minorTickInterval": null,

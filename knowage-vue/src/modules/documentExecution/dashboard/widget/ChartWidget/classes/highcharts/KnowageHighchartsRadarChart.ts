@@ -35,11 +35,7 @@ export class KnowageHighchartsRadarChart extends KnowageHighcharts {
         // TODO
         console.log('----------------------- DATA: ', data)
         if (this.model.series.length === 0) this.getSeriesFromWidgetModel(widgetModel)
-        const measureColumns = widgetModel.columns.filter((column: IWidgetColumn) => column.fieldType === 'MEASURE')
-        console.log('----------------------- measureColumns: ', measureColumns)
 
-
-        // TODO - see if needed
         const formattedFields = [] as any[]
         data.metaData.fields.forEach((field: any, index: number) => {
             if (index !== 0) {
@@ -48,20 +44,10 @@ export class KnowageHighchartsRadarChart extends KnowageHighcharts {
             }
         })
 
-        console.log('----------------------- formattedFields: ', formattedFields)
         this.model.series.map((serie) => {
-            console.log('------ SERIE: ', serie)
             const index = formattedFields.findIndex((field: any) => serie.name === field.name)
             const dataIndex = index !== -1 ? formattedFields[index].dataIndex : ''
-            console.log('------ DATA INDEX: ', dataIndex)
             serie.data = []
-            // TODO
-            // const serieElement = {
-            //     id: serie.name,// TODO
-            //     name: serie.name,
-            //     y: '', // TODO
-            //     data: []
-            // }
             data?.rows?.forEach((row: any) => {
                 serie.data.push({
                     name: row[formattedFields[0].dataIndex],
@@ -70,9 +56,6 @@ export class KnowageHighchartsRadarChart extends KnowageHighcharts {
                 })
             })
         })
-
-
-        console.log('----------------------- this.model.series: ', this.model.series)
 
         return this.model.series
     }
