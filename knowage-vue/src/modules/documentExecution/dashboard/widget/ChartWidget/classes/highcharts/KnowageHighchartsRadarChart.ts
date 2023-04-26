@@ -44,8 +44,6 @@ export class KnowageHighchartsRadarChart extends KnowageHighcharts {
             }
         })
 
-        console.log('----------     this.model.series: ', this.model.series)
-
         this.model.series.map((serie) => {
             const index = formattedFields.findIndex((field: any) => serie.name === field.name)
             const dataIndex = index !== -1 ? formattedFields[index].dataIndex : ''
