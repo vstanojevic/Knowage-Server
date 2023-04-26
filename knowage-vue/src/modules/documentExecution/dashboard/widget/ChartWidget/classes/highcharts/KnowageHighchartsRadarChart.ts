@@ -5,6 +5,7 @@ import { createSerie } from './updater/KnowageHighchartsCommonUpdater'
 import { updateRadarChartModel } from './updater/KnowageHighchartsRadarChartUpdater'
 import * as highchartsDefaultValues from '../../../WidgetEditor/helpers/chartWidget/highcharts/HighchartsDefaultValues'
 import deepcopy from 'deepcopy'
+import moment from 'moment'
 
 export class KnowageHighchartsRadarChart extends KnowageHighcharts {
     constructor(model: any) {
@@ -36,21 +37,16 @@ export class KnowageHighchartsRadarChart extends KnowageHighcharts {
         console.log('----------------------- DATA: ', data)
         if (this.model.series.length === 0) this.getSeriesFromWidgetModel(widgetModel)
 
-        const formattedFields = [] as any[]
-        data.metaData.fields.forEach((field: any, index: number) => {
-            if (index !== 0) {
-                const index = widgetModel.columns.findIndex((column: IWidgetColumn) => field.header.startsWith(column.columnName))
-                if (index !== -1) formattedFields.push({ name: widgetModel.columns[index].columnName, dataIndex: field.dataIndex, type: widgetModel.columns[index].fieldType })
-            }
-        })
-
+        const dateFormat = widgetModel.settings?.configuration?.datetypeSettings && widgetModel.settings.configuration.datetypeSettings.enabled ? widgetModel.settings?.configuration?.datetypeSettings?.format : ''
         this.model.series.map((serie) => {
-            const index = formattedFields.findIndex((field: any) => serie.name === field.name)
-            const dataIndex = index !== -1 ? formattedFields[index].dataIndex : ''
+            const index = data.metaData.fields.findIndex((field: any) => field.header?.startsWith(serie.name))
+            const dataIndex = index !== -1 ? data.metaData.fields[index].dataIndex : ''
+            const attribute = data.metaData.fields[1]
             serie.data = []
             data?.rows?.forEach((row: any) => {
+                console.log('------ TEST: ', this.getFormattedDateCategoryValue(row[attribute.dataIndex], dateFormat, attribute.type))
                 serie.data.push({
-                    name: row[formattedFields[0].dataIndex],
+                    name: dateFormat && ['date', 'timestamp'].includes(attribute.type) ? this.getFormattedDateCategoryValue(row[attribute.dataIndex], dateFormat, attribute.type) : row[attribute.dataIndex],
                     y: row[dataIndex],
                     drilldown: false // TODO 
                 })
@@ -59,6 +55,14 @@ export class KnowageHighchartsRadarChart extends KnowageHighcharts {
 
         return this.model.series
     }
+
+    // TODO - Move to common?
+    getFormattedDateCategoryValue(dateString: string, dateFormat: string, type: 'date' | 'timestamp') {
+        if (!dateFormat) return dateString
+        const date = moment(dateString, type === 'date' ? 'DD/MM/YYYY' : 'DD/MM/YYYY HH:mm:ss.SSS')
+        return date.isValid() ? date.format(dateFormat) : dateString
+    }
+
 
     getSeriesFromWidgetModel(widgetModel: IWidget) {
         // TODO
