@@ -43,6 +43,7 @@
                 <HighchartsLineSettings v-else-if="accordion.type === 'LinesSettings'" :widget-model="widgetModel"></HighchartsLineSettings>
                 <HighchartsAxisGridSettings v-else-if="accordion.type === 'MajorGridSettings'" :widget-model="widgetModel" type="major"></HighchartsAxisGridSettings>
                 <HighchartsAxisGridSettings v-else-if="accordion.type === 'MinorGridSettings'" :widget-model="widgetModel" type="minor"></HighchartsAxisGridSettings>
+                <HighchartsRadarSplittingSettings v-else-if="accordion.type === 'SplittingSettings'" :widget-model="widgetModel"></HighchartsRadarSplittingSettings>
             </AccordionTab>
         </Accordion>
     </div>
@@ -89,6 +90,7 @@ import HighchartsHeatmapNullSettings from './heatmap/HighchartsHeatmapNullSettin
 import HighchartsDatetypeSettings from './configuration/HighchartsDatetypeSettings.vue'
 import HighchartsLineSettings from './settings/HighchartsLineSettings.vue'
 import HighchartsAxisGridSettings from './axis/HighchartsAxisGridSettings.vue'
+import HighchartsRadarSplittingSettings from './radar/HighchartsRadarSplittingSettings.vue'
 
 export default defineComponent({
     name: 'hihgcharts-widget-configuration-container',
@@ -129,7 +131,8 @@ export default defineComponent({
         HighchartsHeatmapNullSettings,
         HighchartsDatetypeSettings,
         HighchartsLineSettings,
-        HighchartsAxisGridSettings
+        HighchartsAxisGridSettings,
+        HighchartsRadarSplittingSettings
     },
     props: {
         widgetModel: { type: Object as PropType<IWidget>, required: true },

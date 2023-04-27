@@ -56,6 +56,7 @@ const getFormattedWidgetSettings = (widget: any, chartType: string) => {
 const getFormattedConfiguration = (widget: any, chartType: string) => {
     const formattedConfiguration = { exports: { showExcelExport: widget.style?.showExcelExport ?? false, showScreenshot: widget.style?.showScreenshot ?? false } as IWidgetExports } as IHighchartsWidgetConfiguration
     if (['HEATMAP', 'RADAR'].includes(chartType)) formattedConfiguration.datetypeSettings = getFormmatedDatetypeSettings(widget)
+    if (['RADAR'].includes(chartType)) formattedConfiguration.splitting = getFormmatedSplittingSettings(widget)
     return formattedConfiguration
 }
 
@@ -67,6 +68,16 @@ const getFormmatedDatetypeSettings = (widget: any) => {
         formattedDatetypeSettings.format = getProperDateTimeFormat(oldChartModel.dateFormat)
     }
     return formattedDatetypeSettings
+}
+
+const getFormmatedSplittingSettings = (widget: any) => {
+    const splittingSettings = { enabled: false, groupedSerie: '' }
+    const oldChartModel = widget.content?.chartTemplate?.CHART
+    if (oldChartModel) {
+        splittingSettings.enabled = oldChartModel.groupSeriesCateg
+        splittingSettings.groupedSerie = oldChartModel.groupedSerie
+    }
+    return splittingSettings
 }
 
 const getProperDateTimeFormat = (oldDateFormat: string) => {

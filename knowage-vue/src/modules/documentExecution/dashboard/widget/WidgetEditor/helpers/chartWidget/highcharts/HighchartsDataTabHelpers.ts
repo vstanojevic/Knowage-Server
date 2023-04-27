@@ -69,7 +69,10 @@ const isHeatmapTimestampColumnIsTheFirstOne = (tempColumn: IWidgetColumn, rows: 
 }
 
 const isRadarSplitInvalidForAttributes = (tempColumn: IWidgetColumn, rows: IWidgetColumn[], widgetModel: IWidget) => {
-    // TODO
+    const splitEnabled = widgetModel.settings?.configuration?.splitting
+    console.log('--------------------------- splitEnabled: ', splitEnabled)
+    console.log('--------------------------- rows: ', rows)
+    if (splitEnabled && (rows.length === 2 || tempColumn.type.includes('DATE') || tempColumn.type.includes('TIMESTAMP'))) return true
     return false
 }
 
@@ -78,7 +81,7 @@ const addMeasureColumnToTableRows = (tempColumn: IWidgetColumn, rows: IWidgetCol
     const maxValues = getMaxValuesNumber(chartType)
     if (maxValues && maxValues !== 1 && rows.length >= maxValues) return
     convertColumnToMeasure(tempColumn)
-    if (rows.length === 1 && maxValues === 1 || areAdditionalMeasureConstraintsInvalid(tempColumn, rows, chartType, widgetModel)) {
+    if (rows.length === 1 && maxValues === 1) {
         removeSerieFromWidgetModel(widgetModel, rows[0], chartType)
         updateSerieInWidgetModel(widgetModel, tempColumn, chartType)
         rows[0] = tempColumn
@@ -86,20 +89,6 @@ const addMeasureColumnToTableRows = (tempColumn: IWidgetColumn, rows: IWidgetCol
     addColumnToRows(rows, tempColumn)
     widgetModel.settings.chartModel.addSerie(tempColumn, chartType)
     emitter.emit('seriesAdded', tempColumn)
-}
-
-const areAdditionalMeasureConstraintsInvalid = (tempColumn: IWidgetColumn, rows: IWidgetColumn[], chartType: string | undefined, widgetModel: IWidget) => {
-    switch (chartType) {
-        case 'radar':
-            return isRadarSplitInvalidForMeasures(tempColumn, rows, widgetModel)
-        default:
-            return false
-    }
-}
-
-const isRadarSplitInvalidForMeasures = (tempColumn: IWidgetColumn, rows: IWidgetColumn[], widgetModel: IWidget) => {
-    // TODO
-    return false
 }
 
 

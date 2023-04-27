@@ -23,6 +23,7 @@ export interface IDrillOrderItem {
 
 export interface IHighchartsWidgetConfiguration {
     datetypeSettings?: any
+    splitting?: any
     exports: IWidgetExports
 }
 

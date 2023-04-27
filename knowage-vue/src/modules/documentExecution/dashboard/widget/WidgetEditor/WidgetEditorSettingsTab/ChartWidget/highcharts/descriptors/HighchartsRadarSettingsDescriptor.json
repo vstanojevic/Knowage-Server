@@ -22,12 +22,16 @@
                 "type": "DatetypeSettings"
             },
             {
-                "title": "dashboard.widgetEditor.noData.title",
-                "type": "NoDataMessageConfiguration"
+                "title": "dashboard.widgetEditor.highcharts.splitting.title",
+                "type": "SplittingSettings"
             },
             {
                 "title": "dashboard.widgetEditor.export.title",
                 "type": "Export"
+            },
+            {
+                "title": "dashboard.widgetEditor.noData.title",
+                "type": "NoDataMessageConfiguration"
             }
         ],
         "Interactions": [
